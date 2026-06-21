@@ -3,6 +3,14 @@
 All notable changes to Sawasdee · Learn Thai. This project follows
 [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] — 2026-06-21
+
+### Changed
+- **Thai typeface** is now **Maitree**, a looped (มีหัว) serif face with traditional
+  clear "heads," replacing the loopless Noto Sans Thai. All Thai text routes through the
+  single `--thai` CSS variable, so the font can be swapped in one line (see ROADMAP for
+  alternatives: Sarabun, Pridi, Noto Serif Thai, Trirong).
+
 ## [1.1.0] — 2026-06-21
 
 ### Added

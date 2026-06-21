@@ -77,6 +77,30 @@ In `index.html`:
 
 ---
 
+## Thai font — how to swap
+
+The app uses **Maitree** (looped serif). Every Thai glyph routes through one CSS
+variable, so changing the face is two edits in `index.html`:
+
+1. In the `<head>` Google Fonts `<link>`, swap the `Maitree:wght@400;500;600;700`
+   segment for the family you want.
+2. Change the `--thai` variable to match.
+
+Drop-in looped alternatives (all keep the traditional heads):
+
+| Family | Style | Feel |
+|--------|-------|------|
+| **Maitree** *(current)* | looped serif | warm, textbook |
+| **Pridi** | looped serif | a touch more formal |
+| **Noto Serif Thai** | looped serif | neutral, pairs with the Noto stack |
+| **Trirong** | looped serif | higher contrast, display-ish |
+| **Sarabun** | looped **sans** | the Thai document/textbook standard — clean heads, no serif |
+
+If you'd like to A/B them without editing files, I can add a small "Thai font" toggle
+to Settings.
+
+---
+
 ## Possible later additions (parked)
 
 - A fourth+ buddy (the `MASCOTS` map is ready for it — one entry adds a buddy

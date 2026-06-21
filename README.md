@@ -59,6 +59,7 @@ guides are reference study aids and may benefit from a native speaker's refineme
 ## Tech notes
 
 - Pure HTML / CSS / vanilla JS in one file. No dependencies except Google Fonts
-  (Outfit, Noto Sans Thai / JP / SC / TC), which load from the CDN.
+  (Outfit for UI, **Maitree** — a looped serif Thai face — for Thai, and Noto Sans
+  JP / SC / TC for Japanese and Chinese), which load from the CDN.
 - Animations respect `prefers-reduced-motion`.
 - Tested as a mobile-first layout (max width ~560px) with safe-area insets.
