@@ -18,8 +18,9 @@ GitHub Pages.
   **Malai** the Thai dog. Each has gentle idle motion (breathing, ear-wave, blink,
   occasional glance and eye-roll) and reacts when you tap to tickle them. They grow
   through six stages as you learn.
-- **Flashcards** — swipe through cards, tap to flip, SRS (Leitner) memory status
-  (New → Learning → Familiar → Mastered) with Again / Hard / Good / Easy ratings.
+- **Flashcards** — swipe through cards, tap the card to flip, SRS (Leitner) memory
+  status (New → Learning → Familiar → Mastered). The Again / Hard / Good / Easy rating
+  buttons are always available, so you can rate a word from either side of the card.
 - **Quizzes** — Meaning, Thai, and Mixed modes, with configurable pool and length.
   *(A "Listening" mode exists in the code but is hidden for now — see ROADMAP.)*
 - **Browse & search** — find any word across Thai, pronunciation, and all meanings.

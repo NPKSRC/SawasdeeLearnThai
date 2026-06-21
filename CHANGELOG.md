@@ -3,6 +3,14 @@
 All notable changes to Sawasdee · Learn Thai. This project follows
 [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] — 2026-06-21
+
+### Changed
+- **Study card flow** — the Again / Hard / Good / Easy rating buttons are now shown at
+  all times, on both the front and back of the card, so a word can be rated without
+  flipping. Removed the dedicated "Flip card / Got it" button; the card still flips by
+  tapping it (or Space / Enter), and prev / next arrows remain for navigation.
+
 ## [1.2.0] — 2026-06-21
 
 ### Changed
