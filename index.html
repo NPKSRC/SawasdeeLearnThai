@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0e7c73">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+Thai+Looped:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Thai+Looped:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#2a211c; --ink-soft:#6f635a; --ink-faint:#a99e93;
@@ -21,7 +21,7 @@
   --new:#c3b6a4; --learning:#e0a526; --familiar:#3fa58c; --mastered:#0a5c55;
   --shadow:0 6px 22px rgba(42,33,28,.10); --shadow-sm:0 4px 14px rgba(42,33,28,.08);
   --r-lg:22px; --r-md:16px; --r-sm:12px;
-  --display:'Outfit',system-ui,sans-serif; --body:'Outfit',system-ui,sans-serif;
+  --display:'Outfit',system-ui,sans-serif; --body:'Outfit','Noto Sans',system-ui,sans-serif;
   --thai:'Noto Sans Thai Looped','Noto Sans Thai',sans-serif;
   --jp:'Noto Sans JP',sans-serif; --sc:'Noto Sans SC',sans-serif; --tc:'Noto Sans TC',sans-serif;
 }
@@ -236,6 +236,8 @@ body.no-tts #qType button[data-qt="listen"]{display:none!important}
 .back .ml.ja .rd{font-family:var(--jp)}
 .back .note{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-family:var(--thai);font-size:.8rem;color:var(--ink-soft);font-weight:500;max-width:94%;line-height:1.4}
 .back .note b{font-family:var(--display);font-size:.6rem;text-transform:uppercase;letter-spacing:.5px;color:var(--gold-deep);display:block;margin-bottom:2px}
+/* S7: long IPA compounds (no-space, dot-separated) wrap instead of overflowing on narrow screens — non-game surfaces only */
+.front .pronbig,.back .pron,.qprompt-pin,.row .rpin{overflow-wrap:break-word}
 
 /* SRS rating row */
 .rate{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
@@ -327,7 +329,7 @@ button.game-card:hover{transform:translateY(-2px)}
 @keyframes pt-bloom{0%{transform:scale(1)}45%{transform:scale(1.14)}100%{transform:scale(1)}}
 .pt-clue{text-align:center;font-size:.78rem;color:var(--ink-soft);font-weight:700;margin-bottom:8px}
 .pt-cells{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin-bottom:14px}
-.pt-cells .cell{width:40px;height:48px;border-radius:9px;border:2px solid var(--line);background:var(--cloud);display:grid;place-items:center;font-family:var(--body);font-size:1.35rem;font-weight:600;color:var(--ink)}
+.pt-cells .cell{width:40px;height:48px;border-radius:9px;border:2px solid var(--line);background:var(--cloud);display:grid;place-items:center;font-family:var(--thai);font-size:1.35rem;font-weight:600;line-height:1;color:var(--ink)}
 .pt-cells .cell.hid{color:transparent}
 .pt-cells .cell.c-vowel{background:var(--teal-tint);border-color:#bcd9d2}
 .pt-cells .cell.c-tone{background:#faeecb;border-color:#ecd79a}
@@ -594,6 +596,45 @@ button.game-card:hover{transform:translateY(-2px)}
 .mm-done .mm-stats .l{font-size:.72rem;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
 .mm-xp{display:inline-block;background:var(--gold);color:#fff;font-weight:800;padding:6px 16px;border-radius:999px;margin-top:4px}
 .mm-best{display:inline-block;margin-top:8px;color:var(--gold-deep);font-weight:800;font-size:.9rem}
+
+/* ---------- Tone Hero ---------- */
+.th-contour{display:inline-block;vertical-align:middle}
+.th-tones-key{display:flex;flex-wrap:wrap;gap:7px;margin:-4px 0 14px}
+.th-tones-key .tkey{display:inline-flex;align-items:center;gap:6px;background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:5px 11px 5px 9px;font-size:.72rem;font-weight:700;color:var(--ink-soft)}
+.th-tones-key .tkey .tg{font-family:var(--thai);color:var(--teal-deep);font-weight:800;font-size:.9rem}
+.th-tones-key .tkey b.th{font-family:var(--thai);color:var(--ink);font-weight:800}
+.th-tones-key .th-contour{color:var(--gold-deep)}
+.th-card{min-height:150px}
+.th-spk{position:absolute;top:12px;right:12px;width:40px;height:40px}
+.th-spk svg{width:20px;height:20px}
+.th-time.low b{color:var(--ruby)}
+.th-hearts{letter-spacing:2px}
+.th-heart{color:var(--ruby)}
+.th-heart.gone{color:var(--line)}
+.th-reveal{max-height:0;opacity:0;overflow:hidden;transition:max-height .3s ease,opacity .3s ease,margin .3s ease,padding .3s ease;margin-top:0}
+.th-reveal.show{max-height:220px;opacity:1;margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}
+.th-reveal .thr-word{font-family:var(--thai);font-weight:700;font-size:1.5rem;line-height:1.1}
+.th-reveal .thr-pron{color:var(--teal-deep);font-weight:700;font-size:1rem;margin-top:2px;overflow-wrap:break-word}
+.th-reveal.no .thr-pron{color:var(--ruby-deep)}
+.th-reveal .thr-tone{font-size:.8rem;color:var(--ink-soft);font-weight:700;margin-top:4px}
+.th-reveal .thr-tone b{font-family:var(--thai);color:var(--ink);font-size:.98rem}
+.th-reveal .thr-mean{font-size:.82rem;color:var(--ink-soft);font-weight:600;margin-top:2px}
+.th-answers{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.th-tone{display:flex;align-items:center;gap:10px;text-align:left;background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-md);padding:12px;cursor:pointer;box-shadow:var(--shadow-sm);transition:all .14s;font:inherit;color:var(--ink)}
+.th-tone:hover:not(:disabled){border-color:var(--teal);transform:translateY(-2px)}
+.th-tone:disabled{cursor:default}
+.th-tone .tg{flex:none;width:30px;text-align:center;font-family:var(--thai);font-weight:800;font-size:1.15rem;color:var(--teal-deep)}
+.th-tone .th-contour{flex:none;color:var(--gold-deep)}
+.th-tone .tn{display:flex;flex-direction:column;line-height:1.12;min-width:0}
+.th-tone .tn b.th{font-family:var(--thai);font-weight:800;font-size:1rem;color:var(--ink)}
+.th-tone .tn span{font-size:.66rem;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.th-tone:last-child:nth-child(odd){grid-column:1 / -1}
+.th-tone.correct{background:#e6f4ec;border-color:var(--teal)}
+.th-tone.correct .tg,.th-tone.correct .tn b.th{color:var(--teal-deep)}
+.th-tone.correct .th-contour{color:var(--teal)}
+.th-tone.wrong{background:#fbe9e7;border-color:var(--ruby)}
+.th-tone.wrong .tg,.th-tone.wrong .tn b.th{color:var(--ruby-deep)}
+.th-tone.wrong .th-contour{color:var(--ruby)}
 </style>
 </head>
 <body data-mood="idle" class="no-tts">
@@ -823,11 +864,11 @@ button.game-card:hover{transform:translateY(-2px)}
         <span class="gc-txt"><b>Memory Match</b><span>Flip the tiles and pair each word with its match.</span></span>
         <span class="gc-arrow">→</span>
       </button>
-      <div class="game-card soon">
+      <button class="game-card" id="gcHero">
         <span class="gc-tile">🐘</span>
         <span class="gc-txt"><b>Tone Hero</b><span>See the word — tap its tone. Thai has five!</span></span>
-        <span class="soon-pill">coming soon</span>
-      </div>
+        <span class="gc-arrow">→</span>
+      </button>
     </div>
 
     <div id="petalsSetup" style="display:none">
@@ -928,6 +969,66 @@ button.game-card:hover{transform:translateY(-2px)}
         <button class="btn btn-primary" id="mmAgainBtn">Play again</button>
       </div>
     </div>
+
+    <!-- ===== Tone Hero ===== -->
+    <div id="thSetup" style="display:none">
+      <button class="back-pill" id="thSetupBackBtn"><i>‹</i> Back to games list</button>
+      <div class="quiz-setup">
+        <h2>🐘 Tone Hero</h2>
+        <p class="sub">See the word — tap its tone. Thai has five.</p>
+        <div class="scope-chip" id="thScope"></div>
+        <div class="setup-group">
+          <label>Mode</label>
+          <div class="seg" id="thMode">
+            <button data-m="timed" aria-pressed="true">⏱ ประลองเวลา<small>race the 60s clock</small></button>
+            <button data-m="survival" aria-pressed="false">❤ เอาชีวิตรอด<small>3 lives, endless</small></button>
+          </div>
+        </div>
+        <div class="setup-group">
+          <label>The five tones</label>
+          <div class="th-tones-key" id="thTonesKey"></div>
+        </div>
+        <div class="mm-hint" id="thHint"></div>
+        <div class="mm-setup-best" id="thSetupBest"></div>
+        <div class="cleared-bar" id="thCleared"></div>
+        <button class="btn btn-primary" id="thStartBtn" style="width:100%">Start</button>
+      </div>
+    </div>
+
+    <div id="thPlay" style="display:none">
+      <div class="pt-top">
+        <button class="back-pill" id="thBackBtn" style="margin-bottom:0"><i>‹</i> Back to games list</button>
+        <button class="btn btn-ghost btn-sm" id="thQuitBtn" style="margin-left:auto">Quit game</button>
+      </div>
+      <div class="mm-meta" id="thMeta"></div>
+      <div class="qcard th-card">
+        <div class="qprompt-label">What tone is this?</div>
+        <div class="qprompt" id="thWord">—</div>
+        <button class="spk th-spk" id="thSpk" title="Hear it in Thai" aria-label="Hear it in Thai"></button>
+        <div class="th-reveal" id="thReveal"></div>
+      </div>
+      <div class="th-answers" id="thAnswers"></div>
+    </div>
+
+    <div id="thDone" style="display:none">
+      <button class="back-pill" id="thDoneBackBtn"><i>‹</i> Back to games list</button>
+      <div class="mm-done">
+        <div class="mm-mascot" id="thMascot"></div>
+        <h2 id="thDoneTitle">Time!</h2>
+        <p id="thDoneSub">Nicely done.</p>
+        <div class="mm-stats">
+          <div><div class="n" id="thDoneScore">0</div><div class="l">Score</div></div>
+          <div><div class="n" id="thDoneCombo">×0</div><div class="l">Best combo</div></div>
+          <div><div class="n" id="thDoneAcc">0%</div><div class="l">Accuracy</div></div>
+        </div>
+        <div class="mm-xp" id="thXp">+0 XP</div>
+        <div class="mm-best" id="thBest" style="display:none">🏅 New best!</div>
+      </div>
+      <div class="controls" style="margin-top:14px">
+        <button class="btn btn-ghost" id="thChangeBtn">Change setup</button>
+        <button class="btn btn-primary" id="thAgainBtn">Play again</button>
+      </div>
+    </div>
   </section>
 
   <section class="view" id="view-browse">
@@ -1007,7 +1108,7 @@ button.game-card:hover{transform:translateY(-2px)}
         <ul>
           <li><b>Study</b> — flip and rate flashcards. This is where learning happens.</li>
           <li><b>Quiz</b> — test yourself with multiple-choice rounds.</li>
-          <li><b>Games</b> — learn by playing. Petals: spell the Thai word before the jasmine loses its petals. Memory Match: flip the tiles to pair each Thai word with its match (more games coming).</li>
+          <li><b>Games</b> — learn by playing. Petals: spell the Thai word before the jasmine loses its petals. Memory Match: flip the tiles to pair each Thai word with its match. Tone Hero: read the word and tap its tone — Thai has five (mid, low, falling, high, rising).</li>
           <li><b>Browse</b> — search and skim every word in your deck.</li>
           <li><b>Progress</b> — watch your buddy grow as you learn.</li>
           <li><b>Guide</b> — you are here!</li>
@@ -1064,7 +1165,7 @@ button.game-card:hover{transform:translateY(-2px)}
         <ul>
           <li><b>Study</b> — カードをめくって自己評価します。学習の中心です。</li>
           <li><b>Quiz</b> — 選択式の問題で力試しができます。</li>
-          <li><b>Games</b> — 遊びながら学べます。Petals：ジャスミンの花びらが散る前にタイ語のつづりを当てましょう。Memory Match：タイル をめくってタイ語の単語と意味を組み合わせましょう（今後追加予定）。</li>
+          <li><b>Games</b> — 遊びながら学べます。Petals：ジャスミンの花びらが散る前にタイ語のつづりを当てましょう。Memory Match：タイル をめくってタイ語の単語と意味を組み合わせましょう。Tone Hero：単語を見て声調をタップ。タイ語には5つの声調があります（平声・低声・下声・高声・上声）。</li>
           <li><b>Browse</b> — デック内のすべての単語を検索・一覧できます。</li>
           <li><b>Progress</b> — 学習に合わせて相棒が成長していきます。</li>
           <li><b>Guide</b> — 今ここです！</li>
@@ -1121,7 +1222,7 @@ button.game-card:hover{transform:translateY(-2px)}
         <ul>
           <li><b>Study</b> — 翻卡片并自我评分，这是学习的核心。</li>
           <li><b>Quiz</b> — 用选择题检验学习成果。</li>
-          <li><b>Games</b> — 边玩边学。Petals：在茉莉花瓣落完之前拼出泰文单词。Memory Match：翻开卡片，把泰文单词和它的意思配对（更多游戏即将推出）。</li>
+          <li><b>Games</b> — 边玩边学。Petals：在茉莉花瓣落完之前拼出泰文单词。Memory Match：翻开卡片，把泰文单词和它的意思配对。Tone Hero：看单词，点出它的声调——泰语有五个声调（中平、低、降、高、升）。</li>
           <li><b>Browse</b> — 搜索并浏览当前词组里的所有单词。</li>
           <li><b>Progress</b> — 看着小伙伴随你的学习一起成长。</li>
           <li><b>Guide</b> — 你现在就在这里！</li>
@@ -1421,6 +1522,8 @@ function migrateAccount(a){
   if(!a.petalsDone)a.petalsDone={};
   if(!a.mmDone)a.mmDone={};
   if(!a.mmBest)a.mmBest={};
+  if(!a.heroDone)a.heroDone={};
+  if(!a.heroBest)a.heroBest={};
   if(!a.cards)a.cards={};if(!a.best)a.best={};if(!a.qStats)a.qStats={correct:0,total:0};
   if(!a.xpByDay)a.xpByDay={};if(!a.log)a.log=[];if(!a.days)a.days=[];
   if(typeof a.xp!=="number")a.xp=0;if(typeof a.streak!=="number")a.streak=0;
@@ -2028,7 +2131,9 @@ function ptClass(ch){
   if(PT_TONES.indexOf(ch)>=0)return "tone";
   return null;
 }
-function ptCombining(ch){return "ัิีึืุู็่้๊๋์".indexOf(ch)>=0;}
+// Thai zero-width combining marks (upper/lower vowels, above signs, tone marks):
+// they stack onto the preceding base consonant and must never occupy their own cell.
+function ptCombining(ch){var c=ch.charCodeAt(0);return c===0x0E31||(c>=0x0E34&&c<=0x0E3A)||c===0x0E47||(c>=0x0E48&&c<=0x0E4E);}
 var petals={word:null,chars:[],revealed:[],wrong:0,max:6,hints:3,diff:"easy",over:false,lastId:null};
 function ptCandidates(){
   return curCatWords().map(function(w){
@@ -2071,15 +2176,26 @@ function ptFlowerSVG(){
     +'<circle cx="60" cy="60" r="12" fill="#e0a526"/><circle cx="56" cy="56" r="3" fill="#f0d27a"/>'
     +'</svg>';
 }
+function ptClusters(){
+  // Group each base char with its following zero-width combining marks into ONE cell.
+  // Guess/reveal bookkeeping stays per-codepoint; this only shapes the display.
+  var out=[];
+  petals.chars.forEach(function(ch,i){
+    if(ptCombining(ch)&&out.length){out[out.length-1].idx.push(i);}
+    else{out.push({base:i,idx:[i]});}
+  });
+  return out;
+}
 function ptRender(){
   var fl=$("#ptFlower");fl.classList.remove("bloom");fl.innerHTML=ptFlowerSVG();
   var left=petals.max-petals.wrong;
   var m=meaningLines(petals.word)[0];
   $("#ptClue").textContent="Clue: "+m.t+"  ·  "+CAT_BY_KEY[petals.word.c].emo+"  ·  petals left "+left;
-  $("#ptCells").innerHTML=petals.chars.map(function(ch,i){
-    var cl=ptClass(ch);var on=petals.revealed[i];
-    var disp=ptCombining(ch)?"\u25CC"+ch:ch;
-    return '<span class="cell c-'+cl+(on?"":" hid")+'" data-i="'+i+'">'+(on?esc(disp):"·")+'</span>';
+  $("#ptCells").innerHTML=ptClusters().map(function(cl){
+    var bi=cl.base;var baseOn=petals.revealed[bi];var kls=ptClass(petals.chars[bi]);
+    // A mark shows only when its base shows, so a mark never floats in an empty cell.
+    var glyph="";if(baseOn){cl.idx.forEach(function(j){if(petals.revealed[j])glyph+=petals.chars[j];});}
+    return '<span class="cell c-'+kls+(baseOn?"":" hid")+'" data-idx="'+cl.idx.join(",")+'">'+(baseOn?esc(glyph):"·")+'</span>';
   }).join("");
   $("#ptHintN").textContent=petals.hints;
   ptRenderKeys();
@@ -2113,7 +2229,7 @@ function ptGuess(ch){
   petals._guessed[ch]=hit?"ok":"no";
   if(!hit)petals.wrong++;
   ptRender();
-  if(hit){$$("#ptCells .cell").forEach(function(el){if(petals.chars[+el.getAttribute("data-i")]===ch)el.classList.add("just");});}
+  if(hit){$$("#ptCells .cell").forEach(function(el){if((el.getAttribute("data-idx")||"").split(",").some(function(j){return petals.chars[+j]===ch;}))el.classList.add("just");});}
   ptCheckEnd();
 }
 function ptHint(){
@@ -2161,6 +2277,7 @@ function ptShow(which){ /* "home" | "setup" | "play" */
   $("#petalsSetup").style.display=which==="setup"?"block":"none";
   $("#petalsPlay").style.display=which==="play"?"block":"none";
   $("#mmSetup").style.display="none";$("#mmPlay").style.display="none";$("#mmDone").style.display="none";
+  $("#thSetup").style.display="none";$("#thPlay").style.display="none";$("#thDone").style.display="none";
   if(which==="setup")renderPetalsSetup();
 }
 function renderPetalsSetup(){
@@ -2174,6 +2291,8 @@ function renderPetalsSetup(){
   $$("#ptDiff button").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-d")===petals.diff);});
 }
 function renderGames(){
+  if($("#thSetup").style.display==="block"){thValidate();return;}
+  if($("#thPlay").style.display==="block"||$("#thDone").style.display==="block")return;
   if($("#mmSetup").style.display==="block"){mmValidate();return;}
   if($("#mmPlay").style.display==="block"||$("#mmDone").style.display==="block")return;
   ptShow($("#petalsPlay").style.display==="block"?"play":($("#petalsSetup").style.display==="block"?"setup":"home"));
@@ -2241,6 +2360,7 @@ function mmShow(which){ /* "setup" | "play" | "done" */
   $("#mmSetup").style.display=which==="setup"?"block":"none";
   $("#mmPlay").style.display=which==="play"?"block":"none";
   $("#mmDone").style.display=which==="done"?"block":"none";
+  $("#thSetup").style.display="none";$("#thPlay").style.display="none";$("#thDone").style.display="none";
   if(which==="setup")mmValidate();
 }
 
@@ -2334,6 +2454,200 @@ function mmFinish(){
 function mmQuit(){
   mm.playing=false;if(mm.timer){clearInterval(mm.timer);mm.timer=null;}
   setMood("idle");mmShow("setup");
+}
+
+/* ============ TONE HERO ============ */
+/* Read the Thai word, tap its tone. Word pool (PO decision, S9): SINGLE-SYLLABLE
+   words in the current deck — exactly ONE Chao tone-bar group in the IPA field w.i.
+   Contour->tone map is the 5 canonical Thai contours (pre-solved S7); any word whose
+   lone contour isn't in the map is logged to console and excluded (self-verifying). */
+var TH_TONELET=/[\u02E5-\u02E9]+/g;               /* runs of Chao tone letters ˥˦˧˨˩ */
+var TH_TONE_MAP={
+  "\u02E7":"mid",                    /* ˧    สามัญ  mid     */
+  "\u02E8\u02E9":"low",              /* ˨˩   เอก    low     */
+  "\u02E5\u02E9":"falling",          /* ˥˩   โท     falling */
+  "\u02E6\u02E9":"falling",          /* ˦˩   (accepted variant) */
+  "\u02E6\u02E5":"high",             /* ˦˥   ตรี    high    */
+  "\u02E5":"high",                   /* ˥    (accepted variant) */
+  "\u02E8\u02E9\u02E6":"rising",     /* ˨˩˦  จัตวา  rising  */
+  "\u02E9\u02E6":"rising",           /* ˩˦   (accepted variant) */
+  "\u02E8\u02E6":"rising"            /* ˨˦   (accepted variant) */
+};
+var TH_TONES=[
+  {k:"mid",    th:"สามัญ", en:"mid",     g:"\u02E7",             pts:"3,12 37,12"},
+  {k:"low",    th:"เอก",   en:"low",     g:"\u02E8\u02E9",       pts:"3,13 37,19"},
+  {k:"falling",th:"โท",    en:"falling", g:"\u02E5\u02E9",       pts:"3,6 15,6 37,21"},
+  {k:"high",   th:"ตรี",   en:"high",    g:"\u02E6\u02E5",       pts:"3,16 37,5"},
+  {k:"rising", th:"จัตวา", en:"rising",  g:"\u02E8\u02E9\u02E6", pts:"3,13 17,20 37,6"}
+];
+var TH_TONE_BY={};TH_TONES.forEach(function(t){TH_TONE_BY[t.k]=t;});
+var TH_MIN=4, TH_TIME=60, TH_LIVES=3;
+var hero={mode:"timed",playing:false,phase:"ask",pool:[],order:[],oi:0,cur:null,
+          score:0,combo:0,bestCombo:0,correct:0,asked:0,lives:TH_LIVES,
+          time:TH_TIME,timer:null,scopeKey:""};
+
+function thFirstReading(iraw){
+  var s=String(iraw||"").trim().replace(/^\/+/,"").replace(/\/+$/,"");
+  return s.split(/\s+\/\s+/)[0]||"";   /* first of any alternative readings */
+}
+function thContours(s){return s.match(TH_TONELET)||[];}
+function thContourSVG(pts){
+  return '<svg class="th-contour" viewBox="0 0 40 24" width="40" height="24" aria-hidden="true">'
+    +'<polyline points="'+pts+'" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+function thBuildPool(){
+  var pool=[],unmapped={};
+  curCatWords().forEach(function(w){
+    if(!w.i)return;
+    var runs=thContours(thFirstReading(w.i));
+    if(runs.length!==1)return;                 /* single-syllable only */
+    var tone=TH_TONE_MAP[runs[0]];
+    if(!tone){unmapped[runs[0]]=(unmapped[runs[0]]||0)+1;return;}  /* log + exclude */
+    pool.push({w:w,tone:tone});
+  });
+  if(Object.keys(unmapped).length){try{console.warn("[ToneHero] contours excluded (unmapped):",unmapped);}catch(e){}}
+  return pool;
+}
+function thBestKey(){return curCatKey()+"|"+hero.mode;}
+
+function thValidate(){
+  var pool=thBuildPool(),start=$("#thStartBtn"),hint=$("#thHint");
+  hero.scopeKey=curCatKey();
+  $$("#thMode button").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-m")===hero.mode);});
+  $("#thTonesKey").innerHTML=TH_TONES.map(function(t){
+    return '<span class="tkey"><span class="tg">'+t.g+'</span>'+thContourSVG(t.pts)+'<b class="th">'+t.th+'</b><span>'+t.en+'</span></span>';
+  }).join("");
+  var cat=CAT_BY_KEY[curCatKey()]||{emo:"🌿",en:"All"};
+  $("#thScope").textContent=cat.emo+" "+cat.en+" · "+pool.length+" playable words";
+  if(pool.length<TH_MIN){hint.textContent="Not enough single-syllable words with tones here — try another deck.";start.disabled=true;}
+  else{start.disabled=false;hint.textContent=(pool.length<10?("Only "+pool.length+" toned words in this deck."):"");}
+  var a=acct();if(!a.heroBest)a.heroBest={};
+  var b=a.heroBest[thBestKey()],box=$("#thSetupBest");
+  if(b){box.style.display="block";box.textContent="🏅 Best here: "+b.score+" pts"+(b.cleared?(" · "+b.cleared+" cleared"):"");}
+  else{box.style.display="none";}
+  var hd=a.heroDone||{},done=0;
+  pool.forEach(function(o){if(hd[o.w.id])done++;});
+  var pct=pool.length?Math.round(done/pool.length*100):0;
+  $("#thCleared").innerHTML='<div class="cb-row"><span>Toned · '+esc(cat.en)+'</span><b>'+done+'/'+pool.length+'</b></div>'
+    +'<div class="cb-track"><i style="width:'+pct+'%"></i></div>';
+}
+
+function thShow(which){ /* "setup" | "play" | "done" */
+  $("#gamesHome").style.display="none";
+  $("#petalsSetup").style.display="none";$("#petalsPlay").style.display="none";
+  $("#mmSetup").style.display="none";$("#mmPlay").style.display="none";$("#mmDone").style.display="none";
+  $("#thSetup").style.display=which==="setup"?"block":"none";
+  $("#thPlay").style.display=which==="play"?"block":"none";
+  $("#thDone").style.display=which==="done"?"block":"none";
+  if(which==="setup")thValidate();
+}
+
+function thHearts(){var s="";for(var i=0;i<TH_LIVES;i++)s+='<span class="th-heart'+(i<hero.lives?"":" gone")+'">❤</span>';return s;}
+function thRenderMeta(){
+  var left=hero.mode==="timed"
+    ? '<div class="mm-pill th-time'+(hero.time<=10?" low":"")+'">⏱ <b>'+hero.time+'s</b></div>'
+    : '<div class="mm-pill"><b class="th-hearts">'+thHearts()+'</b></div>';
+  $("#thMeta").innerHTML=left
+    +'<div class="mm-pill">Score <b>'+hero.score+'</b></div>'
+    +'<div class="mm-pill">Combo <b>×'+hero.combo+'</b></div>';
+}
+
+function thStart(){
+  var pool=thBuildPool();
+  if(pool.length<TH_MIN){thShow("setup");return;}
+  hero.pool=pool;hero.scopeKey=curCatKey();
+  hero.order=shuffle(pool.map(function(_,i){return i;}));
+  hero.oi=0;hero.score=0;hero.combo=0;hero.bestCombo=0;hero.correct=0;hero.asked=0;
+  hero.lives=TH_LIVES;hero.time=TH_TIME;hero.playing=true;hero.phase="ask";
+  $("#thAnswers").innerHTML=TH_TONES.map(function(t){
+    return '<button class="th-tone" data-k="'+t.k+'">'
+      +'<span class="tg">'+t.g+'</span>'+thContourSVG(t.pts)
+      +'<span class="tn"><b class="th">'+t.th+'</b><span>'+t.en+'</span></span></button>';
+  }).join("");
+  $$("#thAnswers .th-tone").forEach(function(b){b.onclick=function(){thAnswer(b.getAttribute("data-k"));};});
+  if(hero.timer){clearInterval(hero.timer);hero.timer=null;}
+  if(hero.mode==="timed")hero.timer=setInterval(thTick,1000);
+  thShow("play");setMood("think");window.scrollTo(0,0);
+  thNext();
+}
+function thTick(){
+  if(!hero.playing||hero.phase!=="ask")return;   /* clock pauses during reveal */
+  hero.time--;thRenderMeta();
+  if(hero.time<=0){hero.time=0;thRenderMeta();thFinish();}
+}
+function thNext(){
+  if(!hero.playing)return;
+  hero.phase="ask";
+  if(hero.oi>=hero.order.length){hero.order=shuffle(hero.order);hero.oi=0;}  /* recycle deck */
+  hero.cur=hero.pool[hero.order[hero.oi]];hero.oi++;hero.asked++;
+  var w=hero.cur.w;
+  $("#thWord").textContent=w.th;
+  $("#thWord").className="qprompt"+((w.th||"").length>6?" mean":"");
+  $("#thReveal").className="th-reveal";$("#thReveal").innerHTML="";
+  $$("#thAnswers .th-tone").forEach(function(b){b.className="th-tone";b.disabled=false;});
+  thRenderMeta();
+}
+function thAnswer(key){
+  if(!hero.playing||hero.phase!=="ask")return;
+  hero.phase="reveal";
+  var correctKey=hero.cur.tone,w=hero.cur.w,ok=(key===correctKey);
+  $$("#thAnswers .th-tone").forEach(function(b){
+    b.disabled=true;var bk=b.getAttribute("data-k");
+    if(bk===correctKey)b.classList.add("correct");
+    else if(bk===key)b.classList.add("wrong");
+  });
+  if(ok){
+    hero.correct++;hero.combo++;if(hero.combo>hero.bestCombo)hero.bestCombo=hero.combo;
+    hero.score+=10+Math.min(hero.combo-1,5)*4;   /* combo bonus up to +20 */
+    var ac=acct();if(!ac.heroDone)ac.heroDone={};ac.heroDone[w.id]=1;
+  }else{
+    hero.combo=0;
+    if(hero.mode==="survival")hero.lives--;
+  }
+  var t=TH_TONE_BY[correctKey];
+  $("#thReveal").innerHTML='<div class="thr-word">'+esc(w.th)+'</div>'
+    +'<div class="thr-pron">'+esc(pronOf(w))+'</div>'
+    +'<div class="thr-tone"><b>'+t.th+'</b> <span>'+t.en+' tone '+t.g+'</span></div>'
+    +(w.en||w.ja?'<div class="thr-mean">'+esc(w.en||w.ja)+'</div>':'');
+  $("#thReveal").className="th-reveal show "+(ok?"ok":"no");
+  if(ttsAvailable())speak(w.th);
+  thRenderMeta();
+  var over=(hero.mode==="survival"&&hero.lives<=0);
+  setTimeout(function(){
+    if(!hero.playing)return;
+    if(over)thFinish();else thNext();
+  },ok?900:1400);
+}
+function thFinish(){
+  hero.playing=false;hero.phase="done";
+  if(hero.timer){clearInterval(hero.timer);hero.timer=null;}
+  var acc=hero.asked?Math.round(hero.correct/hero.asked*100):0;
+  var xp=hero.correct*2+Math.round(hero.bestCombo);
+  var a=acct();if(!a.heroBest)a.heroBest={};
+  var key=thBestKey(),prev=a.heroBest[key],isBest=false;
+  if(!prev||hero.score>prev.score){a.heroBest[key]={score:hero.score,combo:hero.bestCombo,cleared:hero.correct};isBest=true;}
+  touchDay();
+  awardXP(xp,"Tone Hero · "+(hero.mode==="timed"?"Timed":"Survival")+" · "+hero.correct+" correct","game");
+  flashGrowthMaybe();saveDB();
+  var stage=stageFromGP(growthPoints(acct()).gp);
+  $("#thMascot").innerHTML=mascotSVG(curMascot(),stage,96);
+  var great=acc>=80&&hero.correct>=8;
+  $("#thDoneTitle").textContent=great?"Tone master! 🐘":(hero.mode==="survival"?"Out of lives":"Time!");
+  $("#thDoneSub").textContent=great?"เก่งมาก! Your ear for tones is sharp."
+    :(acc>=60?"Nice — the five tones are settling in.":"Keep going — tones take a little time.");
+  $("#thDoneScore").textContent=hero.score;
+  $("#thDoneCombo").textContent="×"+hero.bestCombo;
+  $("#thDoneAcc").textContent=acc+"%";
+  $("#thXp").textContent="+"+xp+" XP";
+  var be=$("#thBest");be.style.display="inline-block";
+  be.textContent=isBest?("🏅 New best: "+hero.score+" pts"):("🏅 Best: "+prev.score+" pts");
+  flashMood("happy");updateChip();
+  thShow("done");window.scrollTo(0,0);
+}
+function thQuit(){
+  hero.playing=false;hero.phase="done";
+  if(hero.timer){clearInterval(hero.timer);hero.timer=null;}
+  saveDB();setMood("idle");thShow("setup");
 }
 
 /* ============ GUIDE ============ */
@@ -2517,6 +2831,18 @@ function init(){
   $("#mmChangeBtn").onclick=function(){mmShow("setup");};
   $$("#mmSideB button").forEach(function(b){b.onclick=function(){mm.b=b.getAttribute("data-b");mmValidate();};});
   $$("#mmSize button").forEach(function(b){b.onclick=function(){var n=+b.getAttribute("data-n");if(mmMaxPairs()>=n){mm.n=n;mmValidate();}};});
+  /* tone hero */
+  $("#gcHero").onclick=function(){thShow("setup");};
+  $("#thSetupBackBtn").onclick=function(){ptShow("home");};
+  $("#thBackBtn").onclick=function(){hero.playing=false;hero.phase="done";if(hero.timer){clearInterval(hero.timer);hero.timer=null;}saveDB();setMood("idle");ptShow("home");};
+  $("#thDoneBackBtn").onclick=function(){ptShow("home");};
+  $("#thQuitBtn").onclick=function(){thQuit();};
+  $("#thStartBtn").onclick=function(){thStart();};
+  $("#thAgainBtn").onclick=function(){thStart();};
+  $("#thChangeBtn").onclick=function(){thShow("setup");};
+  $$("#thMode button").forEach(function(b){b.onclick=function(){hero.mode=b.getAttribute("data-m");thValidate();};});
+  $("#thSpk").innerHTML=SPK_SVG;
+  $("#thSpk").onclick=function(){if(hero.cur&&hero.cur.w)speak(hero.cur.w.th);};
   /* settings */
   $("#settingsBtn").onclick=openSettings;
   $("#closeSettingsBtn").onclick=closeSettings;
