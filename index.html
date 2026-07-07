@@ -1301,8 +1301,11 @@ button.game-card:hover{transform:translateY(-2px)}
       #view-story .st-sel.ok{border-color:#2ea06e;background:rgba(46,160,110,.14);}
       #view-story .st-sel.bad{border-color:#d9534f;background:rgba(217,83,79,.13);}
       #view-story .st-fix{font-size:.66rem;color:#2ea06e;margin-top:2px;min-height:.8em;}
-      #view-story .st-foot{position:sticky;bottom:0;padding:14px 0 6px;background:linear-gradient(transparent,var(--bg,#fff) 30%);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-      #view-story .st-btn{border:0;font:inherit;font-weight:700;padding:10px 20px;border-radius:12px;cursor:pointer;background:var(--accent,#2ea06e);color:#fff;}
+      #view-story .st-foot{position:fixed;left:max(10px,calc(50% - 548px));bottom:84px;z-index:50;display:flex;flex-direction:column;gap:6px;align-items:stretch;width:106px;background:var(--card,#fff);border:1px solid rgba(128,128,128,.22);border-radius:14px;padding:8px;box-shadow:0 4px 16px rgba(0,0,0,.2);}
+      #view-story .st-foot[hidden]{display:none;}
+      #view-story .st-foot .st-btn{width:100%;padding:8px 10px;text-align:center;}
+      #view-story .st-score{text-align:center;font-size:.78rem;}
+      #view-story .st-btn{border:0;font:inherit;font-weight:700;padding:9px 16px;border-radius:10px;cursor:pointer;background:var(--accent,#2ea06e);color:#fff;}
       #view-story .st-btn.ghost{background:rgba(128,128,128,.18);color:inherit;}
       #view-story .st-score{font-weight:700;}
       #view-story .st-langbar{display:inline-flex;gap:6px;margin:0 0 14px;flex-wrap:wrap;}
@@ -1314,7 +1317,7 @@ button.game-card:hover{transform:translateY(-2px)}
       #view-story .st-schead{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;padding:0;}
       #view-story .st-snum{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--accent,#2ea06e);color:#fff;font-size:.82rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;}
       #view-story .st-stitle{flex:1 1 auto;font-size:1.06rem;font-weight:700;}
-      #view-story .st-chev{flex:0 0 auto;transition:transform .18s;opacity:.55;font-size:.9rem;}
+      #view-story .st-chev{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:rgba(46,160,110,.12);border:1.5px solid var(--accent,#2ea06e);color:var(--accent,#2ea06e);display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;line-height:1;transition:transform .18s;}
       #view-story .st-scene.open .st-chev{transform:rotate(180deg);}
       #view-story .st-prose{display:none;margin-top:10px;}
       #view-story .st-scene.open .st-prose{display:block;}
@@ -2413,9 +2416,9 @@ function stRenderCloze(){
   }).join("");
 }
 var ST_UI={
-  en:{title:"📖 A Day in Thailand",sub:"One survival story, told in the order you'd actually live it — from the plane door to your first Thai friend. <b>Read</b> it through, then switch to <b>Fill in the blanks</b> and recall the Thai from memory.",read:"Read",cloze:"Fill in the blanks",check:"Check answers",again:"Try again",correct:"correct",blank:"blank",expandAll:"Expand all",collapseAll:"Collapse all",labLang:"Language",labPron:"Hint",labMode:"Mode",pronMean:"Meaning",pronRom:"Romanization",pronIpa:"IPA",pronNone:"No hint",labChoice:"Choices",choiceThai:"Thai",choiceRom:"Romanization",choiceIpa:"IPA"},
-  ja:{title:"📖 タイでの一日",sub:"飛行機のドアから最初のタイ人の友だちまで——実際に体験する順番で語られる、ひとつのサバイバル物語。まず通して<b>読む</b>、それから<b>穴埋め</b>に切り替えて、タイ語を記憶からよみがえらせましょう。",read:"読む",cloze:"穴埋め",check:"答え合わせ",again:"もう一度",correct:"正解",blank:"空欄",expandAll:"すべて開く",collapseAll:"すべて閉じる",labLang:"言語",labPron:"ヒント",labMode:"モード",pronMean:"意味",pronRom:"ローマ字",pronIpa:"IPA",pronNone:"ヒントなし",labChoice:"選択肢",choiceThai:"タイ文字",choiceRom:"ローマ字",choiceIpa:"IPA"},
-  zh:{title:"📖 泰国的一天",sub:"从舱门打开到结识第一位泰国朋友——按你真实经历的顺序讲述的一个生存小故事。先<b>阅读</b>一遍，再切换到<b>填空</b>，凭记忆把泰语填回去。",read:"阅读",cloze:"填空",check:"检查答案",again:"再试一次",correct:"正确",blank:"空白",expandAll:"全部展开",collapseAll:"全部收起",labLang:"语言",labPron:"提示",labMode:"模式",pronMean:"释义",pronRom:"罗马音",pronIpa:"IPA",pronNone:"无提示",labChoice:"选项",choiceThai:"泰文",choiceRom:"罗马音",choiceIpa:"IPA"}
+  en:{title:"📖 A Day in Thailand",sub:"One survival story, told in the order you'd actually live it — from the plane door to your first Thai friend. <b>Read</b> it through, then switch to <b>Fill in the blanks</b> and recall the Thai from memory.",read:"Read",cloze:"Fill in the blanks",check:"Check",again:"Reset",correct:"correct",blank:"blank",expandAll:"Expand all",collapseAll:"Collapse all",labLang:"Language",labPron:"Hint",labMode:"Mode",pronMean:"Meaning",pronRom:"Romanization",pronIpa:"IPA",pronNone:"No hint",labChoice:"Choices",choiceThai:"Thai",choiceRom:"Romanization",choiceIpa:"IPA"},
+  ja:{title:"📖 タイでの一日",sub:"飛行機のドアから最初のタイ人の友だちまで——実際に体験する順番で語られる、ひとつのサバイバル物語。まず通して<b>読む</b>、それから<b>穴埋め</b>に切り替えて、タイ語を記憶からよみがえらせましょう。",read:"読む",cloze:"穴埋め",check:"チェック",again:"リセット",correct:"正解",blank:"空欄",expandAll:"すべて開く",collapseAll:"すべて閉じる",labLang:"言語",labPron:"ヒント",labMode:"モード",pronMean:"意味",pronRom:"ローマ字",pronIpa:"IPA",pronNone:"ヒントなし",labChoice:"選択肢",choiceThai:"タイ文字",choiceRom:"ローマ字",choiceIpa:"IPA"},
+  zh:{title:"📖 泰国的一天",sub:"从舱门打开到结识第一位泰国朋友——按你真实经历的顺序讲述的一个生存小故事。先<b>阅读</b>一遍，再切换到<b>填空</b>，凭记忆把泰语填回去。",read:"阅读",cloze:"填空",check:"检查",again:"重置",correct:"正确",blank:"空白",expandAll:"全部展开",collapseAll:"全部收起",labLang:"语言",labPron:"提示",labMode:"模式",pronMean:"释义",pronRom:"罗马音",pronIpa:"IPA",pronNone:"无提示",labChoice:"选项",choiceThai:"泰文",choiceRom:"罗马音",choiceIpa:"IPA"}
 };
 function stUI(){return ST_UI[story.lang]||ST_UI.en;}
 function renderStory(){
@@ -2447,6 +2450,10 @@ function renderStory(){
   if(pron){
     var oM=pron.querySelector('option[value="mean"]'),oR=pron.querySelector('option[value="rom"]'),oI=pron.querySelector('option[value="ipa"]'),oN=pron.querySelector('option[value="none"]');
     if(oM)oM.textContent=U.pronMean; if(oR)oR.textContent=U.pronRom; if(oI)oI.textContent=U.pronIpa; if(oN)oN.textContent=U.pronNone;
+    var hideHint=(story.choice==="rom"||story.choice==="ipa")?story.choice:null;
+    if(story.pron===hideHint){story.pron="mean";if(acct()){S().storyPron="mean";saveDB();}}
+    if(oR){oR.hidden=(hideHint==="rom");oR.disabled=(hideHint==="rom");}
+    if(oI){oI.hidden=(hideHint==="ipa");oI.disabled=(hideHint==="ipa");}
     pron.value=story.pron;
     pron.onchange=function(){story.pron=pron.value;if(acct()){S().storyPron=pron.value;saveDB();}renderStory();};
   }
