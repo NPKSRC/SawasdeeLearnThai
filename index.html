@@ -1120,7 +1120,7 @@ button.game-card:hover{transform:translateY(-2px)}
           <li><b>Games</b> — learn by playing. Petals: spell the Thai word before the jasmine loses its petals. Memory Match: flip the tiles to pair each Thai word with its match. Tone Hero: read the word and tap its tone — Thai has five (mid, low, falling, high, rising).</li>
           <li><b>Browse</b> — search and skim every word in your deck.</li>
           <li><b>Progress</b> — watch your buddy grow as you learn.</li>
-          <li><b>Story</b> — read a short survival story set in Thailand, then blank out the Thai and fill it back in from memory.</li>
+          <li><b>Story</b> — read a short survival story set in Thailand, then blank out the Thai and fill it back in from memory. Switch the story between <b>EN / 日本語 / 中文</b> with the language chips. Choose whether each word’s hint shows the meaning, romanization, or IPA.</li>
           <li><b>Guide</b> — you are here!</li>
         </ul>
       </div>
@@ -1178,7 +1178,7 @@ button.game-card:hover{transform:translateY(-2px)}
           <li><b>Games</b> — 遊びながら学べます。Petals：ジャスミンの花びらが散る前にタイ語のつづりを当てましょう。Memory Match：タイル をめくってタイ語の単語と意味を組み合わせましょう。Tone Hero：単語を見て声調をタップ。タイ語には5つの声調があります（平声・低声・下声・高声・上声）。</li>
           <li><b>Browse</b> — デック内のすべての単語を検索・一覧できます。</li>
           <li><b>Progress</b> — 学習に合わせて相棒が成長していきます。</li>
-          <li><b>Story</b> — タイを舞台にした短いサバイバル物語を読み、タイ語を空欄にして記憶から埋め直します。</li>
+          <li><b>Story</b> — タイを舞台にした短いサバイバル物語を読み、タイ語を空欄にして記憶から埋め直します。言語チップで<b>EN / 日本語 / 中文</b>を切り替えられます。各語のヒントは意味・ローマ字・IPAから選べます。</li>
           <li><b>Guide</b> — 今ここです！</li>
         </ul>
       </div>
@@ -1236,7 +1236,7 @@ button.game-card:hover{transform:translateY(-2px)}
           <li><b>Games</b> — 边玩边学。Petals：在茉莉花瓣落完之前拼出泰文单词。Memory Match：翻开卡片，把泰文单词和它的意思配对。Tone Hero：看单词，点出它的声调——泰语有五个声调（中平、低、降、高、升）。</li>
           <li><b>Browse</b> — 搜索并浏览当前词组里的所有单词。</li>
           <li><b>Progress</b> — 看着小伙伴随你的学习一起成长。</li>
-          <li><b>Story</b> — 阅读一个发生在泰国的简短生存小故事，然后把泰语挖空，凭记忆填回去。</li>
+          <li><b>Story</b> — 阅读一个发生在泰国的简短生存小故事，然后把泰语挖空，凭记忆填回去。用语言按钮可在<b>EN / 日本語 / 中文</b>之间切换。每个词的提示可选择显示释义、罗马音或 IPA。</li>
           <li><b>Guide</b> — 你现在就在这里！</li>
         </ul>
       </div>
@@ -1305,15 +1305,53 @@ button.game-card:hover{transform:translateY(-2px)}
       #view-story .st-btn{border:0;font:inherit;font-weight:700;padding:10px 20px;border-radius:12px;cursor:pointer;background:var(--accent,#2ea06e);color:#fff;}
       #view-story .st-btn.ghost{background:rgba(128,128,128,.18);color:inherit;}
       #view-story .st-score{font-weight:700;}
+      #view-story .st-langbar{display:inline-flex;gap:6px;margin:0 0 14px;flex-wrap:wrap;}
+      #view-story .st-lang{border:1.5px solid rgba(128,128,128,.35);background:var(--card,#fff);color:inherit;font:inherit;font-weight:700;font-size:.8rem;padding:6px 14px;border-radius:999px;cursor:pointer;opacity:.8;}
+      #view-story .st-lang.on{background:var(--accent,#2ea06e);border-color:transparent;color:#fff;opacity:1;}
+      #view-story .st-toolrow{display:flex;gap:8px;margin:0 0 14px;}
+      #view-story .st-tool{border:1px solid rgba(128,128,128,.3);background:transparent;color:inherit;font:inherit;font-size:.76rem;font-weight:700;padding:5px 12px;border-radius:8px;cursor:pointer;opacity:.85;}
+      #view-story .st-tool:hover{opacity:1;}
+      #view-story .st-schead{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;padding:0;}
+      #view-story .st-snum{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--accent,#2ea06e);color:#fff;font-size:.82rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;}
+      #view-story .st-stitle{flex:1 1 auto;font-size:1.06rem;font-weight:700;}
+      #view-story .st-chev{flex:0 0 auto;transition:transform .18s;opacity:.55;font-size:.9rem;}
+      #view-story .st-scene.open .st-chev{transform:rotate(180deg);}
+      #view-story .st-prose{display:none;margin-top:10px;}
+      #view-story .st-scene.open .st-prose{display:block;}
+      #view-story .st-top{position:fixed;right:20px;bottom:78px;z-index:50;width:44px;height:44px;border-radius:50%;border:0;background:var(--accent,#2ea06e);color:#fff;font-size:1.25rem;font-weight:800;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.28);}
+      #view-story .st-ctrls{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:flex-end;margin:0 0 16px;}
+      #view-story .st-ctrl{display:flex;flex-direction:column;gap:6px;}
+      #view-story .st-clbl{font-size:.66rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;opacity:.5;}
+      #view-story .st-ctrl .st-langbar,#view-story .st-ctrl .st-modebar{margin:0;}
+      #view-story .st-select{font:inherit;font-weight:600;padding:7px 30px 7px 13px;border-radius:999px;border:1.5px solid rgba(128,128,128,.35);background:var(--card,#fff);color:inherit;cursor:pointer;}
     </style>
     <h2 class="st-title">📖 A Day in Thailand</h2>
     <p class="st-sub">One survival story, told in the order you'd actually live it — from the plane door to your first Thai friend. <b>Read</b> it through, then switch to <b>Fill in the blanks</b> and recall the Thai from memory.</p>
-    <div class="st-modebar" role="tablist">
-      <button class="st-mode on" data-smode="read" type="button">Read</button>
-      <button class="st-mode" data-smode="cloze" type="button">Fill in the blanks</button>
+    <div class="st-ctrls">
+      <div class="st-ctrl">
+        <span class="st-clbl" id="stLabLang">Language</span>
+        <div class="st-langbar" role="group" aria-label="Story language">
+          <button class="st-lang on" data-slang="en" type="button">EN</button>
+          <button class="st-lang" data-slang="ja" type="button">日本語</button>
+          <button class="st-lang" data-slang="zh" type="button">中文</button>
+        </div>
+      </div>
+      <div class="st-ctrl">
+        <span class="st-clbl" id="stLabPron">Hint</span>
+        <span class="seldrop"><select id="stPron" class="st-select" aria-label="Hint"><option value="mean">Meaning</option><option value="rom">Romanization</option><option value="ipa">IPA</option></select></span>
+      </div>
+      <div class="st-ctrl">
+        <span class="st-clbl" id="stLabMode">Mode</span>
+        <div class="st-modebar" role="tablist">
+          <button class="st-mode on" data-smode="read" type="button">Read</button>
+          <button class="st-mode" data-smode="cloze" type="button">Fill in the blanks</button>
+        </div>
+      </div>
     </div>
+    <div class="st-toolrow"><button class="st-tool" id="stExpandAll" type="button">Expand all</button><button class="st-tool" id="stCollapseAll" type="button">Collapse all</button></div>
     <div id="storyBody"></div>
     <div id="storyFoot" class="st-foot" hidden></div>
+    <button id="stTop" class="st-top" type="button" hidden aria-label="Back to top">↑</button>
   </section>
 
   <p class="note">Vocabulary: <b>599 Thai survival phrases</b> across 35 decks, in 16 story chapters — ordered by real-world urgency for a traveler arriving in Thailand. Thai-first, with English, Chinese &amp; Japanese meanings.</p>
@@ -1568,7 +1606,7 @@ function newAccount(name,mascot){
   var id="a"+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36);
   return {id:id,name:name||"Learner",mascot:mascot||"eleph",created:Date.now(),
     xp:0,streak:0,lastDay:null,days:[],xpByDay:{},
-    settings:{front:"thai",langs:{en:true,ja:false,zs:false,zt:false},pron:"rom",cat:FIRST_CAT,catView:"chapter",onboarded:false},
+    settings:{front:"thai",langs:{en:true,ja:false,zs:false,zt:false},pron:"rom",cat:FIRST_CAT,catView:"chapter",storyLang:"en",storyPron:"rom",onboarded:false},
     cards:{},best:{},qStats:{correct:0,total:0},log:[]};
 }
 function migrateAccount(a){
@@ -1580,6 +1618,8 @@ function migrateAccount(a){
   if(!s.langs.en&&!s.langs.ja&&!s.langs.zs&&!s.langs.zt)s.langs.en=true;
   if(s.pron!=="rom"&&s.pron!=="ipa")s.pron="rom";
   if(["en","ja","zh"].indexOf(s.glang)<0)s.glang="en";
+  if(["en","ja","zh"].indexOf(s.storyLang)<0)s.storyLang="en";
+  if(["mean","rom","ipa"].indexOf(s.storyPron)<0)s.storyPron="rom";
   if(!s.cat||!CAT_BY_KEY[s.cat])s.cat=FIRST_CAT;
   if(s.catView!=="flat"&&s.catView!=="chapter")s.catView="chapter";
   if(typeof s.onboarded!=="boolean")s.onboarded=true; /* legacy accounts already in use */
@@ -2218,315 +2258,85 @@ function switchView(v){
   if(v==="quiz")updateQuizSetupLabels();
   if(v==="study")renderMascots();
   window.scrollTo(0,0);
+  var _stt=document.getElementById("stTop");if(_stt&&v!=="story")_stt.hidden=true;
 }
 
 
 /* ============ STORY ============ */
 var STORY=[
- {t:"Touchdown",e:"🛬",seg:[
-   "The plane doors open at Suvarnabhumi. You take a breath, press your palms together in a wai, and offer your first word — ",
-   {th:"สวัสดี"},
-   ". The immigration officer smiles back. When she returns your passport you remember to say ",
-   {th:"ขอบคุณ"},
-   ". Turning to leave, you bump a stranger's suitcase and quickly add ",
-   {th:"ขอโทษ"},
-   " — but they only wave and reply ",
-   {th:"ไม่เป็นไร"},
-   "."
- ]},
- {t:"Finding Your Way",e:"🧭",seg:[
-   "Outside, the heat hits like a wall. You need to get downtown, so you look for a ",
-   {th:"แท็กซี่"},
-   ". The driver speaks no English, so you show him the hotel's name and ask, “",
-   {th:"...อยู่ที่ไหน"},
-   "?” He nods and pulls into traffic. At the big junction he glances back, and you tell him ",
-   {th:"ตรงไป"},
-   ", then ",
-   {th:"เลี้ยวซ้าย"},
-   " at the temple."
- ]},
- {t:"Street Eats & Baht",e:"🍜",seg:[
-   "By evening you are ",
-   {th:"หิว"},
-   ". A street stall glows with steam. You sit down and ask, “",
-   {th:"ขอเมนู"},
-   "” — then give up reading it and simply point: “",
-   {th:"เอาอันนี้"},
-   ".” A steaming bowl of ",
-   {th:"ก๋วยเตี๋ยว"},
-   " lands in front of you, and you wash it down with ",
-   {th:"น้ำเปล่า"},
-   "."
- ]},
- {t:"Settling In",e:"🛏️",seg:[
-   "Full and happy, you reach a small hotel. At the desk you ask, “",
-   {th:"ห้องว่างไหม"},
-   "?” They have space. “",
-   {th:"คืนละเท่าไหร่"},
-   "?” The clerk writes a number on a pad. You decide to ",
-   {th:"จองห้อง"},
-   " for three nights and carry the key up to your ",
-   {th:"ห้องพัก"},
-   "."
- ]},
- {t:"When Things Go Wrong",e:"🆘",seg:[
-   "The next afternoon, in a crowded market, you reach for your phone — gone. Your heart races. You turn to a vendor and blurt, “",
-   {th:"ช่วยฉันหน่อยได้ไหม"},
-   "?” You explain that you ",
-   {th:"ต้องการความช่วยเหลือ"},
-   ". She walks you to a police box, where you manage to say, “",
-   {th:"เรียกตำรวจ"},
-   ".” It is stressful, but people are kind."
- ]},
- {t:"Making Friends",e:"🤝",seg:[
-   "Days pass, and Thailand starts to feel familiar. At your regular café a barista grins and asks, “",
-   {th:"สบายดีไหม"},
-   "?” You answer honestly, “",
-   {th:"สบายดี"},
-   ".” You have walked all day and you are a little ",
-   {th:"เหนื่อย",},
-   ", but mostly you feel ",
-   {th:"มีความสุข"},
-   ". As you leave, your new friend calls out, “",
-   {th:"โชคดีนะ"},
-   "!” and you smile back, “",
-   {th:"สู้ๆ"},
-   "!”"
- ]},
- {t:"Everyday Life",e:"🏠",seg:[
-   "With a week ahead of you, you rent a small room and slip into a routine. Each morning you ",
-   {th:"ตื่น"},
-   " early, ",
-   {th:"อาบน้ำ"},
-   ", and ",
-   {th:"กิน"},
-   " a quick breakfast before you ",
-   {th:"ทำงาน"},
-   ". In the afternoon you wander to the ",
-   {th:"ตลาด"},
-   " for supplies, and in the evening you ",
-   {th:"พักผ่อน"},
-   " by the window before you ",
-   {th:"นอน"},
-   "."
- ]},
- {t:"Work & School",e:"💼",seg:[
-   "You still have a job back home, so most days you open your laptop for a morning ",
-   {th:"ประชุม"},
-   " and clear your ",
-   {th:"อีเมล"},
-   " before lunch. On a whim you sign up for a Thai class — a patient ",
-   {th:"ครู"},
-   " who loves to ",
-   {th:"สอน"},
-   ", a ",
-   {th:"หนังสือ"},
-   " full of new words, and ",
-   {th:"การบ้าน"},
-   " every night. When a lesson gets hard, the teacher smiles and asks, “",
-   {th:"เข้าใจไหม"},
-   "?”"
- ]},
- {t:"The World Around You",e:"🌦️",seg:[
-   "One Saturday the ",
-   {th:"อากาศ"},
-   " turns dramatic. Dark ",
-   {th:"เมฆ"},
-   " gather, the ",
-   {th:"ลม"},
-   " picks up, and suddenly ",
-   {th:"ฝนตก"},
-   " hard. You wait it out, watching the ",
-   {th:"ท้องฟ้า"},
-   ". When the storm passes you ride to the coast to see the ",
-   {th:"ทะเล"},
-   " and the green ",
-   {th:"ภูเขา"},
-   " beyond it, and you ",
-   {th:"ถ่ายรูป"},
-   " with your ",
-   {th:"โทรศัพท์มือถือ"},
-   "."
- ]},
- {t:"Getting Things Done",e:"🛍️",seg:[
-   "Your clothes are worn out, so you hunt for new ",
-   {th:"เสื้อผ้า"},
-   ". You find a ",
-   {th:"เสื้อ"},
-   " you like and ask, “",
-   {th:"ลองได้ไหม"},
-   "?” It's ",
-   {th:"เล็กไป"},
-   ", so they bring another. “",
-   {th:"ราคาเท่าไหร่"},
-   "?” Not bad — there's even a ",
-   {th:"ลดราคา"},
-   " — so you ",
-   {th:"จ่ายเงิน"},
-   ". Afterward you stop by the ",
-   {th:"ธนาคาร"},
-   " to ",
-   {th:"แลกเงิน"},
-   ", then the ",
-   {th:"ไปรษณีย์"},
-   " to ",
-   {th:"ส่งพัสดุ"},
-   " home."
- ]},
- {t:"Grammar Glue",e:"🧩",seg:[
-   "Your Thai is improving, and you start to notice the little glue words that hold sentences together. You can say you want rice ",
-   {th:"และ"},
-   " soup, ask for coffee ",
-   {th:"หรือ"},
-   " tea, explain that you're tired ",
-   {th:"แต่"},
-   " happy, and add “",
-   {th:"เพราะ"},
-   "” you walked all day. ",
-   {th:"ถ้า"},
-   " you keep practising, you think, the rest will come soon ",
-   {th:"แล้ว"},
-   "."
- ]},
- {t:"Colors & Counters",e:"🎨",seg:[
-   "At the fruit stall you drill your ",
-   {th:"สี"},
-   " and classifiers. You point to the ",
-   {th:"สีแดง"},
-   " apples and ask for three — the counter for round fruit is ",
-   {th:"ลูก"},
-   ". You grab two ",
-   {th:"ขวด"},
-   " of water and a ",
-   {th:"สีเหลือง"},
-   " mango, then count a ",
-   {th:"ใบ"},
-   " of tickets for later. The vendor grins at your careful ",
-   {th:"ลักษณนาม"},
-   "."
- ]},
- {t:"Saying More",e:"🗣️",seg:[
-   "You're chattier now. You ",
-   {th:"เดิน"},
-   " everywhere, ",
-   {th:"ใช้"},
-   " new verbs without thinking, and when you're late you ",
-   {th:"รีบ"},
-   " for the skytrain. Your friends toss idioms at you: “",
-   {th:"ใจเย็นๆ"},
-   "” when you fret, “",
-   {th:"สบายๆ"},
-   "” when you unwind, and the ever-friendly “",
-   {th:"กินข้าวหรือยัง"},
-   "?” You've even learned to feel ",
-   {th:"เกรงใจ"},
-   " — that very Thai reluctance to impose."
- ]},
- {t:"Out & About",e:"🗺️",seg:[
-   "On a long weekend you finally ",
-   {th:"เที่ยว"},
-   ". You visit a golden ",
-   {th:"วัด"},
-   ", wander through a ",
-   {th:"พิพิธภัณฑ์"},
-   ", then catch a boat to an ",
-   {th:"เกาะ"},
-   " with a perfect ",
-   {th:"ชายหาด"},
-   ". You ",
-   {th:"ว่ายน้ำ"},
-   " in the warm water, try ",
-   {th:"ดำน้ำ"},
-   " over the reef, and stay to ",
-   {th:"ดูพระอาทิตย์ตก"},
-   ". “",
-   {th:"ประทับใจ"},
-   ",” you whisper — unforgettable."
- ]},
- {t:"Thai Life",e:"🎊",seg:[
-   "The longer you stay, the more of Thai life you're welcomed into. A friend invites you to a ",
-   {th:"งานแต่งงาน"},
-   ", where you watch the ",
-   {th:"เจ้าบ่าว"},
-   " and ",
-   {th:"เจ้าสาว"},
-   " during the ",
-   {th:"รดน้ำสังข์"},
-   " blessing; as a ",
-   {th:"แขก"},
-   " you bring a ",
-   {th:"ซองเงิน"},
-   " and offer your ",
-   {th:"อวยพร"},
-   ". A month later another friend enters the monkhood — you join the ",
-   {th:"แห่นาค"},
-   " as the ",
-   {th:"นาค"},
-   " circles the temple to ",
-   {th:"บวช"},
-   ". And when an elder passes, you pay respects at the ",
-   {th:"งานศพ"},
-   ", laying down a ",
-   {th:"พวงหรีด"},
-   " and quietly learning to ",
-   {th:"ไว้อาลัย"},
-   "."
- ]},
- {t:"Food, Deeper",e:"🍲",seg:[
-   "Food becomes your real education. At a ",
-   {th:"ร้านอาหารตามสั่ง"},
-   " you learn to ",
-   {th:"สั่งอาหาร"},
-   " like a local — ",
-   {th:"ข้าวผัด"},
-   " with a ",
-   {th:"ไข่ดาว"},
-   ", made ",
-   {th:"พิเศษ"},
-   ", and “",
-   {th:"คิดเงิน"},
-   "” when you're done. You taste everything: ",
-   {th:"ผัดไทย"},
-   " from a street cart, fiery ",
-   {th:"ต้มยำกุ้ง"},
-   ", tangy ",
-   {th:"ส้มตำ"},
-   ", and for dessert ",
-   {th:"ข้าวเหนียวมะม่วง"},
-   ". At the market you pile up ",
-   {th:"ผลไม้"},
-   " — sweet ",
-   {th:"มะม่วง"},
-   " and pungent ",
-   {th:"ทุเรียน"},
-   ". In your last week you even take a ",
-   {th:"ทำอาหาร"},
-   " class, learning to ",
-   {th:"ผัด"},
-   " garlic in hot ",
-   {th:"น้ำมัน"},
-   " and season with ",
-   {th:"น้ำปลา"},
-   " until the ",
-   {th:"รสชาติ"},
-   " is just right — a little ",
-   {th:"หวาน"},
-   ", a little ",
-   {th:"เปรี้ยว"},
-   ", perfectly ",
-   {th:"กลมกล่อม"},
-   ". You arrived with one word, ",
-   {th:"สวัสดี"},
-   ", and now Thailand tastes like home."
- ]}
+  {e:"🛬",
+   en:{t:"Touchdown",seg:["The plane doors open at Suvarnabhumi. You take a breath, press your palms together in a wai, and offer your first word — ",{th:"สวัสดี"},". The immigration officer smiles back. When she returns your passport you remember to say ",{th:"ขอบคุณ"},". Turning to leave, you bump a stranger's suitcase and quickly add ",{th:"ขอโทษ"}," — but they only wave and reply ",{th:"ไม่เป็นไร"},"."]},
+   ja:{t:"着陸",seg:["スワンナプーム空港で飛行機のドアが開く。ひと呼吸おいて、両手を合わせてワイの挨拶をし、最初のひと言を口にする——",{th:"สวัสดี"},"。入国審査官も笑顔を返してくれた。パスポートを返してもらうとき、忘れずに",{th:"ขอบคุณ"},"と言う。立ち去ろうとして見知らぬ人のスーツケースにぶつかり、とっさに",{th:"ขอโทษ"},"と付け加えるが、相手は手を振って",{th:"ไม่เป็นไร"},"と答えるだけだった。"]},
+   zh:{t:"抵达",seg:["在素万那普机场，飞机舱门缓缓打开。你深吸一口气，双手合十行了个「wai」礼，说出第一句话——",{th:"สวัสดี"},"。入境官也回以微笑。她把护照还给你时，你记得说",{th:"ขอบคุณ"},"。转身要走，却撞到一位陌生人的行李箱，连忙补上一句",{th:"ขอโทษ"},"——对方只是挥挥手，回答",{th:"ไม่เป็นไร"},"。"]}},
+  {e:"🧭",
+   en:{t:"Finding Your Way",seg:["Outside, the heat hits like a wall. You need to get downtown, so you look for a ",{th:"แท็กซี่"},". The driver speaks no English, so you show him the hotel's name and ask, “",{th:"...อยู่ที่ไหน"},"?” He nods and pulls into traffic. At the big junction he glances back, and you tell him ",{th:"ตรงไป"},", then ",{th:"เลี้ยวซ้าย"}," at the temple."]},
+   ja:{t:"道を探す",seg:["外に出ると、暑さが壁のように押し寄せる。街の中心へ行きたくて、",{th:"แท็กซี่"},"を探す。運転手は英語が話せないので、ホテルの名前を見せて「",{th:"...อยู่ที่ไหน"},"？」と尋ねる。彼はうなずいて車を出した。大きな交差点で振り返る彼に、あなたは",{th:"ตรงไป"},"、それから寺のところで",{th:"เลี้ยวซ้าย"},"と伝える。"]},
+   zh:{t:"寻找方向",seg:["一走到外面，热浪像墙一样扑来。你想去市中心，于是找了一辆",{th:"แท็กซี่"},"。司机不会说英语，你便把酒店名字给他看，问：「",{th:"...อยู่ที่ไหน"},"？」他点点头，驶入车流。到了大路口，他回头看你，你告诉他",{th:"ตรงไป"},"，然后在寺庙那儿",{th:"เลี้ยวซ้าย"},"。"]}},
+  {e:"🍜",
+   en:{t:"Street Eats & Baht",seg:["By evening you are ",{th:"หิว"},". A street stall glows with steam. You sit down and ask, “",{th:"ขอเมนู"},"” — then give up reading it and simply point: “",{th:"เอาอันนี้"},".” A steaming bowl of ",{th:"ก๋วยเตี๋ยว"}," lands in front of you, and you wash it down with ",{th:"น้ำเปล่า"},"."]},
+   ja:{t:"屋台と一杯",seg:["夕方になると、あなたは",{th:"หิว"},"。湯気の立つ屋台が目に留まる。腰を下ろして「",{th:"ขอเมนู"},"」と頼むが、結局読むのをあきらめて指をさし「",{th:"เอาอันนี้"},"」と言う。湯気の立つ",{th:"ก๋วยเตี๋ยว"},"が目の前に運ばれ、",{th:"น้ำเปล่า"},"で流し込む。"]},
+   zh:{t:"街边小吃",seg:["到了傍晚，你已经",{th:"หิว"},"了。一个冒着热气的路边摊亮着灯。你坐下问：「",{th:"ขอเมนู"},"」——可看不懂菜单，干脆指着说：「",{th:"เอาอันนี้"},"。」一碗热腾腾的",{th:"ก๋วยเตี๋ยว"},"端到面前，你就着",{th:"น้ำเปล่า"},"把它吃了个精光。"]}},
+  {e:"🛏️",
+   en:{t:"Settling In",seg:["Full and happy, you reach a small hotel. At the desk you ask, “",{th:"ห้องว่างไหม"},"?” They have space. “",{th:"คืนละเท่าไหร่"},"?” The clerk writes a number on a pad. You decide to ",{th:"จองห้อง"}," for three nights and carry the key up to your ",{th:"ห้องพัก"},"."]},
+   ja:{t:"宿にて",seg:["お腹も満たされ、あなたは小さなホテルにたどり着く。フロントで「",{th:"ห้องว่างไหม"},"？」と尋ねると、部屋は空いていた。「",{th:"คืนละเท่าไหร่"},"？」係員がメモに数字を書く。あなたは三泊",{th:"จองห้อง"},"ことにし、鍵を受け取って自分の",{th:"ห้องพัก"},"へ上がっていった。"]},
+   zh:{t:"安顿下来",seg:["吃饱喝足，你来到一家小旅馆。在前台问：「",{th:"ห้องว่างไหม"},"？」正好有空房。「",{th:"คืนละเท่าไหร่"},"？」店员在便签上写下一个数字。你决定",{th:"จองห้อง"},"住三晚，拿着钥匙上楼，回到自己的",{th:"ห้องพัก"},"。"]}},
+  {e:"🆘",
+   en:{t:"When Things Go Wrong",seg:["The next afternoon, in a crowded market, you reach for your phone — gone. Your heart races. You turn to a vendor and blurt, “",{th:"ช่วยฉันหน่อยได้ไหม"},"?” You explain that you ",{th:"ต้องการความช่วยเหลือ"},". She walks you to a police box, where you manage to say, “",{th:"เรียกตำรวจ"},".” It is stressful, but people are kind."]},
+   ja:{t:"トラブル発生",seg:["翌日の午後、混み合った市場でスマホに手を伸ばす——ない。心臓が跳ねる。あなたは屋台の店主に振り向いて、思わず「",{th:"ช่วยฉันหน่อยได้ไหม"},"？」と口走る。あなたは",{th:"ต้องการความช่วยเหลือ"},"と説明する。彼女はあなたを交番まで連れて行き、そこであなたは何とか「",{th:"เรียกตำรวจ"},"」と言えた。大変だったが、人々は親切だった。"]},
+   zh:{t:"出了状况",seg:["第二天下午，在拥挤的市场里，你伸手去摸手机——不见了。你的心一下子提了起来。你转向一个摊主，脱口而出：「",{th:"ช่วยฉันหน่อยได้ไหม"},"？」你解释说你",{th:"ต้องการความช่วยเหลือ"},"。她把你带到警亭，你在那里勉强说出：「",{th:"เรียกตำรวจ"},"。」虽然一阵慌乱，但人们都很热心。"]}},
+  {e:"🤝",
+   en:{t:"Making Friends",seg:["Days pass, and Thailand starts to feel familiar. At your regular café a barista grins and asks, “",{th:"สบายดีไหม"},"?” You answer honestly, “",{th:"สบายดี"},".” You have walked all day and you are a little ",{th:"เหนื่อย"},", but mostly you feel ",{th:"มีความสุข"},". As you leave, your new friend calls out, “",{th:"โชคดีนะ"},"!” and you smile back, “",{th:"สู้ๆ"},"!”"]},
+   ja:{t:"友だちができる",seg:["日が経つにつれ、タイが身近に感じられてくる。行きつけのカフェで、バリスタがにっこり笑って「",{th:"สบายดีไหม"},"？」と尋ねる。あなたは正直に「",{th:"สบายดี"},"」と答える。一日中歩いて少し",{th:"เหนื่อย"},"けれど、それ以上に",{th:"มีความสุข"},"だ。店を出るとき、新しい友人が「",{th:"โชคดีนะ"},"！」と声をかけ、あなたも「",{th:"สู้ๆ"},"！」と笑顔を返す。"]},
+   zh:{t:"结交朋友",seg:["日子一天天过去，泰国渐渐让你感到亲切。在常去的咖啡馆，咖啡师笑着问：「",{th:"สบายดีไหม"},"？」你老实回答：「",{th:"สบายดี"},"。」走了一整天，你有点",{th:"เหนื่อย"},"，但更多的是",{th:"มีความสุข"},"。临走时，新朋友喊道：「",{th:"โชคดีนะ"},"！」你也笑着回一句：「",{th:"สู้ๆ"},"！」"]}},
+  {e:"🏠",
+   en:{t:"Everyday Life",seg:["With a week ahead of you, you rent a small room and slip into a routine. Each morning you ",{th:"ตื่น"}," early, ",{th:"อาบน้ำ"},", and ",{th:"กิน"}," a quick breakfast before you ",{th:"ทำงาน"},". In the afternoon you wander to the ",{th:"ตลาด"}," for supplies, and in the evening you ",{th:"พักผ่อน"}," by the window before you ",{th:"นอน"},"."]},
+   ja:{t:"日々の暮らし",seg:["一週間の滞在を前に、あなたは小さな部屋を借り、生活のリズムに慣れていく。毎朝早く",{th:"ตื่น"},"、",{th:"อาบน้ำ"},"、そして",{th:"ทำงาน"},"前に軽い朝食を",{th:"กิน"},"。午後は",{th:"ตลาด"},"まで買い出しに出かけ、夜は",{th:"นอน"},"前に窓辺で",{th:"พักผ่อน"},"。"]},
+   zh:{t:"日常生活",seg:["眼前还有一整周，你租下一间小屋，渐渐过起规律的日子。每天一早",{th:"ตื่น"},"，",{th:"อาบน้ำ"},"，",{th:"ทำงาน"},"之前先",{th:"กิน"},"一顿简单的早餐。下午你逛到",{th:"ตลาด"},"买些日用品，晚上则在窗边",{th:"พักผ่อน"},"，然后才去",{th:"นอน"},"。"]}},
+  {e:"💼",
+   en:{t:"Work & School",seg:["You still have a job back home, so most days you open your laptop for a morning ",{th:"ประชุม"}," and clear your ",{th:"อีเมล"}," before lunch. On a whim you sign up for a Thai class — a patient ",{th:"ครู"}," who loves to ",{th:"สอน"},", a ",{th:"หนังสือ"}," full of new words, and ",{th:"การบ้าน"}," every night. When a lesson gets hard, the teacher smiles and asks, “",{th:"เข้าใจไหม"},"?”"]},
+   ja:{t:"仕事と学び",seg:["故郷の仕事はまだ続いているので、たいていの日は昼前にノートパソコンを開いて朝の",{th:"ประชุม"},"に出て、",{th:"อีเมล"},"を片づける。ふと思い立ってタイ語教室に申し込む——根気強い",{th:"ครู"},"は",{th:"สอน"},"のが大好きで、新しい言葉が詰まった",{th:"หนังสือ"},"と、毎晩の",{th:"การบ้าน"},"が待っている。レッスンが難しくなると、先生は微笑んで「",{th:"เข้าใจไหม"},"？」と尋ねる。"]},
+   zh:{t:"工作与学习",seg:["你在老家还有一份工作，所以大多数日子都会打开笔记本电脑，开个上午的",{th:"ประชุม"},"，午饭前清完",{th:"อีเมล"},"。一时兴起，你报了个泰语班——耐心的",{th:"ครู"},"特别喜欢",{th:"สอน"},"，一本装满生词的",{th:"หนังสือ"},"，还有每晚的",{th:"การบ้าน"},"。课程一变难，老师就微笑着问：「",{th:"เข้าใจไหม"},"？」"]}},
+  {e:"🌦️",
+   en:{t:"The World Around You",seg:["One Saturday the ",{th:"อากาศ"}," turns dramatic. Dark ",{th:"เมฆ"}," gather, the ",{th:"ลม"}," picks up, and suddenly ",{th:"ฝนตก"}," hard. You wait it out, watching the ",{th:"ท้องฟ้า"},". When the storm passes you ride to the coast to see the ",{th:"ทะเล"}," and the green ",{th:"ภูเขา"}," beyond it, and you ",{th:"ถ่ายรูป"}," with your ",{th:"โทรศัพท์มือถือ"},"."]},
+   ja:{t:"あなたを取り巻く世界",seg:["ある土曜日、",{th:"อากาศ"},"が急変する。黒い",{th:"เมฆ"},"が集まり、",{th:"ลม"},"が強まり、突然激しく",{th:"ฝนตก"},"。あなたは",{th:"ท้องฟ้า"},"を眺めながら雨宿りする。嵐が去ると海岸まで足を延ばし、",{th:"ทะเล"},"と、その向こうの緑の",{th:"ภูเขา"},"を眺め、",{th:"โทรศัพท์มือถือ"},"で",{th:"ถ่ายรูป"},"。"]},
+   zh:{t:"周遭的世界",seg:["一个周六，",{th:"อากาศ"},"骤变。乌黑的",{th:"เมฆ"},"聚拢，",{th:"ลม"},"越刮越大，忽然就",{th:"ฝนตก"},"了，还下得很急。你一边躲雨，一边望着",{th:"ท้องฟ้า"},"。风雨过后，你骑车到海边，看",{th:"ทะเล"},"，看远处苍翠的",{th:"ภูเขา"},"，再拿出",{th:"โทรศัพท์มือถือ"},"，",{th:"ถ่ายรูป"},"留念。"]}},
+  {e:"🛍️",
+   en:{t:"Getting Things Done",seg:["Your clothes are worn out, so you hunt for new ",{th:"เสื้อผ้า"},". You find a ",{th:"เสื้อ"}," you like and ask, “",{th:"ลองได้ไหม"},"?” It's ",{th:"เล็กไป"},", so they bring another. “",{th:"ราคาเท่าไหร่"},"?” Not bad — there's even a ",{th:"ลดราคา"}," — so you ",{th:"จ่ายเงิน"},". Afterward you stop by the ",{th:"ธนาคาร"}," to ",{th:"แลกเงิน"},", then the ",{th:"ไปรษณีย์"}," to ",{th:"ส่งพัสดุ"}," home."]},
+   ja:{t:"用事を片づける",seg:["服がくたびれてきたので、新しい",{th:"เสื้อผ้า"},"を探しに行く。気に入った",{th:"เสื้อ"},"を見つけて「",{th:"ลองได้ไหม"},"？」と尋ねる。少し",{th:"เล็กไป"},"ので、別のサイズを持ってきてもらう。「",{th:"ราคาเท่าไหร่"},"？」悪くない——しかも",{th:"ลดราคา"},"までしている——ので",{th:"จ่ายเงิน"},"。その後",{th:"ธนาคาร"},"に寄って",{th:"แลกเงิน"},"、それから",{th:"ไปรษณีย์"},"で実家に",{th:"ส่งพัสดุ"},"。"]},
+   zh:{t:"办点事情",seg:["衣服穿旧了，你去淘几件新",{th:"เสื้อผ้า"},"。看中一件",{th:"เสื้อ"},"，便问：「",{th:"ลองได้ไหม"},"？」有点",{th:"เล็กไป"},"，店家又拿来一件。「",{th:"ราคาเท่าไหร่"},"？」不贵——而且还在",{th:"ลดราคา"},"——于是你",{th:"จ่ายเงิน"},"。之后你顺路拐去",{th:"ธนาคาร"},"，",{th:"แลกเงิน"},"，再到",{th:"ไปรษณีย์"},"给家里",{th:"ส่งพัสดุ"},"。"]}},
+  {e:"🧩",
+   en:{t:"Grammar Glue",seg:["Your Thai is improving, and you start to notice the little glue words that hold sentences together. You can say you want rice ",{th:"และ"}," soup, ask for coffee ",{th:"หรือ"}," tea, explain that you're tired ",{th:"แต่"}," happy, and add “",{th:"เพราะ"},"” you walked all day. ",{th:"ถ้า"}," you keep practising, you think, the rest will come soon ",{th:"แล้ว"},"."]},
+   ja:{t:"文をつなぐ言葉",seg:["タイ語が上達し、文をつなぐ小さな「のり」のような言葉が見えてくる。ご飯",{th:"และ"},"（〜と）スープ、コーヒー",{th:"หรือ"},"（または）お茶、疲れている",{th:"แต่"},"（でも）幸せ、そして一日中歩いた",{th:"เพราะ"},"（なぜなら）と理由も言える。",{th:"ถ้า"},"（もし）練習を続ければ、残りもすぐに身につく",{th:"แล้ว"},"（もう）、と思えてくる。"]},
+   zh:{t:"语法黏合剂",seg:["泰语渐渐进步，你开始留意那些把句子黏在一起的小词。你会说米饭",{th:"และ"},"（和）汤、咖啡",{th:"หรือ"},"（或者）茶，能解释自己累",{th:"แต่"},"（但是）开心，还能补一句",{th:"เพราะ"},"（因为）走了一整天。",{th:"ถ้า"},"（如果）继续练下去，你想，剩下的很快也就会了",{th:"แล้ว"},"（就）。"]}},
+  {e:"🎨",
+   en:{t:"Colors & Counters",seg:["At the fruit stall you drill your ",{th:"สี"}," and classifiers. You point to the ",{th:"สีแดง"}," apples and ask for three — the counter for round fruit is ",{th:"ลูก"},". You grab two ",{th:"ขวด"}," of water and a ",{th:"สีเหลือง"}," mango, then count a ",{th:"ใบ"}," of tickets for later. The vendor grins at your careful ",{th:"ลักษณนาม"},"."]},
+   ja:{t:"色と助数詞",seg:["果物屋で、あなたは",{th:"สี"},"と助数詞を練習する。",{th:"สีแดง"},"リンゴを指して三つ頼む——丸い果物を数える助数詞は",{th:"ลูก"},"。水を二",{th:"ขวด"},"取り、",{th:"สีเหลือง"},"マンゴーを一つ、あとで使うチケットも一",{th:"ใบ"},"数える。店主はあなたの丁寧な",{th:"ลักษณนาม"},"ににっこり笑った。"]},
+   zh:{t:"颜色与量词",seg:["在水果摊，你操练",{th:"สี"},"和量词。你指着",{th:"สีแดง"},"的苹果要三个——数圆形水果的量词是",{th:"ลูก"},"。你拿了两",{th:"ขวด"},"水，一个",{th:"สีเหลือง"},"的芒果，又数了一",{th:"ใบ"},"票留着以后用。摊主看你认真用",{th:"ลักษณนาม"},"，笑了。"]}},
+  {e:"🗣️",
+   en:{t:"Saying More",seg:["You're chattier now. You ",{th:"เดิน"}," everywhere, ",{th:"ใช้"}," new verbs without thinking, and when you're late you ",{th:"รีบ"}," for the skytrain. Your friends toss idioms at you: “",{th:"ใจเย็นๆ"},"” when you fret, “",{th:"สบายๆ"},"” when you unwind, and the ever-friendly “",{th:"กินข้าวหรือยัง"},"?” You've even learned to feel ",{th:"เกรงใจ"}," — that very Thai reluctance to impose."]},
+   ja:{t:"もっと話せる",seg:["あなたはすっかりおしゃべりになった。どこへでも",{th:"เดิน"},"、新しい動詞を意識せず",{th:"ใช้"},"、遅刻しそうなときはスカイトレインへ",{th:"รีบ"},"。友人たちは慣用句を投げかける——慌てるあなたに「",{th:"ใจเย็นๆ"},"」、くつろぐときは「",{th:"สบายๆ"},"」、そしておなじみの「",{th:"กินข้าวหรือยัง"},"？」。あなたはあの、とてもタイらしい",{th:"เกรงใจ"},"——人に迷惑をかけたくない気持ち——さえ感じるようになった。"]},
+   zh:{t:"越说越溜",seg:["你现在话多了。走到哪儿都靠",{th:"เดิน"},"，用起新动词也不假思索地",{th:"ใช้"},"，快迟到时就",{th:"รีบ"},"着赶轻轨。朋友们朝你抛来各种俗语：你着急时来一句「",{th:"ใจเย็นๆ"},"」，放松时说「",{th:"สบายๆ"},"」，还有那句最亲切的「",{th:"กินข้าวหรือยัง"},"？」你甚至学会了",{th:"เกรงใจ"},"——那种很泰式的、怕麻烦别人的心情。"]}},
+  {e:"🗺️",
+   en:{t:"Out & About",seg:["On a long weekend you finally ",{th:"เที่ยว"},". You visit a golden ",{th:"วัด"},", wander through a ",{th:"พิพิธภัณฑ์"},", then catch a boat to an ",{th:"เกาะ"}," with a perfect ",{th:"ชายหาด"},". You ",{th:"ว่ายน้ำ"}," in the warm water, try ",{th:"ดำน้ำ"}," over the reef, and stay to ",{th:"ดูพระอาทิตย์ตก"},". “",{th:"ประทับใจ"},",” you whisper — unforgettable."]},
+   ja:{t:"あちこち出かける",seg:["連休に、あなたはついに",{th:"เที่ยว"},"。黄金の",{th:"วัด"},"を訪れ、",{th:"พิพิธภัณฑ์"},"を歩き、それから船に乗って、完璧な",{th:"ชายหาด"},"のある",{th:"เกาะ"},"へ渡る。暖かい海で",{th:"ว่ายน้ำ"},"、サンゴ礁で",{th:"ดำน้ำ"},"に挑戦し、",{th:"ดูพระอาทิตย์ตก"},"まで居残る。「",{th:"ประทับใจ"},"」——忘れられない、とあなたはつぶやく。"]},
+   zh:{t:"四处走走",seg:["趁着长假，你终于出去",{th:"เที่ยว"},"。你参观金光闪闪的",{th:"วัด"},"，逛了一座",{th:"พิพิธภัณฑ์"},"，又搭船去一座有绝美",{th:"ชายหาด"},"的",{th:"เกาะ"},"。你在温暖的海水里",{th:"ว่ายน้ำ"},"，在珊瑚礁上试着",{th:"ดำน้ำ"},"，一直留到",{th:"ดูพระอาทิตย์ตก"},"。「",{th:"ประทับใจ"},"，」你轻声说——难以忘怀。"]}},
+  {e:"🎊",
+   en:{t:"Thai Life",seg:["The longer you stay, the more of Thai life you're welcomed into. A friend invites you to a ",{th:"งานแต่งงาน"},", where you watch the ",{th:"เจ้าบ่าว"}," and ",{th:"เจ้าสาว"}," during the ",{th:"รดน้ำสังข์"}," blessing; as a ",{th:"แขก"}," you bring a ",{th:"ซองเงิน"}," and offer your ",{th:"อวยพร"},". A month later another friend enters the monkhood — you join the ",{th:"แห่นาค"}," as the ",{th:"นาค"}," circles the temple to ",{th:"บวช"},". And when an elder passes, you pay respects at the ",{th:"งานศพ"},", laying down a ",{th:"พวงหรีด"}," and quietly learning to ",{th:"ไว้อาลัย"},"."]},
+   ja:{t:"タイの暮らし",seg:["長く滞在するほど、タイの暮らしの中に迎え入れられていく。友人に",{th:"งานแต่งงาน"},"へ招かれ、",{th:"รดน้ำสังข์"},"の儀式で",{th:"เจ้าบ่าว"},"と",{th:"เจ้าสาว"},"を見守る。",{th:"แขก"},"として",{th:"ซองเงิน"},"を持参し、",{th:"อวยพร"},"の言葉を贈る。一か月後には別の友人が出家することになり、あなたは",{th:"แห่นาค"},"に加わる——",{th:"นาค"},"が",{th:"บวช"},"ために寺を巡る。そして年長者が亡くなると、",{th:"งานศพ"},"で弔い、",{th:"พวงหรีด"},"を供え、静かに",{th:"ไว้อาลัย"},"ことを学ぶ。"]},
+   zh:{t:"泰式生活",seg:["住得越久，你越被迎进泰国人的生活里。朋友请你去参加",{th:"งานแต่งงาน"},"，在",{th:"รดน้ำสังข์"},"的祝福仪式上，你看着",{th:"เจ้าบ่าว"},"和",{th:"เจ้าสาว"},"。身为",{th:"แขก"},"，你带上",{th:"ซองเงิน"},"，献上一句",{th:"อวยพร"},"。一个月后，另一位朋友要出家，你也加入",{th:"แห่นาค"},"——",{th:"นาค"},"绕着寺庙走，准备",{th:"บวช"},"。而当一位长者离世，你到",{th:"งานศพ"},"上致意，放下一只",{th:"พวงหรีด"},"，静静地学着",{th:"ไว้อาลัย"},"。"]}},
+  {e:"🍲",
+   en:{t:"Food, Deeper",seg:["Food becomes your real education. At a ",{th:"ร้านอาหารตามสั่ง"}," you learn to ",{th:"สั่งอาหาร"}," like a local — ",{th:"ข้าวผัด"}," with a ",{th:"ไข่ดาว"},", made ",{th:"พิเศษ"},", and “",{th:"คิดเงิน"},"” when you're done. You taste everything: ",{th:"ผัดไทย"}," from a street cart, fiery ",{th:"ต้มยำกุ้ง"},", tangy ",{th:"ส้มตำ"},", and for dessert ",{th:"ข้าวเหนียวมะม่วง"},". At the market you pile up ",{th:"ผลไม้"}," — sweet ",{th:"มะม่วง"}," and pungent ",{th:"ทุเรียน"},". In your last week you even take a ",{th:"ทำอาหาร"}," class, learning to ",{th:"ผัด"}," garlic in hot ",{th:"น้ำมัน"}," and season with ",{th:"น้ำปลา"}," until the ",{th:"รสชาติ"}," is just right — a little ",{th:"หวาน"},", a little ",{th:"เปรี้ยว"},", perfectly ",{th:"กลมกล่อม"},". You arrived with one word, ",{th:"สวัสดี"},", and now Thailand tastes like home."]},
+   ja:{t:"食、さらに深く",seg:["食こそが、あなたの本当の学びになる。",{th:"ร้านอาหารตามสั่ง"},"では、地元の人のように",{th:"สั่งอาหาร"},"できるようになる——",{th:"ไข่ดาว"},"をのせた",{th:"ข้าวผัด"},"を",{th:"พิเศษ"},"で頼み、食べ終えたら「",{th:"คิดเงิน"},"」。あなたは何でも味わう——屋台の",{th:"ผัดไทย"},"、辛い",{th:"ต้มยำกุ้ง"},"、さっぱりした",{th:"ส้มตำ"},"、そしてデザートに",{th:"ข้าวเหนียวมะม่วง"},"。市場では",{th:"ผลไม้"},"を山ほど買う——甘い",{th:"มะม่วง"},"に、強烈な匂いの",{th:"ทุเรียน"},"。最後の一週間には",{th:"ทำอาหาร"},"教室にも通い、熱い",{th:"น้ำมัน"},"でニンニクを",{th:"ผัด"},"、",{th:"น้ำปลา"},"で味つけして、",{th:"รสชาติ"},"がちょうどよくなるまで仕上げる——少し",{th:"หวาน"},"、少し",{th:"เปรี้ยว"},"、そして見事に",{th:"กลมกล่อม"},"。あなたはたったひと言、",{th:"สวัสดี"},"から始めた。そして今、タイは我が家の味がする。"]},
+   zh:{t:"深入美食",seg:["美食，才是你真正的课堂。在",{th:"ร้านอาหารตามสั่ง"},"，你学会像本地人那样",{th:"สั่งอาหาร"},"——一份加了",{th:"ไข่ดาว"},"的",{th:"ข้าวผัด"},"，还要",{th:"พิเศษ"},"，吃完喊一声「",{th:"คิดเงิน"},"」。你什么都尝：街边小推车的",{th:"ผัดไทย"},"、火辣的",{th:"ต้มยำกุ้ง"},"、酸爽的",{th:"ส้มตำ"},"，甜点则是",{th:"ข้าวเหนียวมะม่วง"},"。在市场，你堆起一大堆",{th:"ผลไม้"},"——香甜的",{th:"มะม่วง"},"，还有气味浓烈的",{th:"ทุเรียน"},"。最后一周，你甚至去上了",{th:"ทำอาหาร"},"课，学着在热",{th:"น้ำมัน"},"里",{th:"ผัด"},"蒜末，用",{th:"น้ำปลา"},"调味，直到",{th:"รสชาติ"},"恰到好处——一点",{th:"หวาน"},"，一点",{th:"เปรี้ยว"},"，",{th:"กลมกล่อม"},"得刚刚好。你当初只带着一个词",{th:"สวัสดี"},"而来，如今，泰国尝起来就像家。"]}}
 ];
-var story={mode:"read"};
+
+var story={mode:"read",lang:"en",pron:"rom"};
 var ST_IDX=null, ST_TARGETS=null;
 function stIndex(){
   if(ST_IDX)return;
   ST_IDX={}; ST_TARGETS=[];
   (window.ALL_WORDS||[]).forEach(function(w){ if(ST_IDX[w.th]===undefined)ST_IDX[w.th]=w; });
-  STORY.forEach(function(sc){sc.seg.forEach(function(s){ if(typeof s==="object"&&ST_TARGETS.indexOf(s.th)<0)ST_TARGETS.push(s.th); });});
+  STORY.forEach(function(sc){sc.en.seg.forEach(function(s){ if(typeof s==="object"&&ST_TARGETS.indexOf(s.th)<0)ST_TARGETS.push(s.th); });});
 }
 function stShuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function stClozeOptions(ans){
@@ -2534,39 +2344,82 @@ function stClozeOptions(ans){
   var picks=stShuffle(pool).slice(0,3); picks.push(ans);
   return stShuffle(picks);
 }
+function stGloss(w){var L=story.lang;if(L==="ja")return w.ja||w.en||"";if(L==="zh")return w.zs||w.en||"";return w.en||"";}
+function stPronText(w){var p=story.pron;if(p==="ipa")return w.i||"";if(p==="mean")return stGloss(w);return w.r||"";}
+function stSceneWrap(si,head,body){
+  var open=!story.open||story.open[si];
+  return '<div class="st-scene'+(open?" open":"")+'" data-scene="'+si+'">'
+    +'<button class="st-schead" type="button" data-scene="'+si+'"><span class="st-snum">'+(si+1)+'</span><span class="st-stitle">'+esc(head)+'</span><span class="st-chev" aria-hidden="true">▾</span></button>'
+    +'<div class="st-prose">'+body+'</div></div>';
+}
+function stSetAllOpen(v){$$("#view-story .st-scene").forEach(function(el){el.classList.toggle("open",v);var si=+el.getAttribute("data-scene");if(story.open)story.open[si]=v;});}
+function stTopUpdate(){var t=document.getElementById("stTop");if(!t)return;var sv=document.getElementById("view-story");var show=!!(sv&&sv.classList.contains("active")&&(window.scrollY||window.pageYOffset)>420);t.hidden=!show;}
 function stRenderRead(){
-  return STORY.map(function(sc){
-    var body=sc.seg.map(function(s){
+  var L=story.lang;
+  return STORY.map(function(sc,si){
+    var sl=sc[L]||sc.en;
+    var body=sl.seg.map(function(s){
       if(typeof s==="string")return esc(s);
       var w=ST_IDX[s.th]||{};
-      return '<span class="st-tok" title="'+esc(w.en||"")+'"><span class="st-th">'+esc(s.th)+'</span><span class="st-r">'+esc(w.r||"")+'</span></span>';
+      var pr=stPronText(w);
+      return '<span class="st-tok" title="'+esc(stGloss(w))+'"><span class="st-th">'+esc(s.th)+'</span>'+(pr?'<span class="st-r">'+esc(pr)+'</span>':'')+'</span>';
     }).join("");
-    return '<div class="st-scene"><h3>'+esc(sc.e+" "+sc.t)+'</h3><div class="st-prose">'+body+'</div></div>';
+    return stSceneWrap(si,sc.e+" "+sl.t,body);
   }).join("");
 }
 function stRenderCloze(){
-  var idx=0;
-  return STORY.map(function(sc){
-    var body=sc.seg.map(function(s){
+  var L=story.lang,idx=0;
+  return STORY.map(function(sc,si){
+    var sl=sc[L]||sc.en;
+    var body=sl.seg.map(function(s){
       if(typeof s==="string")return esc(s);
       var w=ST_IDX[s.th]||{};
       var opts=stClozeOptions(s.th);
       var i=idx++;
       var o='<option value="">— ? —</option>'+opts.map(function(v){return '<option value="'+esc(v)+'">'+esc(v)+'</option>';}).join("");
-      return '<span class="st-cloze"><span class="st-hint">'+esc(w.en||"")+'</span>'
+      return '<span class="st-cloze"><span class="st-hint">'+esc(stPronText(w))+'</span>'
         +'<select class="st-sel" data-answer="'+esc(s.th)+'" data-idx="'+i+'">'+o+'</select>'
         +'<span class="st-fix" data-fix="'+i+'"></span></span>';
     }).join("");
-    return '<div class="st-scene"><h3>'+esc(sc.e+" "+sc.t)+'</h3><div class="st-prose">'+body+'</div></div>';
+    return stSceneWrap(si,sc.e+" "+sl.t,body);
   }).join("");
 }
+var ST_UI={
+  en:{title:"📖 A Day in Thailand",sub:"One survival story, told in the order you'd actually live it — from the plane door to your first Thai friend. <b>Read</b> it through, then switch to <b>Fill in the blanks</b> and recall the Thai from memory.",read:"Read",cloze:"Fill in the blanks",check:"Check answers",again:"Try again",correct:"correct",blank:"blank",expandAll:"Expand all",collapseAll:"Collapse all",labLang:"Language",labPron:"Hint",labMode:"Mode",pronMean:"Meaning",pronRom:"Romanization",pronIpa:"IPA"},
+  ja:{title:"📖 タイでの一日",sub:"飛行機のドアから最初のタイ人の友だちまで——実際に体験する順番で語られる、ひとつのサバイバル物語。まず通して<b>読む</b>、それから<b>穴埋め</b>に切り替えて、タイ語を記憶からよみがえらせましょう。",read:"読む",cloze:"穴埋め",check:"答え合わせ",again:"もう一度",correct:"正解",blank:"空欄",expandAll:"すべて開く",collapseAll:"すべて閉じる",labLang:"言語",labPron:"ヒント",labMode:"モード",pronMean:"意味",pronRom:"ローマ字",pronIpa:"IPA"},
+  zh:{title:"📖 泰国的一天",sub:"从舱门打开到结识第一位泰国朋友——按你真实经历的顺序讲述的一个生存小故事。先<b>阅读</b>一遍，再切换到<b>填空</b>，凭记忆把泰语填回去。",read:"阅读",cloze:"填空",check:"检查答案",again:"再试一次",correct:"正确",blank:"空白",expandAll:"全部展开",collapseAll:"全部收起",labLang:"语言",labPron:"提示",labMode:"模式",pronMean:"释义",pronRom:"罗马音",pronIpa:"IPA"}
+};
+function stUI(){return ST_UI[story.lang]||ST_UI.en;}
 function renderStory(){
+  if(acct()){var _sl=S().storyLang;if(["en","ja","zh"].indexOf(_sl)>=0)story.lang=_sl;}
+  if(acct()){var _sp=S().storyPron;if(["mean","rom","ipa"].indexOf(_sp)>=0)story.pron=_sp;}
   stIndex();
-  $$("#view-story .st-mode").forEach(function(b){
-    var on=b.getAttribute("data-smode")===story.mode;
-    b.classList.toggle("on",on); b.setAttribute("aria-selected",on);
-    b.onclick=function(){ if(story.mode!==b.getAttribute("data-smode")){story.mode=b.getAttribute("data-smode");renderStory();} };
+  if(!story.open){story.open={};for(var _k=0;_k<STORY.length;_k++)story.open[_k]=(_k<3);}
+  var U=stUI();
+  var tEl=$("#view-story .st-title");if(tEl)tEl.textContent=U.title;
+  var sEl=$("#view-story .st-sub");if(sEl)sEl.innerHTML=U.sub;
+  $$("#view-story .st-lang").forEach(function(b){
+    var on=b.getAttribute("data-slang")===story.lang;
+    b.classList.toggle("on",on); b.setAttribute("aria-pressed",on);
+    b.onclick=function(){var L=b.getAttribute("data-slang");if(story.lang!==L){story.lang=L;if(acct()){S().storyLang=L;saveDB();}renderStory();}};
   });
+  $$("#view-story .st-mode").forEach(function(b){
+    var m=b.getAttribute("data-smode");
+    b.textContent=(m==="read")?U.read:U.cloze;
+    var on=m===story.mode;
+    b.classList.toggle("on",on); b.setAttribute("aria-selected",on);
+    b.onclick=function(){ if(story.mode!==m){story.mode=m;renderStory();} };
+  });
+  var _ll=$("#stLabLang");if(_ll)_ll.textContent=U.labLang;
+  var _lp=$("#stLabPron");if(_lp)_lp.textContent=U.labPron;
+  var _lm=$("#stLabMode");if(_lm)_lm.textContent=U.labMode;
+  var pron=$("#stPron");
+  if(pron){
+    var oM=pron.querySelector('option[value="mean"]'),oR=pron.querySelector('option[value="rom"]'),oI=pron.querySelector('option[value="ipa"]');
+    if(oM)oM.textContent=U.pronMean; if(oR)oR.textContent=U.pronRom; if(oI)oI.textContent=U.pronIpa;
+    pron.value=story.pron;
+    pron.onchange=function(){story.pron=pron.value;if(acct()){S().storyPron=pron.value;saveDB();}renderStory();};
+  }
   var body=$("#storyBody"), foot=$("#storyFoot");
   if(story.mode==="read"){
     body.innerHTML=stRenderRead();
@@ -2574,12 +2427,20 @@ function renderStory(){
   }else{
     body.innerHTML=stRenderCloze();
     foot.hidden=false;
-    foot.innerHTML='<button class="st-btn" id="stCheck" type="button">Check answers</button>'
-      +'<button class="st-btn ghost" id="stReset" type="button">Try again</button>'
+    foot.innerHTML='<button class="st-btn" id="stCheck" type="button">'+esc(U.check)+'</button>'
+      +'<button class="st-btn ghost" id="stReset" type="button">'+esc(U.again)+'</button>'
       +'<span class="st-score" id="stScore"></span>';
     $("#stCheck").onclick=stCheck;
     $("#stReset").onclick=function(){renderStory();};
   }
+  $$("#view-story .st-schead").forEach(function(b){
+    b.onclick=function(){var el=b.parentNode;var si=+b.getAttribute("data-scene");var open=!el.classList.contains("open");el.classList.toggle("open",open);story.open[si]=open;};
+  });
+  var ea=$("#stExpandAll"),ca=$("#stCollapseAll");
+  if(ea){ea.textContent=U.expandAll;ea.onclick=function(){stSetAllOpen(true);};}
+  if(ca){ca.textContent=U.collapseAll;ca.onclick=function(){stSetAllOpen(false);};}
+  if(!window._stTopBound){window._stTopBound=true;window.addEventListener("scroll",stTopUpdate,{passive:true});var _tb=document.getElementById("stTop");if(_tb)_tb.onclick=function(){window.scrollTo({top:0,behavior:"smooth"});};}
+  stTopUpdate();
   window.scrollTo(0,0);
 }
 function stCheck(){
@@ -2594,7 +2455,8 @@ function stCheck(){
     else { s.classList.add("bad"); if(fix)fix.textContent="→ "+ans; }
   });
   var sc=$("#stScore");
-  if(sc)sc.textContent=ok+" / "+sels.length+" correct"+(done<sels.length?" ("+(sels.length-done)+" blank)":"");
+  if(sc){var U=stUI();sc.textContent=ok+" / "+sels.length+" "+U.correct+(done<sels.length?" ("+(sels.length-done)+" "+U.blank+")":"");}
+  stSetAllOpen(true);
 }
 
 /* ============ GAMES ============ */
