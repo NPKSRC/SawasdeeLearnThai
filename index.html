@@ -1338,7 +1338,7 @@ button.game-card:hover{transform:translateY(-2px)}
       </div>
       <div class="st-ctrl">
         <span class="st-clbl" id="stLabPron">Hint</span>
-        <span class="seldrop"><select id="stPron" class="st-select" aria-label="Hint"><option value="mean">Meaning</option><option value="rom">Romanization</option><option value="ipa">IPA</option><option value="none">Hidden</option></select></span>
+        <span class="seldrop"><select id="stPron" class="st-select" aria-label="Hint"><option value="mean">Meaning</option><option value="rom">Romanization</option><option value="ipa">IPA</option><option value="none">No hint</option></select></span>
       </div>
       <div class="st-ctrl" id="stChoiceCtrl">
         <span class="st-clbl" id="stLabChoice">Choices</span>
@@ -2413,9 +2413,9 @@ function stRenderCloze(){
   }).join("");
 }
 var ST_UI={
-  en:{title:"📖 A Day in Thailand",sub:"One survival story, told in the order you'd actually live it — from the plane door to your first Thai friend. <b>Read</b> it through, then switch to <b>Fill in the blanks</b> and recall the Thai from memory.",read:"Read",cloze:"Fill in the blanks",check:"Check answers",again:"Try again",correct:"correct",blank:"blank",expandAll:"Expand all",collapseAll:"Collapse all",labLang:"Language",labPron:"Hint",labMode:"Mode",pronMean:"Meaning",pronRom:"Romanization",pronIpa:"IPA",pronNone:"Hidden",labChoice:"Choices",choiceThai:"Thai",choiceRom:"Romanization",choiceIpa:"IPA"},
-  ja:{title:"📖 タイでの一日",sub:"飛行機のドアから最初のタイ人の友だちまで——実際に体験する順番で語られる、ひとつのサバイバル物語。まず通して<b>読む</b>、それから<b>穴埋め</b>に切り替えて、タイ語を記憶からよみがえらせましょう。",read:"読む",cloze:"穴埋め",check:"答え合わせ",again:"もう一度",correct:"正解",blank:"空欄",expandAll:"すべて開く",collapseAll:"すべて閉じる",labLang:"言語",labPron:"ヒント",labMode:"モード",pronMean:"意味",pronRom:"ローマ字",pronIpa:"IPA",pronNone:"非表示",labChoice:"選択肢",choiceThai:"タイ文字",choiceRom:"ローマ字",choiceIpa:"IPA"},
-  zh:{title:"📖 泰国的一天",sub:"从舱门打开到结识第一位泰国朋友——按你真实经历的顺序讲述的一个生存小故事。先<b>阅读</b>一遍，再切换到<b>填空</b>，凭记忆把泰语填回去。",read:"阅读",cloze:"填空",check:"检查答案",again:"再试一次",correct:"正确",blank:"空白",expandAll:"全部展开",collapseAll:"全部收起",labLang:"语言",labPron:"提示",labMode:"模式",pronMean:"释义",pronRom:"罗马音",pronIpa:"IPA",pronNone:"隐藏",labChoice:"选项",choiceThai:"泰文",choiceRom:"罗马音",choiceIpa:"IPA"}
+  en:{title:"📖 A Day in Thailand",sub:"One survival story, told in the order you'd actually live it — from the plane door to your first Thai friend. <b>Read</b> it through, then switch to <b>Fill in the blanks</b> and recall the Thai from memory.",read:"Read",cloze:"Fill in the blanks",check:"Check answers",again:"Try again",correct:"correct",blank:"blank",expandAll:"Expand all",collapseAll:"Collapse all",labLang:"Language",labPron:"Hint",labMode:"Mode",pronMean:"Meaning",pronRom:"Romanization",pronIpa:"IPA",pronNone:"No hint",labChoice:"Choices",choiceThai:"Thai",choiceRom:"Romanization",choiceIpa:"IPA"},
+  ja:{title:"📖 タイでの一日",sub:"飛行機のドアから最初のタイ人の友だちまで——実際に体験する順番で語られる、ひとつのサバイバル物語。まず通して<b>読む</b>、それから<b>穴埋め</b>に切り替えて、タイ語を記憶からよみがえらせましょう。",read:"読む",cloze:"穴埋め",check:"答え合わせ",again:"もう一度",correct:"正解",blank:"空欄",expandAll:"すべて開く",collapseAll:"すべて閉じる",labLang:"言語",labPron:"ヒント",labMode:"モード",pronMean:"意味",pronRom:"ローマ字",pronIpa:"IPA",pronNone:"ヒントなし",labChoice:"選択肢",choiceThai:"タイ文字",choiceRom:"ローマ字",choiceIpa:"IPA"},
+  zh:{title:"📖 泰国的一天",sub:"从舱门打开到结识第一位泰国朋友——按你真实经历的顺序讲述的一个生存小故事。先<b>阅读</b>一遍，再切换到<b>填空</b>，凭记忆把泰语填回去。",read:"阅读",cloze:"填空",check:"检查答案",again:"再试一次",correct:"正确",blank:"空白",expandAll:"全部展开",collapseAll:"全部收起",labLang:"语言",labPron:"提示",labMode:"模式",pronMean:"释义",pronRom:"罗马音",pronIpa:"IPA",pronNone:"无提示",labChoice:"选项",choiceThai:"泰文",choiceRom:"罗马音",choiceIpa:"IPA"}
 };
 function stUI(){return ST_UI[story.lang]||ST_UI.en;}
 function renderStory(){
