@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
 <title>Sawasdee · Learn Thai</title>
-<meta name="description" content="Learn Thai vocabulary with swipeable flashcards, quizzes and spaced-repetition memory tracking. Pick your meanings (English, Japanese, Chinese) and pronunciation guide, then grow your Thai animal buddy as you learn.">
+<meta name="description" content="Learn Thai vocabulary with swipeable flashcards, quizzes, spaced-repetition memory tracking and a read-and-fill-in survival story. Pick your meanings (English, Japanese, Chinese) and pronunciation guide, then grow your Thai animal buddy as you learn.">
 <meta name="theme-color" content="#0e7c73">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,7 +84,17 @@ body{
 .lm-trigger[aria-expanded="true"] .lm-chev{transform:rotate(180deg)}
 .lm-pop{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:50;background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow);padding:6px;max-height:60vh;overflow-y:auto}
 .lm-ghead{position:sticky;top:-6px;z-index:1;background:var(--cloud);padding:8px 10px 4px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft,#7a8a87);border-bottom:1px solid var(--line);margin-bottom:4px}
+.lm-viewtoggle{position:sticky;top:-6px;z-index:3;display:flex;gap:4px;background:var(--cloud);padding:2px 2px 8px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+.lm-vt{flex:1;border:1.5px solid var(--line);background:var(--paper-2);border-radius:9px;padding:7px 10px;font-family:var(--display);font-weight:800;font-size:.8rem;color:var(--ink-soft);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.lm-vt.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.lm-vt:hover:not(.on){background:var(--paper)}
+.lm-pop .lm-ghead{top:42px}
 .lm-ghead:not(:first-child){margin-top:6px}
+.lm-chapsel{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border:0;text-align:left;cursor:pointer;font-family:inherit;color:var(--ink-soft,#7a8a87)}
+.lm-chapsel:hover{background:var(--paper-2)}
+.lm-chapsel.on{color:var(--teal);background:var(--paper)}
+.lm-chapsel .lm-gh-l{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lm-chapsel .lm-gh-r{flex:none;text-transform:none;letter-spacing:0;font-size:.6rem;font-weight:800;opacity:.75;white-space:nowrap}
 .lm-pop[hidden]{display:none}
 .lm-item{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;cursor:pointer;padding:10px 12px;border-radius:11px;text-align:left;transition:background .15s}
 .lm-item:hover{background:var(--paper-2)}
@@ -745,7 +755,6 @@ button.game-card:hover{transform:translateY(-2px)}
       </div>
       <div class="optrow-div"></div>
       <div class="study-actions">
-        <button class="btn btn-ghost btn-sm" id="shuffleBtn">🔀 Shuffle</button>
         <button class="btn btn-ghost btn-sm" id="resetStudyBtn">↺ Restart</button>
       </div>
       <div class="stage stage-side"><div id="mascotStudy"></div></div>
@@ -1111,6 +1120,7 @@ button.game-card:hover{transform:translateY(-2px)}
           <li><b>Games</b> — learn by playing. Petals: spell the Thai word before the jasmine loses its petals. Memory Match: flip the tiles to pair each Thai word with its match. Tone Hero: read the word and tap its tone — Thai has five (mid, low, falling, high, rising).</li>
           <li><b>Browse</b> — search and skim every word in your deck.</li>
           <li><b>Progress</b> — watch your buddy grow as you learn.</li>
+          <li><b>Story</b> — read a short survival story set in Thailand, then blank out the Thai and fill it back in from memory.</li>
           <li><b>Guide</b> — you are here!</li>
         </ul>
       </div>
@@ -1125,7 +1135,7 @@ button.game-card:hover{transform:translateY(-2px)}
       <div class="guide-card">
         <h3>Choosing what you see</h3>
         <ul>
-          <li><b>Category</b> — the picker at the top chooses which deck you study, from everyday topics to advanced words.</li>
+          <li><b>Category</b> — the picker at the top chooses what you study. Tap a <b>chapter header</b> to study the whole chapter's decks together, or pick a single deck beneath it. Use the <b>Chapters / All decks</b> toggle to switch between the grouped and flat views.</li>
           <li><b>Meanings (EN / 日 / 简 / 繁)</b> — the pills next to the picker choose which languages appear on the back of cards and in Browse. Pick up to two.</li>
           <li><b>Front &amp; Pronounce</b> — set what appears on the front of a card (Thai or meaning) and how pronunciation is written: romanization with tone marks, or IPA with tone bars. Tap the 🔊 speaker on a card to hear the word in Thai (shown when your device has a Thai voice).</li>
         </ul>
@@ -1168,6 +1178,7 @@ button.game-card:hover{transform:translateY(-2px)}
           <li><b>Games</b> — 遊びながら学べます。Petals：ジャスミンの花びらが散る前にタイ語のつづりを当てましょう。Memory Match：タイル をめくってタイ語の単語と意味を組み合わせましょう。Tone Hero：単語を見て声調をタップ。タイ語には5つの声調があります（平声・低声・下声・高声・上声）。</li>
           <li><b>Browse</b> — デック内のすべての単語を検索・一覧できます。</li>
           <li><b>Progress</b> — 学習に合わせて相棒が成長していきます。</li>
+          <li><b>Story</b> — タイを舞台にした短いサバイバル物語を読み、タイ語を空欄にして記憶から埋め直します。</li>
           <li><b>Guide</b> — 今ここです！</li>
         </ul>
       </div>
@@ -1182,7 +1193,7 @@ button.game-card:hover{transform:translateY(-2px)}
       <div class="guide-card">
         <h3>表示する内容を選ぶ</h3>
         <ul>
-          <li><b>Category</b> — 上部のメニューで学習するデックを選びます。日常の話題から上級語彙まで。</li>
+          <li><b>Category</b> — 上部のメニューで学習する範囲を選びます。<b>チャプター見出し</b>をタップするとその章のデック全体を、下の各デックを選べば単独で学習できます。「<b>Chapters／All decks</b>」で表示を切り替えられます。</li>
           <li><b>意味の言語（EN / 日 / 简 / 繁）</b> — メニュー横のボタンで、カードの裏面や Browse に表示する言語を選びます。最大2つまで。</li>
           <li><b>Front &amp; Pronounce</b> — カード表面に表示する内容（タイ語・意味）と、発音の書き方（声調記号つきローマ字、または IPA）を設定します。カードの 🔊 ボタンでタイ語の音声を再生できます（端末にタイ語音声がある場合）。</li>
         </ul>
@@ -1225,6 +1236,7 @@ button.game-card:hover{transform:translateY(-2px)}
           <li><b>Games</b> — 边玩边学。Petals：在茉莉花瓣落完之前拼出泰文单词。Memory Match：翻开卡片，把泰文单词和它的意思配对。Tone Hero：看单词，点出它的声调——泰语有五个声调（中平、低、降、高、升）。</li>
           <li><b>Browse</b> — 搜索并浏览当前词组里的所有单词。</li>
           <li><b>Progress</b> — 看着小伙伴随你的学习一起成长。</li>
+          <li><b>Story</b> — 阅读一个发生在泰国的简短生存小故事，然后把泰语挖空，凭记忆填回去。</li>
           <li><b>Guide</b> — 你现在就在这里！</li>
         </ul>
       </div>
@@ -1239,7 +1251,7 @@ button.game-card:hover{transform:translateY(-2px)}
       <div class="guide-card">
         <h3>选择显示内容</h3>
         <ul>
-          <li><b>Category</b> — 顶部的选择器决定学习哪个词组，从日常话题到高级词汇。</li>
+          <li><b>Category</b> — 顶部的选择器决定学习范围。点击<b>章节标题</b>可一次学习整章的所有词组，或选择其下的单个词组。用「<b>Chapters / All decks</b>」切换分组视图和平铺视图。</li>
           <li><b>释义语言（EN / 日 / 简 / 繁）</b> — 选择器旁的按钮决定卡片背面和 Browse 中显示的语言，最多选两种。简体和繁体中文都可选。</li>
           <li><b>Front &amp; Pronounce</b> — 设置卡片正面显示的内容（泰文或释义），以及注音方式：带声调符号的罗马拼音，或带声调线的国际音标（IPA）。点按卡片上的 🔊 即可播放泰语发音（设备装有泰语语音时显示）。</li>
         </ul>
@@ -1269,7 +1281,42 @@ button.game-card:hover{transform:translateY(-2px)}
     </div>
   </section>
 
-  <p class="note">Vocabulary: <b>5,621 Thai words</b> across 29 decks, built from the Peng HSK trilingual database (HSK 1–6). Source term is Thai; meanings are study aids.</p>
+  <section class="view" id="view-story">
+    <style>
+      #view-story{max-width:860px;margin:0 auto;}
+      #view-story .st-title{margin:0 0 4px;font-size:1.5rem;}
+      #view-story .st-sub{margin:0 0 14px;opacity:.75;font-size:.92rem;line-height:1.5;}
+      #view-story .st-modebar{display:inline-flex;gap:4px;padding:4px;border-radius:999px;background:rgba(128,128,128,.14);margin-bottom:18px;}
+      #view-story .st-mode{border:0;background:transparent;color:inherit;font:inherit;font-weight:600;padding:7px 16px;border-radius:999px;cursor:pointer;opacity:.7;}
+      #view-story .st-mode.on{background:var(--card,#fff);opacity:1;box-shadow:0 1px 4px rgba(0,0,0,.12);}
+      #view-story .st-scene{background:rgba(128,128,128,.06);border:1px solid rgba(128,128,128,.16);border-radius:16px;padding:16px 18px;margin-bottom:14px;}
+      #view-story .st-scene h3{margin:0 0 10px;font-size:1.06rem;}
+      #view-story .st-prose{line-height:2.35;font-size:1.02rem;}
+      #view-story .st-tok{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 2px;padding:2px 7px;border-radius:9px;background:rgba(46,160,110,.13);cursor:default;}
+      #view-story .st-th{font-weight:700;color:var(--accent,#2ea06e);font-size:1.05rem;}
+      #view-story .st-r{font-size:.68rem;opacity:.7;}
+      #view-story .st-cloze{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.2;margin:0 3px;}
+      #view-story .st-hint{font-size:.66rem;opacity:.7;font-style:italic;margin-bottom:2px;}
+      #view-story .st-sel{font:inherit;font-weight:600;padding:4px 6px;border-radius:8px;border:1.5px solid rgba(128,128,128,.4);background:var(--card,#fff);color:inherit;max-width:190px;}
+      #view-story .st-sel.ok{border-color:#2ea06e;background:rgba(46,160,110,.14);}
+      #view-story .st-sel.bad{border-color:#d9534f;background:rgba(217,83,79,.13);}
+      #view-story .st-fix{font-size:.66rem;color:#2ea06e;margin-top:2px;min-height:.8em;}
+      #view-story .st-foot{position:sticky;bottom:0;padding:14px 0 6px;background:linear-gradient(transparent,var(--bg,#fff) 30%);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+      #view-story .st-btn{border:0;font:inherit;font-weight:700;padding:10px 20px;border-radius:12px;cursor:pointer;background:var(--accent,#2ea06e);color:#fff;}
+      #view-story .st-btn.ghost{background:rgba(128,128,128,.18);color:inherit;}
+      #view-story .st-score{font-weight:700;}
+    </style>
+    <h2 class="st-title">📖 A Day in Thailand</h2>
+    <p class="st-sub">One survival story, told in the order you'd actually live it — from the plane door to your first Thai friend. <b>Read</b> it through, then switch to <b>Fill in the blanks</b> and recall the Thai from memory.</p>
+    <div class="st-modebar" role="tablist">
+      <button class="st-mode on" data-smode="read" type="button">Read</button>
+      <button class="st-mode" data-smode="cloze" type="button">Fill in the blanks</button>
+    </div>
+    <div id="storyBody"></div>
+    <div id="storyFoot" class="st-foot" hidden></div>
+  </section>
+
+  <p class="note">Vocabulary: <b>599 Thai survival phrases</b> across 35 decks, in 16 story chapters — ordered by real-world urgency for a traveler arriving in Thailand. Thai-first, with English, Chinese &amp; Japanese meanings.</p>
   <p class="disclaimer">Meanings &amp; pronunciation guides are reference drafts — a native speaker may refine some. Profiles &amp; progress are saved on this device.</p>
 </div>
 
@@ -1280,6 +1327,7 @@ button.game-card:hover{transform:translateY(-2px)}
     <button data-view="browse" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Browse</button>
     <button data-view="progress" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 16v-5M13 16V8M18 16v-3"/></svg>Progress</button>
     <button data-view="games" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v4M5 13h4M15.5 12h.01M18 14h.01"/></svg>Games</button>
+    <button data-view="story" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M9 7h6M9 11h6"/></svg>Story</button>
     <button data-view="guide" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10.3 5 7.7 4.6 5 5v13c2.7-.4 5.3 0 7 1 1.7-1 4.3-1.4 7-1V5c-2.7-.4-5.3 0-7 1z"/><path d="M12 6v13"/></svg>Guide</button>
   </div>
 </nav>
@@ -1476,6 +1524,22 @@ var CAT_BY_KEY={};CATS.forEach(function(c){CAT_BY_KEY[c.k]=c;});
 var ALL_WORDS=THAI_DATA.words.map(function(w){return w;});
 var WORD_BY_ID={};ALL_WORDS.forEach(function(w){WORD_BY_ID[w.id]=w;});
 var WORDS_BY_CAT={};CATS.forEach(function(c){WORDS_BY_CAT[c.k]=ALL_WORDS.filter(function(w){return w.c===c.k;});});
+/* virtual "whole chapter" categories — selecting one studies all its decks together, in authored order */
+var CHAPTER_KEYS=[];
+CATS.forEach(function(c){
+  var vid="ch_"+c.ch;
+  if(!CAT_BY_KEY[vid]){
+    var rest=(String(c.chLabel).split("·")[1]||c.chLabel).trim();
+    var toks=rest.split(" ");
+    var emo=toks.length>1?toks[toks.length-1]:"🗂";
+    var title=toks.length>1?toks.slice(0,-1).join(" "):rest;
+    CAT_BY_KEY[vid]={k:vid,en:title,emo:emo,ch:c.ch,chLabel:c.chLabel,n:0,virtual:true};
+    WORDS_BY_CAT[vid]=[];
+    CHAPTER_KEYS.push(vid);
+  }
+  CAT_BY_KEY[vid].n+=(WORDS_BY_CAT[c.k]||[]).length;
+  WORDS_BY_CAT[vid]=WORDS_BY_CAT[vid].concat(WORDS_BY_CAT[c.k]||[]);
+});
 var FIRST_CAT=CATS[0].k;
 
 var LANGS={
@@ -1504,7 +1568,7 @@ function newAccount(name,mascot){
   var id="a"+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36);
   return {id:id,name:name||"Learner",mascot:mascot||"eleph",created:Date.now(),
     xp:0,streak:0,lastDay:null,days:[],xpByDay:{},
-    settings:{front:"thai",langs:{en:true,ja:false,zs:false,zt:false},pron:"rom",cat:FIRST_CAT,onboarded:false},
+    settings:{front:"thai",langs:{en:true,ja:false,zs:false,zt:false},pron:"rom",cat:FIRST_CAT,catView:"chapter",onboarded:false},
     cards:{},best:{},qStats:{correct:0,total:0},log:[]};
 }
 function migrateAccount(a){
@@ -1517,6 +1581,7 @@ function migrateAccount(a){
   if(s.pron!=="rom"&&s.pron!=="ipa")s.pron="rom";
   if(["en","ja","zh"].indexOf(s.glang)<0)s.glang="en";
   if(!s.cat||!CAT_BY_KEY[s.cat])s.cat=FIRST_CAT;
+  if(s.catView!=="flat"&&s.catView!=="chapter")s.catView="chapter";
   if(typeof s.onboarded!=="boolean")s.onboarded=true; /* legacy accounts already in use */
   if(!a.mascot||!MASCOTS[a.mascot])a.mascot="eleph";
   if(!a.petalsDone)a.petalsDone={};
@@ -1765,9 +1830,10 @@ var SPK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 var study={pool:[],idx:0,flipped:false};
 function buildStudyPool(mode){
   var a=acct();
-  if(mode==="due"){var due=curCatWords().filter(function(w){return isDue(a.cards[w.id]);});study.pool=due.length?shuffle(due):shuffle(curCatWords());}
-  else if(mode==="keep"){if(!study.pool.length)study.pool=shuffle(curCatWords());}
-  else{study.pool=shuffle(curCatWords());}
+  /* Story order: Study never shuffles — words stay in authored data.js sequence. */
+  if(mode==="due"){var due=curCatWords().filter(function(w){return isDue(a.cards[w.id]);});study.pool=due.length?due:curCatWords();}
+  else if(mode==="keep"){if(!study.pool.length)study.pool=curCatWords();}
+  else{study.pool=curCatWords();}
   study.idx=0;study.flipped=false;
 }
 function meaningLines(w){
@@ -1898,6 +1964,9 @@ function buildQuiz(){
   var tts=ttsAvailable();
   if(quiz.type==="listen"&&!tts)quiz.type="mean"; /* no th-TH voice on this device */
   var pool=quizCandidatePool();var n=Math.min(quiz.len,pool.length);var picks=sample(pool,n);
+  /* Story order: which words are sampled can rotate for coverage, but present them
+     in authored data.js sequence so the quiz keeps the deck's narrative flow. */
+  picks.sort(function(a,b){return ALL_WORDS.indexOf(a)-ALL_WORDS.indexOf(b);});
   var distractorPool=curCatWords().length>=8?curCatWords():ALL_WORDS;
   var mixModes=tts?["mean","thai","listen"]:["mean","thai"];
   quiz.qs=picks.map(function(w){
@@ -2071,9 +2140,22 @@ function renderCatBar(){
     +'<span class="lm-cur"><b>'+esc(cur.en)+'</b><small>· '+cur.n+' words</small></span></span></span>'
     +'<span class="lm-chev" aria-hidden="true">▾</span></button>';
   var GROUPS=[
-    {label:"Everyday topics",keys:["people_family","social","food","animals_nature","body_health","home_daily","clothing","places_travel","transport","time","numbers","colors_shapes","work_school","money_shopping","feelings","weather","sports_hobbies","tech_media","society_world"]},
-    {label:"Verbs & grammar",keys:["actions1","actions2","mind_speech","verbs_change","grammar"]},
-    {label:"Advanced & abstract",keys:["describing","concepts1","concepts2","idioms","science"]}
+    {label:"Chapter 1 · Touchdown 🛬",keys:["essentials","self_intro","question_words"]},
+    {label:"Chapter 2 · Finding Your Way 🧭",keys:["directions","transport"]},
+    {label:"Chapter 3 · Street Eats & Baht 🍜",keys:["numbers_money","food_drink"]},
+    {label:"Chapter 4 · When Things Go Wrong 🆘",keys:["help_emergency","body_health"]},
+    {label:"Chapter 5 · Settling In 🛏️",keys:["time_dates","accommodation"]},
+    {label:"Chapter 6 · Making Friends 🤝",keys:["people_family","feelings_smalltalk"]},
+    {label:"Chapter 7 · Everyday Life 🏠",keys:["home_daily","common_verbs","describing_words"]},
+    {label:"Chapter 8 · Work & School 💼",keys:["work_office","school_study"]},
+    {label:"Chapter 9 · The World Around You 🌦️",keys:["nature_weather","tech_media"]},
+    {label:"Chapter 10 · Getting Things Done 🛍️",keys:["shopping_clothes","bank_post"]},
+    {label:"Chapter 11 · Grammar Glue 🧩",keys:["grammar_words"]},
+    {label:"Chapter 12 · Colors & Counters 🎨",keys:["colors","counters"]},
+    {label:"Chapter 13 · Saying More 🗣️",keys:["more_verbs","idioms"]},
+    {label:"Chapter 14 · Out & About 🗺️",keys:["sightseeing","activities"]},
+    {label:"Chapter 15 · Thai Life 🎊",keys:["ceremonies"]},
+    {label:"Chapter 16 · Food, Deeper 🍲",keys:["thai_dishes","fruits","local_eats_shops","flavors_textures","cooking_methods"]}
   ];
   var placed={};GROUPS.forEach(function(g){g.keys.forEach(function(k){placed[k]=true;});});
   CATS.forEach(function(c){if(!placed[c.k])GROUPS[0].keys.push(c.k);}); /* unmapped decks fall into first group */
@@ -2082,16 +2164,33 @@ function renderCatBar(){
       +'<span class="lm-ie">'+c.emo+'</span><span class="lm-name">'+esc(c.en)+'</span><span class="lm-sub">'+c.n+'</span>'
       +(c.k===gk?'<span class="lm-tick" aria-hidden="true">✓</span>':'')+'</button>';
   }
-  var items=GROUPS.map(function(g){
-    var rows=g.keys.map(function(k){return CAT_BY_KEY[k];}).filter(Boolean).map(itemHTML).join("");
-    return rows?'<div class="lm-ghead" role="presentation">'+esc(g.label)+'</div>'+rows:"";
-  }).join("");
-  $("#levels").innerHTML=trig+'<div class="lm-pop" id="lmPop" role="menu" hidden>'+items+'</div>';
+  var view=(S().catView==="flat")?"flat":"chapter";
+  var body;
+  if(view==="flat"){
+    body='<div class="lm-ghead" role="presentation">All decks · '+CATS.length+'</div>'+CATS.map(itemHTML).join("");
+  }else{
+    body=GROUPS.map(function(g){
+      var decks=g.keys.map(function(k){return CAT_BY_KEY[k];}).filter(Boolean);
+      if(!decks.length)return "";
+      var rows=decks.map(itemHTML).join("");
+      var vid="ch_"+decks[0].ch;var vc=CAT_BY_KEY[vid];var on=(gk===vid);
+      var head='<button type="button" class="lm-ghead lm-chapsel'+(on?" on":"")+'" role="menuitemradio" aria-checked="'+on+'" data-c="'+vid+'" title="Study the whole chapter">'
+        +'<span class="lm-gh-l">'+esc(g.label)+'</span>'
+        +'<span class="lm-gh-r">'+(vc?vc.n:0)+' words'+(on?' ✓':' ›')+'</span></button>';
+      return head+rows;
+    }).join("");
+  }
+  var toggle='<div class="lm-viewtoggle" role="presentation">'
+    +'<button type="button" class="lm-vt'+(view==="chapter"?" on":"")+'" data-view="chapter" aria-pressed="'+(view==="chapter")+'">Chapters</button>'
+    +'<button type="button" class="lm-vt'+(view==="flat"?" on":"")+'" data-view="flat" aria-pressed="'+(view==="flat")+'">All decks</button>'
+    +'</div>';
+  $("#levels").innerHTML=trig+'<div class="lm-pop" id="lmPop" role="menu" hidden>'+toggle+body+'</div>';
   var trigEl=$("#lmTrigger"),pop=$("#lmPop");
   function closeMenu(){if(pop)pop.hidden=true;if(trigEl)trigEl.setAttribute("aria-expanded","false");}
   function openMenu(){if(pop)pop.hidden=false;if(trigEl)trigEl.setAttribute("aria-expanded","true");}
   if(trigEl)trigEl.onclick=function(ev){ev.stopPropagation();(pop&&pop.hidden)?openMenu():closeMenu();};
-  $$("#lmPop .lm-item").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();S().cat=b.getAttribute("data-c");saveDB();closeMenu();renderCatBar();onCatChange();};});
+  $$("#lmPop .lm-vt").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();var v=b.getAttribute("data-view");if(S().catView!==v){S().catView=v;saveDB();renderCatBar();var p=document.getElementById("lmPop");if(p)p.hidden=false;var t=document.getElementById("lmTrigger");if(t)t.setAttribute("aria-expanded","true");}};});
+  $$("#lmPop .lm-item, #lmPop .lm-chapsel").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();S().cat=b.getAttribute("data-c");saveDB();closeMenu();renderCatBar();onCatChange();};});
   if(!window.__lmDocBound){window.__lmDocBound=true;
     document.addEventListener("click",function(){var p=document.getElementById("lmPop");if(p&&!p.hidden){p.hidden=true;var t=document.getElementById("lmTrigger");if(t)t.setAttribute("aria-expanded","false");}});
     document.addEventListener("keydown",function(e){if(e.key==="Escape"){var p=document.getElementById("lmPop");if(p&&!p.hidden){p.hidden=true;var t=document.getElementById("lmTrigger");if(t)t.setAttribute("aria-expanded","false");}}});
@@ -2110,16 +2209,393 @@ function switchView(v){
   curView=v;
   $$(".view").forEach(function(s){s.classList.toggle("active",s.id==="view-"+v);});
   $$(".nav button").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-view")===v);});
-  var cr=$("#ctrlRow");if(cr)cr.style.display=(v==="progress"||v==="quiz"||v==="guide")?"none":"flex";
+  var cr=$("#ctrlRow");if(cr)cr.style.display=(v==="progress"||v==="quiz"||v==="guide"||v==="story")?"none":"flex";
   if(v==="progress")renderProgress();
   if(v==="games")renderGames();
   if(v==="guide")renderGuide();
+  if(v==="story")renderStory();
   if(v==="browse")renderBrowse();
   if(v==="quiz")updateQuizSetupLabels();
   if(v==="study")renderMascots();
   window.scrollTo(0,0);
 }
 
+
+/* ============ STORY ============ */
+var STORY=[
+ {t:"Touchdown",e:"🛬",seg:[
+   "The plane doors open at Suvarnabhumi. You take a breath, press your palms together in a wai, and offer your first word — ",
+   {th:"สวัสดี"},
+   ". The immigration officer smiles back. When she returns your passport you remember to say ",
+   {th:"ขอบคุณ"},
+   ". Turning to leave, you bump a stranger's suitcase and quickly add ",
+   {th:"ขอโทษ"},
+   " — but they only wave and reply ",
+   {th:"ไม่เป็นไร"},
+   "."
+ ]},
+ {t:"Finding Your Way",e:"🧭",seg:[
+   "Outside, the heat hits like a wall. You need to get downtown, so you look for a ",
+   {th:"แท็กซี่"},
+   ". The driver speaks no English, so you show him the hotel's name and ask, “",
+   {th:"...อยู่ที่ไหน"},
+   "?” He nods and pulls into traffic. At the big junction he glances back, and you tell him ",
+   {th:"ตรงไป"},
+   ", then ",
+   {th:"เลี้ยวซ้าย"},
+   " at the temple."
+ ]},
+ {t:"Street Eats & Baht",e:"🍜",seg:[
+   "By evening you are ",
+   {th:"หิว"},
+   ". A street stall glows with steam. You sit down and ask, “",
+   {th:"ขอเมนู"},
+   "” — then give up reading it and simply point: “",
+   {th:"เอาอันนี้"},
+   ".” A steaming bowl of ",
+   {th:"ก๋วยเตี๋ยว"},
+   " lands in front of you, and you wash it down with ",
+   {th:"น้ำเปล่า"},
+   "."
+ ]},
+ {t:"Settling In",e:"🛏️",seg:[
+   "Full and happy, you reach a small hotel. At the desk you ask, “",
+   {th:"ห้องว่างไหม"},
+   "?” They have space. “",
+   {th:"คืนละเท่าไหร่"},
+   "?” The clerk writes a number on a pad. You decide to ",
+   {th:"จองห้อง"},
+   " for three nights and carry the key up to your ",
+   {th:"ห้องพัก"},
+   "."
+ ]},
+ {t:"When Things Go Wrong",e:"🆘",seg:[
+   "The next afternoon, in a crowded market, you reach for your phone — gone. Your heart races. You turn to a vendor and blurt, “",
+   {th:"ช่วยฉันหน่อยได้ไหม"},
+   "?” You explain that you ",
+   {th:"ต้องการความช่วยเหลือ"},
+   ". She walks you to a police box, where you manage to say, “",
+   {th:"เรียกตำรวจ"},
+   ".” It is stressful, but people are kind."
+ ]},
+ {t:"Making Friends",e:"🤝",seg:[
+   "Days pass, and Thailand starts to feel familiar. At your regular café a barista grins and asks, “",
+   {th:"สบายดีไหม"},
+   "?” You answer honestly, “",
+   {th:"สบายดี"},
+   ".” You have walked all day and you are a little ",
+   {th:"เหนื่อย",},
+   ", but mostly you feel ",
+   {th:"มีความสุข"},
+   ". As you leave, your new friend calls out, “",
+   {th:"โชคดีนะ"},
+   "!” and you smile back, “",
+   {th:"สู้ๆ"},
+   "!”"
+ ]},
+ {t:"Everyday Life",e:"🏠",seg:[
+   "With a week ahead of you, you rent a small room and slip into a routine. Each morning you ",
+   {th:"ตื่น"},
+   " early, ",
+   {th:"อาบน้ำ"},
+   ", and ",
+   {th:"กิน"},
+   " a quick breakfast before you ",
+   {th:"ทำงาน"},
+   ". In the afternoon you wander to the ",
+   {th:"ตลาด"},
+   " for supplies, and in the evening you ",
+   {th:"พักผ่อน"},
+   " by the window before you ",
+   {th:"นอน"},
+   "."
+ ]},
+ {t:"Work & School",e:"💼",seg:[
+   "You still have a job back home, so most days you open your laptop for a morning ",
+   {th:"ประชุม"},
+   " and clear your ",
+   {th:"อีเมล"},
+   " before lunch. On a whim you sign up for a Thai class — a patient ",
+   {th:"ครู"},
+   " who loves to ",
+   {th:"สอน"},
+   ", a ",
+   {th:"หนังสือ"},
+   " full of new words, and ",
+   {th:"การบ้าน"},
+   " every night. When a lesson gets hard, the teacher smiles and asks, “",
+   {th:"เข้าใจไหม"},
+   "?”"
+ ]},
+ {t:"The World Around You",e:"🌦️",seg:[
+   "One Saturday the ",
+   {th:"อากาศ"},
+   " turns dramatic. Dark ",
+   {th:"เมฆ"},
+   " gather, the ",
+   {th:"ลม"},
+   " picks up, and suddenly ",
+   {th:"ฝนตก"},
+   " hard. You wait it out, watching the ",
+   {th:"ท้องฟ้า"},
+   ". When the storm passes you ride to the coast to see the ",
+   {th:"ทะเล"},
+   " and the green ",
+   {th:"ภูเขา"},
+   " beyond it, and you ",
+   {th:"ถ่ายรูป"},
+   " with your ",
+   {th:"โทรศัพท์มือถือ"},
+   "."
+ ]},
+ {t:"Getting Things Done",e:"🛍️",seg:[
+   "Your clothes are worn out, so you hunt for new ",
+   {th:"เสื้อผ้า"},
+   ". You find a ",
+   {th:"เสื้อ"},
+   " you like and ask, “",
+   {th:"ลองได้ไหม"},
+   "?” It's ",
+   {th:"เล็กไป"},
+   ", so they bring another. “",
+   {th:"ราคาเท่าไหร่"},
+   "?” Not bad — there's even a ",
+   {th:"ลดราคา"},
+   " — so you ",
+   {th:"จ่ายเงิน"},
+   ". Afterward you stop by the ",
+   {th:"ธนาคาร"},
+   " to ",
+   {th:"แลกเงิน"},
+   ", then the ",
+   {th:"ไปรษณีย์"},
+   " to ",
+   {th:"ส่งพัสดุ"},
+   " home."
+ ]},
+ {t:"Grammar Glue",e:"🧩",seg:[
+   "Your Thai is improving, and you start to notice the little glue words that hold sentences together. You can say you want rice ",
+   {th:"และ"},
+   " soup, ask for coffee ",
+   {th:"หรือ"},
+   " tea, explain that you're tired ",
+   {th:"แต่"},
+   " happy, and add “",
+   {th:"เพราะ"},
+   "” you walked all day. ",
+   {th:"ถ้า"},
+   " you keep practising, you think, the rest will come soon ",
+   {th:"แล้ว"},
+   "."
+ ]},
+ {t:"Colors & Counters",e:"🎨",seg:[
+   "At the fruit stall you drill your ",
+   {th:"สี"},
+   " and classifiers. You point to the ",
+   {th:"สีแดง"},
+   " apples and ask for three — the counter for round fruit is ",
+   {th:"ลูก"},
+   ". You grab two ",
+   {th:"ขวด"},
+   " of water and a ",
+   {th:"สีเหลือง"},
+   " mango, then count a ",
+   {th:"ใบ"},
+   " of tickets for later. The vendor grins at your careful ",
+   {th:"ลักษณนาม"},
+   "."
+ ]},
+ {t:"Saying More",e:"🗣️",seg:[
+   "You're chattier now. You ",
+   {th:"เดิน"},
+   " everywhere, ",
+   {th:"ใช้"},
+   " new verbs without thinking, and when you're late you ",
+   {th:"รีบ"},
+   " for the skytrain. Your friends toss idioms at you: “",
+   {th:"ใจเย็นๆ"},
+   "” when you fret, “",
+   {th:"สบายๆ"},
+   "” when you unwind, and the ever-friendly “",
+   {th:"กินข้าวหรือยัง"},
+   "?” You've even learned to feel ",
+   {th:"เกรงใจ"},
+   " — that very Thai reluctance to impose."
+ ]},
+ {t:"Out & About",e:"🗺️",seg:[
+   "On a long weekend you finally ",
+   {th:"เที่ยว"},
+   ". You visit a golden ",
+   {th:"วัด"},
+   ", wander through a ",
+   {th:"พิพิธภัณฑ์"},
+   ", then catch a boat to an ",
+   {th:"เกาะ"},
+   " with a perfect ",
+   {th:"ชายหาด"},
+   ". You ",
+   {th:"ว่ายน้ำ"},
+   " in the warm water, try ",
+   {th:"ดำน้ำ"},
+   " over the reef, and stay to ",
+   {th:"ดูพระอาทิตย์ตก"},
+   ". “",
+   {th:"ประทับใจ"},
+   ",” you whisper — unforgettable."
+ ]},
+ {t:"Thai Life",e:"🎊",seg:[
+   "The longer you stay, the more of Thai life you're welcomed into. A friend invites you to a ",
+   {th:"งานแต่งงาน"},
+   ", where you watch the ",
+   {th:"เจ้าบ่าว"},
+   " and ",
+   {th:"เจ้าสาว"},
+   " during the ",
+   {th:"รดน้ำสังข์"},
+   " blessing; as a ",
+   {th:"แขก"},
+   " you bring a ",
+   {th:"ซองเงิน"},
+   " and offer your ",
+   {th:"อวยพร"},
+   ". A month later another friend enters the monkhood — you join the ",
+   {th:"แห่นาค"},
+   " as the ",
+   {th:"นาค"},
+   " circles the temple to ",
+   {th:"บวช"},
+   ". And when an elder passes, you pay respects at the ",
+   {th:"งานศพ"},
+   ", laying down a ",
+   {th:"พวงหรีด"},
+   " and quietly learning to ",
+   {th:"ไว้อาลัย"},
+   "."
+ ]},
+ {t:"Food, Deeper",e:"🍲",seg:[
+   "Food becomes your real education. At a ",
+   {th:"ร้านอาหารตามสั่ง"},
+   " you learn to ",
+   {th:"สั่งอาหาร"},
+   " like a local — ",
+   {th:"ข้าวผัด"},
+   " with a ",
+   {th:"ไข่ดาว"},
+   ", made ",
+   {th:"พิเศษ"},
+   ", and “",
+   {th:"คิดเงิน"},
+   "” when you're done. You taste everything: ",
+   {th:"ผัดไทย"},
+   " from a street cart, fiery ",
+   {th:"ต้มยำกุ้ง"},
+   ", tangy ",
+   {th:"ส้มตำ"},
+   ", and for dessert ",
+   {th:"ข้าวเหนียวมะม่วง"},
+   ". At the market you pile up ",
+   {th:"ผลไม้"},
+   " — sweet ",
+   {th:"มะม่วง"},
+   " and pungent ",
+   {th:"ทุเรียน"},
+   ". In your last week you even take a ",
+   {th:"ทำอาหาร"},
+   " class, learning to ",
+   {th:"ผัด"},
+   " garlic in hot ",
+   {th:"น้ำมัน"},
+   " and season with ",
+   {th:"น้ำปลา"},
+   " until the ",
+   {th:"รสชาติ"},
+   " is just right — a little ",
+   {th:"หวาน"},
+   ", a little ",
+   {th:"เปรี้ยว"},
+   ", perfectly ",
+   {th:"กลมกล่อม"},
+   ". You arrived with one word, ",
+   {th:"สวัสดี"},
+   ", and now Thailand tastes like home."
+ ]}
+];
+var story={mode:"read"};
+var ST_IDX=null, ST_TARGETS=null;
+function stIndex(){
+  if(ST_IDX)return;
+  ST_IDX={}; ST_TARGETS=[];
+  (window.ALL_WORDS||[]).forEach(function(w){ if(ST_IDX[w.th]===undefined)ST_IDX[w.th]=w; });
+  STORY.forEach(function(sc){sc.seg.forEach(function(s){ if(typeof s==="object"&&ST_TARGETS.indexOf(s.th)<0)ST_TARGETS.push(s.th); });});
+}
+function stShuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function stClozeOptions(ans){
+  var pool=ST_TARGETS.filter(function(t){return t!==ans;});
+  var picks=stShuffle(pool).slice(0,3); picks.push(ans);
+  return stShuffle(picks);
+}
+function stRenderRead(){
+  return STORY.map(function(sc){
+    var body=sc.seg.map(function(s){
+      if(typeof s==="string")return esc(s);
+      var w=ST_IDX[s.th]||{};
+      return '<span class="st-tok" title="'+esc(w.en||"")+'"><span class="st-th">'+esc(s.th)+'</span><span class="st-r">'+esc(w.r||"")+'</span></span>';
+    }).join("");
+    return '<div class="st-scene"><h3>'+esc(sc.e+" "+sc.t)+'</h3><div class="st-prose">'+body+'</div></div>';
+  }).join("");
+}
+function stRenderCloze(){
+  var idx=0;
+  return STORY.map(function(sc){
+    var body=sc.seg.map(function(s){
+      if(typeof s==="string")return esc(s);
+      var w=ST_IDX[s.th]||{};
+      var opts=stClozeOptions(s.th);
+      var i=idx++;
+      var o='<option value="">— ? —</option>'+opts.map(function(v){return '<option value="'+esc(v)+'">'+esc(v)+'</option>';}).join("");
+      return '<span class="st-cloze"><span class="st-hint">'+esc(w.en||"")+'</span>'
+        +'<select class="st-sel" data-answer="'+esc(s.th)+'" data-idx="'+i+'">'+o+'</select>'
+        +'<span class="st-fix" data-fix="'+i+'"></span></span>';
+    }).join("");
+    return '<div class="st-scene"><h3>'+esc(sc.e+" "+sc.t)+'</h3><div class="st-prose">'+body+'</div></div>';
+  }).join("");
+}
+function renderStory(){
+  stIndex();
+  $$("#view-story .st-mode").forEach(function(b){
+    var on=b.getAttribute("data-smode")===story.mode;
+    b.classList.toggle("on",on); b.setAttribute("aria-selected",on);
+    b.onclick=function(){ if(story.mode!==b.getAttribute("data-smode")){story.mode=b.getAttribute("data-smode");renderStory();} };
+  });
+  var body=$("#storyBody"), foot=$("#storyFoot");
+  if(story.mode==="read"){
+    body.innerHTML=stRenderRead();
+    foot.hidden=true; foot.innerHTML="";
+  }else{
+    body.innerHTML=stRenderCloze();
+    foot.hidden=false;
+    foot.innerHTML='<button class="st-btn" id="stCheck" type="button">Check answers</button>'
+      +'<button class="st-btn ghost" id="stReset" type="button">Try again</button>'
+      +'<span class="st-score" id="stScore"></span>';
+    $("#stCheck").onclick=stCheck;
+    $("#stReset").onclick=function(){renderStory();};
+  }
+  window.scrollTo(0,0);
+}
+function stCheck(){
+  var sels=$$("#view-story .st-sel"), ok=0, done=0;
+  sels.forEach(function(s){
+    var ans=s.getAttribute("data-answer"), val=s.value;
+    var fix=$('#view-story .st-fix[data-fix="'+s.getAttribute("data-idx")+'"]');
+    s.classList.remove("ok","bad");
+    if(!val){ if(fix)fix.textContent=""; return; }
+    done++;
+    if(val===ans){ s.classList.add("ok"); ok++; if(fix)fix.textContent="✓"; }
+    else { s.classList.add("bad"); if(fix)fix.textContent="→ "+ans; }
+  });
+  var sc=$("#stScore");
+  if(sc)sc.textContent=ok+" / "+sels.length+" correct"+(done<sels.length?" ("+(sels.length-done)+" blank)":"");
+}
 
 /* ============ GAMES ============ */
 var PT_CONS="กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮ";
@@ -2148,8 +2624,10 @@ function ptCandidates(){
 function ptNewRound(){
   var cands=ptCandidates();
   if(!cands.length){toast("No playable words in this deck");return false;}
-  var pick=cands[Math.floor(Math.random()*cands.length)];
-  if(cands.length>1&&pick.w.id===petals.lastId)return ptNewRound();
+  /* Story order: advance to the next candidate after the last one played (wraps at the end). */
+  var pos=-1;
+  if(petals.lastId){for(var pi=0;pi<cands.length;pi++){if(cands[pi].w.id===petals.lastId){pos=pi;break;}}}
+  var pick=cands[(pos+1)%cands.length];
   petals.word=pick.w;petals.lastId=pick.w.id;
   petals.chars=pick.t.split("");
   petals.wrong=0;petals.hints=3;petals.over=false;petals._guessed={};
@@ -2556,7 +3034,8 @@ function thStart(){
   var pool=thBuildPool();
   if(pool.length<TH_MIN){thShow("setup");return;}
   hero.pool=pool;hero.scopeKey=curCatKey();
-  hero.order=shuffle(pool.map(function(_,i){return i;}));
+  /* Story order: step through the deck in authored sequence (pool is already in data.js order). */
+  hero.order=pool.map(function(_,i){return i;});
   hero.oi=0;hero.score=0;hero.combo=0;hero.bestCombo=0;hero.correct=0;hero.asked=0;
   hero.lives=TH_LIVES;hero.time=TH_TIME;hero.playing=true;hero.phase="ask";
   $("#thAnswers").innerHTML=TH_TONES.map(function(t){
@@ -2578,7 +3057,7 @@ function thTick(){
 function thNext(){
   if(!hero.playing)return;
   hero.phase="ask";
-  if(hero.oi>=hero.order.length){hero.order=shuffle(hero.order);hero.oi=0;}  /* recycle deck */
+  if(hero.oi>=hero.order.length){hero.oi=0;}  /* recycle deck, keep story order */
   hero.cur=hero.pool[hero.order[hero.oi]];hero.oi++;hero.asked++;
   var w=hero.cur.w;
   $("#thWord").textContent=w.th;
@@ -2795,8 +3274,7 @@ function init(){
   /* study controls */
   $("#prevBtn").onclick=function(){prevCard();};
   $("#nextBtn").onclick=function(){nextCard();};
-  $("#shuffleBtn").onclick=function(){study.pool=shuffle(curCatWords());study.idx=0;study.flipped=false;renderCard();toast("Shuffled 🔀");};
-  $("#dueBtn").onclick=function(){buildStudyPool("due");renderCard();var n=study.pool.length;toast(n?"Studying due cards":"Nothing due — full deck");};
+  var _dueBtn=$("#dueBtn");if(_dueBtn)_dueBtn.onclick=function(){buildStudyPool("due");renderCard();var n=study.pool.length;toast(n?"Studying due cards":"Nothing due — full deck");};
   $("#resetStudyBtn").onclick=function(){buildStudyPool("reset");renderCard();toast("Back to the start");};
   $$("#rateRow button").forEach(function(b){b.onclick=function(){rateAndAdvance(b.getAttribute("data-rate"));};});
   /* quiz setup */
