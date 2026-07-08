@@ -2476,7 +2476,7 @@ function renderStory(){
       +'<button class="st-btn ghost" id="stReset" type="button">'+esc(U.again)+'</button>'
       +'<span class="st-score" id="stScore"></span>';
     $("#stCheck").onclick=stCheck;
-    $("#stReset").onclick=function(){renderStory();};
+    $("#stReset").onclick=stReset;
   }
   $$("#view-story .st-schead").forEach(function(b){
     b.onclick=function(){var el=b.parentNode;var si=+b.getAttribute("data-scene");var open=!el.classList.contains("open");el.classList.toggle("open",open);story.open[si]=open;};
@@ -2489,6 +2489,10 @@ function renderStory(){
   window.scrollTo(0,0);
 }
 function stCheck(){
+  var scenes=$$("#view-story .st-scene");
+  /* anchor on the topmost scene in view so we can restore position after expanding */
+  var anchor=null, anchorTop=0;
+  for(var i=0;i<scenes.length;i++){var r=scenes[i].getBoundingClientRect();if(r.bottom>0){anchor=scenes[i];anchorTop=r.top;break;}}
   var sels=$$("#view-story .st-sel"), ok=0, done=0;
   sels.forEach(function(s){
     var ans=s.getAttribute("data-answer"), val=s.value;
@@ -2501,7 +2505,19 @@ function stCheck(){
   });
   var sc=$("#stScore");
   if(sc){var U=stUI();sc.textContent=ok+" / "+sels.length+" "+U.correct+(done<sels.length?" ("+(sels.length-done)+" "+U.blank+")":"");}
-  stSetAllOpen(true);
+  /* expand only scenes that have at least one answered blank, so their results show */
+  scenes.forEach(function(el){
+    var answered=false;
+    el.querySelectorAll(".st-sel").forEach(function(s){if(s.value)answered=true;});
+    if(answered&&!el.classList.contains("open")){el.classList.add("open");var si=+el.getAttribute("data-scene");if(story.open)story.open[si]=true;}
+  });
+  /* keep the viewport visually still after expansion */
+  if(anchor){var d=anchor.getBoundingClientRect().top-anchorTop;if(d)window.scrollBy(0,d);}
+}
+function stReset(){
+  $$("#view-story .st-sel").forEach(function(s){s.value="";s.classList.remove("ok","bad");});
+  $$("#view-story .st-fix").forEach(function(f){f.textContent="";});
+  var sc=$("#stScore");if(sc)sc.textContent="";
 }
 
 /* ============ GAMES ============ */
