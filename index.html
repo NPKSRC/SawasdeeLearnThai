@@ -201,7 +201,7 @@ body{
 @keyframes bao-out-fade{to{opacity:0}}
 /* --- Thai TTS: audio affordances hidden only when no th-TH voice exists on this device --- */
 body.no-tts .spk{display:none!important}
-body.no-tts #qType button[data-qt="listen"]{display:none!important}
+body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .speech{text-align:center;font-family:var(--display);font-weight:700;color:var(--ink-soft);min-height:1.4em;margin:2px 0 12px;font-size:1rem}
 
 /* ---------- Flashcard ---------- */
@@ -300,6 +300,7 @@ body.no-tts #qType button[data-qt="listen"]{display:none!important}
 .seg button{flex:1;min-width:fit-content;font-family:var(--display);font-weight:700;font-size:.84rem;cursor:pointer;background:var(--paper);border:1.5px solid var(--line);color:var(--ink-soft);padding:11px 10px;border-radius:var(--r-sm);transition:all .15s;text-align:center;line-height:1.15}
 .seg button small{display:block;font-family:var(--body);font-weight:700;font-size:.62rem;opacity:.7;margin-top:1px}
 .seg button[aria-pressed="true"]{background:var(--teal-tint);border-color:var(--teal);color:var(--teal-deep)}
+.seg button:disabled{opacity:.36;cursor:not-allowed;background:var(--paper);border-color:var(--line);color:var(--ink-faint)}
 .quiz-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:12px}
 .score-pill{font-family:var(--display);font-weight:800;background:var(--cloud);border:1.5px solid var(--line);padding:9px 14px;border-radius:999px;box-shadow:var(--shadow-sm);font-size:.9rem}
 .score-pill span{color:var(--teal-deep)}
@@ -309,6 +310,8 @@ body.no-tts #qType button[data-qt="listen"]{display:none!important}
 .qprompt.mean{font-size:2rem;line-height:1.18}
 .qprompt.mean.sc{font-family:var(--sc)} .qprompt.mean.tc{font-family:var(--tc)} .qprompt.mean.jp{font-family:var(--jp)} .qprompt.mean.en{font-family:var(--display)}
 .qprompt.listen{font-size:3rem}
+.qprompt.pron{font-family:var(--display);font-size:2.1rem;line-height:1.2;font-style:italic;letter-spacing:.3px}
+.answer .ans-rom,.answer .ans-en{font-family:var(--display)} .answer .ans-rom{font-style:italic}
 .games-h{font-family:var(--display);font-size:1.3rem;margin:8px 2px 2px}
 .games-sub{color:var(--ink-soft);font-weight:700;font-size:.86rem;margin:0 2px 14px}
 .game-card{display:flex;align-items:center;text-align:left;width:100%;gap:14px;background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:16px;margin-bottom:14px;cursor:pointer;transition:transform .14s;font:inherit;color:inherit}
@@ -795,12 +798,31 @@ button.game-card:hover{transform:translateY(-2px)}
         <h2>Check your knowledge</h2>
         <p class="sub">Pick a quiz and your buddy will test what you've learned.</p>
         <div class="setup-group">
-          <label>Quiz type</label>
-          <div class="seg" id="qType">
-            <button data-qt="mean" aria-pressed="true">Meaning<small>ไทย → meaning</small></button>
-            <button data-qt="thai" aria-pressed="false">Thai<small>meaning → ไทย</small></button>
-            <button data-qt="listen" aria-pressed="false">Listening<small>audio → ไทย</small></button>
-            <button data-qt="mixed" aria-pressed="false">Mixed<small>a bit of all</small></button>
+          <label>Question shows <span style="opacity:.7;text-transform:none;letter-spacing:0">(front)</span></label>
+          <div class="seg" id="qFront">
+            <button data-side="th" aria-pressed="true">Thai<small>ไทย</small></button>
+            <button data-side="rom" aria-pressed="false">Roman<small>abc</small></button>
+            <button data-side="ipa" aria-pressed="false">IPA<small>/aː/</small></button>
+            <button data-side="mean" aria-pressed="false">Meaning<small>EN·JP·ZH</small></button>
+            <button data-side="audio" aria-pressed="false">Listen<small>🔊 audio</small></button>
+          </div>
+        </div>
+        <div class="setup-group">
+          <label>You pick the <span style="opacity:.7;text-transform:none;letter-spacing:0">(back)</span></label>
+          <div class="seg" id="qBack">
+            <button data-side="th" aria-pressed="false">Thai<small>ไทย</small></button>
+            <button data-side="rom" aria-pressed="false">Roman<small>abc</small></button>
+            <button data-side="ipa" aria-pressed="false">IPA<small>/aː/</small></button>
+            <button data-side="mean" aria-pressed="true">Meaning<small>EN·JP·ZH</small></button>
+          </div>
+        </div>
+        <div class="setup-group" id="qLangGroup">
+          <label>Meaning language</label>
+          <div class="seg" id="qLang">
+            <button data-qlang="en" aria-pressed="true">English<small>EN</small></button>
+            <button data-qlang="ja" aria-pressed="false">日本語<small>JP</small></button>
+            <button data-qlang="zs" aria-pressed="false">简体<small>ZH</small></button>
+            <button data-qlang="zt" aria-pressed="false">繁體<small>ZH-繁</small></button>
           </div>
         </div>
         <div class="setup-group">
@@ -838,7 +860,7 @@ button.game-card:hover{transform:translateY(-2px)}
         <div class="qprompt-pin" id="qPin"></div>
       </div>
       <div class="answers" id="answers"></div>
-      <div class="controls"><button class="btn btn-ghost btn-sm" id="quitQuizBtn">Quit quiz</button></div>
+      <div class="controls"><button class="btn btn-ghost btn-sm" id="quitQuizBtn">Return to quiz menu</button></div>
     </div>
 
     <div id="quizDone" style="display:none">
@@ -1116,7 +1138,7 @@ button.game-card:hover{transform:translateY(-2px)}
         <h3>The tabs</h3>
         <ul>
           <li><b>Study</b> — flip and rate flashcards. This is where learning happens.</li>
-          <li><b>Quiz</b> — multiple-choice rounds. Pick a type — Meaning, Thai, Listening or Mixed — then a pool: this category, cards due for review, or ones you marked hard. (Listening appears when your device has a Thai voice.)</li>
+          <li><b>Quiz</b> — multiple-choice rounds. Choose what the <b>question shows</b> (Thai, Romanization, IPA, Meaning, or Listen) and what <b>you pick</b> from (Thai, Romanization, IPA or Meaning) — so you can drill reading, pronunciation, or meaning. Set the meaning language (EN/JP/ZH) and a pool: this category, cards due for review, or ones you marked hard. (Listen appears when your device has a Thai voice.)</li>
           <li><b>Browse</b> — search and skim every word in your deck.</li>
           <li><b>Progress</b> — watch your buddy grow as you learn.</li>
           <li><b>Games</b> — learn by playing. Petals: spell the Thai word before the jasmine loses its petals. Memory Match: flip the tiles to pair each Thai word with its match. Tone Hero: read the word and tap its tone — Thai has five (mid, low, falling, high, rising).</li>
@@ -1174,7 +1196,7 @@ button.game-card:hover{transform:translateY(-2px)}
         <h3>タブについて</h3>
         <ul>
           <li><b>Study</b> — カードをめくって自己評価します。学習の中心です。</li>
-          <li><b>Quiz</b> — 選択式で力試し。出題タイプ（Meaning・Thai・Listening・Mixed）と出題範囲（このカテゴリ・復習期限のカード・Hard を付けた単語）を選べます。（Listening は端末にタイ語音声がある場合に表示されます。）</li>
+          <li><b>Quiz</b> — 選択式で力試し。<b>問題に出す面</b>（タイ語・発音記号・IPA・意味・リスニング）と<b>選ぶ面</b>（タイ語・発音記号・IPA・意味）を選べるので、読み・発音・意味を自由に練習できます。意味の言語（EN/JP/ZH）と出題範囲（このカテゴリ・復習期限のカード・Hard を付けた単語）も選べます。（リスニングは端末にタイ語音声がある場合に表示されます。）</li>
           <li><b>Browse</b> — デック内のすべての単語を検索・一覧できます。</li>
           <li><b>Progress</b> — 学習に合わせて相棒が成長していきます。</li>
           <li><b>Games</b> — 遊びながら学べます。Petals：ジャスミンの花びらが散る前にタイ語のつづりを当てましょう。Memory Match：タイル をめくってタイ語の単語と意味を組み合わせましょう。Tone Hero：単語を見て声調をタップ。タイ語には5つの声調があります（平声・低声・下声・高声・上声）。</li>
@@ -1232,7 +1254,7 @@ button.game-card:hover{transform:translateY(-2px)}
         <h3>各个标签页</h3>
         <ul>
           <li><b>Study</b> — 翻卡片并自我评分，这是学习的核心。</li>
-          <li><b>Quiz</b> — 选择题检验。可选题型（Meaning、Thai、Listening、Mixed）和题库（本类别、待复习的卡片，或你标记为 Hard 的单词）。（Listening 在设备装有泰语语音时才会出现。）</li>
+          <li><b>Quiz</b> — 选择题检验。可自选<b>题面显示</b>（泰语、罗马音、IPA、释义或听力）与<b>你从中选择</b>的内容（泰语、罗马音、IPA 或释义），可练习认读、发音或释义。还可设置释义语言（EN/JP/ZH）和题库（本类别、待复习的卡片，或你标记为 Hard 的单词）。（听力在设备装有泰语语音时才会出现。）</li>
           <li><b>Browse</b> — 搜索并浏览当前词组里的所有单词。</li>
           <li><b>Progress</b> — 看着小伙伴随你的学习一起成长。</li>
           <li><b>Games</b> — 边玩边学。Petals：在茉莉花瓣落完之前拼出泰文单词。Memory Match：翻开卡片，把泰文单词和它的意思配对。Tone Hero：看单词，点出它的声调——泰语有五个声调（中平、低、降、高、升）。</li>
@@ -1634,7 +1656,7 @@ function newAccount(name,mascot){
   var id="a"+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36);
   return {id:id,name:name||"Learner",mascot:mascot||"eleph",created:Date.now(),
     xp:0,streak:0,lastDay:null,days:[],xpByDay:{},
-    settings:{front:"thai",langs:{en:true,ja:false,zs:false,zt:false},pron:"rom",cat:FIRST_CAT,catView:"chapter",storyLang:"en",storyPron:"rom",storyChoice:"thai",onboarded:false},
+    settings:{front:"thai",langs:{en:true,ja:false,zs:false,zt:false},pron:"rom",quizLang:"en",quizFront:"th",quizBack:"mean",cat:FIRST_CAT,catView:"chapter",storyLang:"en",storyPron:"rom",storyChoice:"thai",onboarded:false},
     cards:{},best:{},qStats:{correct:0,total:0},log:[]};
 }
 function migrateAccount(a){
@@ -1645,6 +1667,10 @@ function migrateAccount(a){
   if(!s.langs)s.langs={en:true,ja:false,zs:false,zt:false};
   if(!s.langs.en&&!s.langs.ja&&!s.langs.zs&&!s.langs.zt)s.langs.en=true;
   if(s.pron!=="rom"&&s.pron!=="ipa")s.pron="rom";
+  if(["en","ja","zs","zt"].indexOf(s.quizLang)<0){var _qpref="en";["en","ja","zs","zt"].some(function(k){if(s.langs&&s.langs[k]){_qpref=k;return true;}return false;});s.quizLang=_qpref;}
+  if(["th","rom","ipa","mean","audio"].indexOf(s.quizFront)<0)s.quizFront="th";
+  if(["th","rom","ipa","mean"].indexOf(s.quizBack)<0)s.quizBack="mean";
+  if(s.quizFront===s.quizBack)s.quizBack=(s.quizFront==="mean")?"th":"mean";
   if(["en","ja","zh"].indexOf(s.glang)<0)s.glang="en";
   if(["en","ja","zh"].indexOf(s.storyLang)<0)s.storyLang="en";
   if(["mean","rom","ipa","none"].indexOf(s.storyPron)<0)s.storyPron="rom";
@@ -1877,7 +1903,20 @@ function _baoInitIdle(){
 var _voices=[];
 function _loadVoices(){try{_voices=window.speechSynthesis.getVoices()||[];}catch(e){_voices=[];}updateTTSUI();}
 if("speechSynthesis"in window){_loadVoices();try{window.speechSynthesis.addEventListener("voiceschanged",_loadVoices);}catch(e){speechSynthesis.onvoiceschanged=_loadVoices;}}
-function _thVoice(){if(!_voices.length){try{_voices=window.speechSynthesis.getVoices()||[];}catch(e){}}for(var i=0;i<_voices.length;i++){var v=_voices[i];if(/th[-_]?TH|thai/i.test((v.lang||"")+" "+(v.name||"")))return v;}return null;}
+function _thVoice(){
+  if(!_voices.length){try{_voices=window.speechSynthesis.getVoices()||[];}catch(e){}}
+  var cands=_voices.filter(function(v){return /th[-_]?TH|thai|ไทย/i.test((v.lang||"")+" "+(v.name||""));});
+  if(!cands.length)return null;
+  /* Prefer the most natural engine available: neural/online voices beat the
+     built-in robotic one, which is usually where the "unnatural" words come from. */
+  function score(v){var n=(v.name||"");var s=0;
+    if(/neural|natural|online|google|premium|enhanced|siri/i.test(n))s+=5;
+    if(v.localService===false)s+=2;
+    if(/kanya|narisa|premwadee|achara|niwat|pattara|premchai|somsi/i.test(n))s+=1;
+    return s;}
+  cands.sort(function(a,b){return score(b)-score(a);});
+  return cands[0];
+}
 function ttsAvailable(){return ("speechSynthesis"in window)&&!!_thVoice();}
 /* Phase 3: TTS enabled. Speaker buttons + Listening quiz appear only when a th-TH
    voice exists on this device; otherwise body keeps .no-tts and they stay hidden. */
@@ -2023,7 +2062,7 @@ function initSwipe(){
 }
 
 /* ============ QUIZ ============ */
-var quiz={type:"mean",pool:"level",len:10,qs:[],i:0,score:0,locked:false,missed:[]};
+var quiz={front:"th",back:"mean",pool:"level",len:10,qs:[],i:0,score:0,locked:false,missed:[]};
 function quizCandidatePool(){
   var a=acct();var base=curCatWords();
   if(quiz.pool==="due"){var d=base.filter(function(w){return isDue(a.cards[w.id]);});return d.length>=4?d:base;}
@@ -2031,56 +2070,83 @@ function quizCandidatePool(){
   return base;
 }
 function buildQuiz(){
-  var tts=ttsAvailable();
-  if(quiz.type==="listen"&&!tts)quiz.type="mean"; /* no th-TH voice on this device */
+  normalizeQuizSides();
   var pool=quizCandidatePool();var n=Math.min(quiz.len,pool.length);var picks=sample(pool,n);
   /* Story order: which words are sampled can rotate for coverage, but present them
      in authored data.js sequence so the quiz keeps the deck's narrative flow. */
   picks.sort(function(a,b){return ALL_WORDS.indexOf(a)-ALL_WORDS.indexOf(b);});
   var distractorPool=curCatWords().length>=8?curCatWords():ALL_WORDS;
-  var mixModes=tts?["mean","thai","listen"]:["mean","thai"];
   quiz.qs=picks.map(function(w){
-    var mode=quiz.type==="mixed"?mixModes[Math.floor(Math.random()*mixModes.length)]:quiz.type;
     var others=sample(distractorPool.filter(function(x){return x.id!==w.id;}),3);
-    return {w:w,mode:mode,others:others};
+    return {w:w,front:quiz.front,back:quiz.back,others:others};
   });
   quiz.i=0;quiz.score=0;quiz.missed=[];quiz.locked=false;
+}
+/* Keep the front/back pair valid: audio needs a voice, and the two sides must differ. */
+function normalizeQuizSides(){
+  if(quiz.front==="audio"&&!ttsAvailable())quiz.front="th";
+  if(["th","rom","ipa","mean","audio"].indexOf(quiz.front)<0)quiz.front="th";
+  if(["th","rom","ipa","mean"].indexOf(quiz.back)<0)quiz.back="mean";
+  if(quiz.front===quiz.back)quiz.back=(quiz.front==="mean")?"th":"mean";
 }
 function startQuiz(){
   buildQuiz();
   $("#quizSetup").style.display="none";$("#quizDone").style.display="none";$("#quizPlay").style.display="block";
   $("#quizQTotal").textContent=quiz.qs.length;renderQuizMascot();renderQuestion();
 }
-function meanText(w){var k=selLangs()[0];return w[LANGS[k].field];}
-function meanFont(){return LANGS[selLangs()[0]].font;}
+function quizLang(){var k=acct()?S().quizLang:null;if(["en","ja","zs","zt"].indexOf(k)<0)k=selLangs()[0]||"en";return k;}
+function meanText(w){return w[LANGS[quizLang()].field];}
+function meanFont(){return LANGS[quizLang()].font;}
+/* Text for one "side" (front prompt or back option) of a card. */
+function sideText(w,side){
+  if(side==="th")return w.th||"";
+  if(side==="rom")return w.r||"";
+  if(side==="ipa")return w.i||w.r||"";
+  if(side==="mean")return meanText(w)||"";
+  return "";
+}
+/* CSS class suffix so the right script font is applied to an answer option. */
+function sideAnsCls(side){
+  if(side==="th")return "ans-th";
+  if(side==="mean")return "ans-"+(meanFont()||"en");
+  return "ans-rom"; /* rom + ipa are latin */
+}
+var SIDE_NAME={th:"Thai word",rom:"pronunciation",ipa:"pronunciation",mean:"meaning"};
+function qLabelText(front,back){
+  if(front==="audio")return "Listen — which one is it?";
+  if(back==="mean")return "What does this mean?";
+  if(back==="th")return "Which Thai word is this?";
+  if(back==="rom"||back==="ipa")return "How is this said?";
+  return "Pick the match.";
+}
 function renderQuestion(){
-  var q=quiz.qs[quiz.i];quiz.locked=false;
+  var q=quiz.qs[quiz.i];quiz.locked=false;var front=q.front,back=q.back,w=q.w;
   $("#quizScore").textContent=quiz.score;$("#quizQNum").textContent=quiz.i+1;
   $("#quizBar").style.width=(quiz.i/quiz.qs.length*100)+"%";$("#quizStamp").className="stamp";
   $("#quizStamp").innerHTML=mascotSVG(curMascot(),stageFromGP(growthPoints(acct()).gp),96);
-  var label,promptHTML,pin="",opts;var w=q.w;var mf=meanFont();
-  if(q.mode==="mean"){
-    label="What does this mean?";promptHTML='<div class="qprompt">'+esc(w.th)+'</div>';pin=pronOf(w);
-    opts=shuffle([w].concat(q.others)).map(function(x){return {label:'<span class="ans-'+(mf||"")+'">'+esc(meanText(x))+'</span>',ok:x.id===w.id};});
-  }else if(q.mode==="thai"){
-    label="Which Thai word is this?";promptHTML='<div class="qprompt mean '+(mf||"en")+'">'+esc(meanText(w))+'</div>';pin="";
-    opts=shuffle([w].concat(q.others)).map(function(x){return {label:'<span class="ans-th">'+esc(x.th)+'</span>',ok:x.id===w.id};});
-  }else{
-    label="Listen — which word is it?";promptHTML='<div class="qprompt listen">🔊</div>';pin="tap 🔊 to replay";
-    opts=shuffle([w].concat(q.others)).map(function(x){return {label:'<span class="ans-th">'+esc(x.th)+'</span>',ok:x.id===w.id};});
-  }
-  $("#qLabel").textContent=label;rebuildPrompt(q,promptHTML);
-  var pinEl=$("#qPin");pinEl.textContent=pin;pinEl.className="qprompt-pin "+(q.mode==="mean"?pronCls():"");
+  /* ---- front (prompt) ---- */
+  var promptHTML,pin="";
+  if(front==="audio"){promptHTML='<div class="qprompt listen">🔊</div>';pin="tap 🔊 to replay";}
+  else if(front==="th"){promptHTML='<div class="qprompt">'+esc(w.th)+'</div>';
+    /* pronunciation hint is safe only when the answer isn't a pronunciation */
+    if(back==="mean"){pin=pronOf(w);}}
+  else if(front==="mean"){promptHTML='<div class="qprompt mean '+(meanFont()||"en")+'">'+esc(meanText(w))+'</div>';}
+  else{promptHTML='<div class="qprompt pron">'+esc(sideText(w,front))+'</div>';}
+  /* ---- back (answer options) ---- */
+  var ansCls=sideAnsCls(back);
+  var opts=shuffle([w].concat(q.others)).map(function(x){return {label:'<span class="'+ansCls+'">'+esc(sideText(x,back))+'</span>',ok:x.id===w.id};});
+  $("#qLabel").textContent=qLabelText(front,back);rebuildPrompt(q,promptHTML);
+  var pinEl=$("#qPin");pinEl.textContent=pin;pinEl.className="qprompt-pin "+((front==="th"&&back==="mean")?pronCls():"");
   var ans=$("#answers");ans.innerHTML="";
-  opts.forEach(function(o){var b=document.createElement("button");b.className="answer";b.innerHTML=o.label;b.onclick=function(){answer(b,o.ok);};ans.appendChild(b);});
-  if(q.mode==="listen")speak(w.th);
+  opts.forEach(function(o){var b=document.createElement("button");b.className="answer";b.innerHTML=o.label;b.dataset.ok=o.ok?"1":"";b.onclick=function(){answer(b,o.ok);};ans.appendChild(b);});
+  if(front==="audio")speak(w.th);
   setMood("think");
 }
 function rebuildPrompt(q,promptHTML){
   var card=$(".qcard");var old=$("#qPrompt");if(old)old.remove();var pin=$("#qPin");
   var tmp=document.createElement("div");tmp.innerHTML=promptHTML.trim();var node=tmp.firstChild;node.id="qPrompt";
   card.insertBefore(node,pin);
-  if(q.mode==="listen"){node.style.cursor="pointer";node.onclick=function(){speak(q.w.th);};}
+  if(q.front==="audio"){node.style.cursor="pointer";node.onclick=function(){speak(q.w.th);};}
 }
 function answer(btn,ok){
   if(quiz.locked)return;quiz.locked=true;var q=quiz.qs[quiz.i];
@@ -2089,8 +2155,7 @@ function answer(btn,ok){
   baoSay(ok?"correct":"wrong",$("#mascotQuiz"));
   if(ok){btn.classList.add("correct");quiz.score++;awardXP(10,null,"quiz");$("#quizStamp").className="stamp show";flashMood("happy");}
   else{btn.classList.add("wrong");awardXP(2,null,"quiz");quiz.missed.push(q.w);flashMood("sad");
-    var want=q.mode==="mean"?meanText(q.w):q.w.th;
-    $$("#answers .answer").forEach(function(b){if(b.textContent.replace(/\s/g,"")===String(want).replace(/\s/g,""))b.classList.add("correct");});
+    $$("#answers .answer").forEach(function(b){if(b.dataset.ok==="1")b.classList.add("correct");});
   }
   touchDay();saveDB();setTimeout(nextQuestion,ok?700:1250);
 }
@@ -2107,10 +2172,10 @@ function endQuiz(){
   else{title="Keep going!";sub="Every quiz makes the next one easier.";setMood("sad");}
   $("#summaryTitle").textContent=title;$("#summarySub").textContent=sub;
   $("#mascotSummary").innerHTML=mascotSVG(curMascot(),stage,96);
-  var a=acct();var key=curCatKey()+"_"+quiz.type;var prev=a.best[key]||0;var bt=$("#bestTag");
+  var a=acct();var qtype=quiz.front+"→"+quiz.back;var key=curCatKey()+"_"+qtype;var prev=a.best[key]||0;var bt=$("#bestTag");
   if(quiz.score>prev){a.best[key]=quiz.score;bt.style.display="inline-block";bt.textContent="🏅 New best: "+quiz.score+"/"+quiz.qs.length;}
   else bt.style.display="none";
-  a.log.unshift({t:Date.now(),k:"quiz",msg:"Quiz "+quiz.type+" · "+catName(curCatKey())+" · "+quiz.score+"/"+quiz.qs.length,xp:earned});a.log=a.log.slice(0,40);
+  a.log.unshift({t:Date.now(),k:"quiz",msg:"Quiz "+qtype+" · "+catName(curCatKey())+" · "+quiz.score+"/"+quiz.qs.length,xp:earned});a.log=a.log.slice(0,40);
   var rm=$("#reviewMissBtn");
   if(quiz.missed.length){rm.style.display="inline-flex";rm.onclick=function(){study.pool=quiz.missed.slice();study.idx=0;study.flipped=false;switchView("study");renderCard();toast("Studying "+quiz.missed.length+" missed words");};}
   else rm.style.display="none";
@@ -2267,7 +2332,17 @@ function renderCatBar(){
   }
 }
 function onCatChange(){buildStudyPool("reset");renderCard();updateDueCounts();renderBrowse();updateQuizSetupLabels();if(curView==="progress")renderProgress();}
-function updateQuizSetupLabels(){var el=$("#qPoolLevel");if(el)el.textContent=catName(curCatKey());updateDueCounts();}
+function updateQuizSetupLabels(){var el=$("#qPoolLevel");if(el)el.textContent=catName(curCatKey());updateDueCounts();if(acct()){quiz.front=S().quizFront;quiz.back=S().quizBack;}renderQuizSides();}
+function syncQuizLangBar(){var cur=quizLang();$$("#qLang button").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-qlang")===cur);});}
+/* Reflect front/back state in the setup, block the impossible pairings, and only
+   show the meaning-language picker when a side actually shows the meaning. */
+function renderQuizSides(){
+  normalizeQuizSides();
+  $$("#qFront button").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-side")===quiz.front);});
+  $$("#qBack button").forEach(function(b){var s=b.getAttribute("data-side");b.disabled=(s===quiz.front);b.setAttribute("aria-pressed",s===quiz.back);});
+  var g=$("#qLangGroup");if(g)g.style.display=(quiz.front==="mean"||quiz.back==="mean")?"":"none";
+  syncQuizLangBar();
+}
 
 function refreshAll(){
   updateChip();renderMascots();syncStudyControls();renderCatBar();
@@ -3201,9 +3276,11 @@ function init(){
   $("#resetStudyBtn").onclick=function(){buildStudyPool("reset");renderCard();toast("Back to the start");};
   $$("#rateRow button").forEach(function(b){b.onclick=function(){rateAndAdvance(b.getAttribute("data-rate"));};});
   /* quiz setup */
-  $$("#qType button").forEach(function(b){b.onclick=function(){quiz.type=b.getAttribute("data-qt");$$("#qType button").forEach(function(x){x.setAttribute("aria-pressed",x===b);});};});
+  $$("#qFront button").forEach(function(b){b.onclick=function(){quiz.front=b.getAttribute("data-side");if(quiz.front===quiz.back)quiz.back=(quiz.front==="mean")?"th":"mean";if(acct()){S().quizFront=quiz.front;S().quizBack=quiz.back;saveDB();}renderQuizSides();};});
+  $$("#qBack button").forEach(function(b){b.onclick=function(){if(b.disabled)return;quiz.back=b.getAttribute("data-side");if(acct()){S().quizBack=quiz.back;saveDB();}renderQuizSides();};});
   $$("#qPool button").forEach(function(b){b.onclick=function(){quiz.pool=b.getAttribute("data-pool");$$("#qPool button").forEach(function(x){x.setAttribute("aria-pressed",x===b);});};});
   $$("#qLen button").forEach(function(b){b.onclick=function(){quiz.len=+b.getAttribute("data-len");$$("#qLen button").forEach(function(x){x.setAttribute("aria-pressed",x===b);});};});
+  $$("#qLang button").forEach(function(b){b.onclick=function(){var k=b.getAttribute("data-qlang");if(acct()){S().quizLang=k;saveDB();}$$("#qLang button").forEach(function(x){x.setAttribute("aria-pressed",x===b);});};});
   $("#startQuizBtn").onclick=startQuiz;
   $("#quitQuizBtn").onclick=function(){$("#quizPlay").style.display="none";$("#quizSetup").style.display="block";};
   $("#againBtn").onclick=function(){$("#quizDone").style.display="none";$("#quizSetup").style.display="block";updateQuizSetupLabels();};
