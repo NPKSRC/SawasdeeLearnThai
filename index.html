@@ -109,7 +109,8 @@ body{
 .lm-item:hover{background:var(--paper-2)}
 .lm-item.on{background:var(--paper-2);border-left-color:var(--teal)}
 .lm-item.on .lm-name{color:var(--ink);font-weight:800}
-.lm-item .lm-ie{font-size:1.02rem;flex:none;opacity:.85}
+.lm-item .lm-ie{font-size:1.02rem;flex:none;opacity:.85;width:1.5em;text-align:center;display:inline-flex;align-items:center;justify-content:center}
+.lm-item .lm-ie:empty{width:1.5em}
 .lm-name{flex:1;font-family:var(--display);font-weight:600;font-size:.84rem;color:var(--ink-soft)}
 .lm-item .lm-sub{font-family:var(--body);font-weight:700;font-size:.62rem;opacity:.6;color:var(--ink-soft)}
 .lm-tick{color:var(--teal);font-weight:800;font-size:.9rem}
@@ -355,6 +356,11 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .lex-msg{color:var(--ink-soft);font-weight:700;font-size:.92rem;margin:4px 0 12px}
 .lm-item.lm-lesson .lm-name{font-style:normal}
 .lm-lessub{color:var(--teal-deep);font-weight:800;font-size:.72rem;white-space:nowrap}
+/* Selectability cues: display-only decks recede; tappable rows show a › */
+.lm-item.static:not(.on){opacity:.5}
+.lm-go{color:var(--ink-faint);font-weight:800;font-size:1rem;flex:none;margin-left:1px}
+.lm-hint{font-size:.68rem;color:var(--ink-faint);font-weight:700;line-height:1.45;margin:2px 6px 8px;padding:0}
+.lm-hint b{color:var(--ink-soft);font-weight:800}
 /* Tone chart (5 tones) */
 .tchart{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:2px 0 14px}
 .tchart-cell{border:1.5px solid var(--line);border-top:3px solid var(--tcol);border-radius:12px;background:var(--cloud);padding:8px 3px 7px;text-align:center}
@@ -386,6 +392,29 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .tcalc-trace b{font-family:var(--thai);color:var(--tcol);font-size:1rem}
 .tcalc-invalid{--tcol:var(--ink-faint)}
 .tcalc-invmsg{margin-top:8px;font-size:.86rem;color:var(--ink-soft);line-height:1.5}
+.les-clockwrap{background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:14px 14px 16px;margin:6px 0 14px}
+.les-clockwrap .les-h{margin-bottom:2px}
+.clk{display:flex;flex-direction:column;align-items:center;gap:9px;margin-top:8px}
+.clk-face{width:184px;height:184px;flex:none}
+.clk-rim{fill:var(--paper);stroke:var(--pcol,var(--teal));stroke-width:3}
+.clk-tick{stroke:var(--ink-faint);stroke-width:2;stroke-linecap:round}
+.clk-num{font-family:var(--display);font-weight:800;font-size:13px;fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central}
+.clk-hh{stroke:var(--ink);stroke-width:5.5;stroke-linecap:round}
+.clk-mm{stroke:var(--pcol,var(--teal));stroke-width:3.5;stroke-linecap:round}
+.clk-pin{fill:var(--pcol,var(--teal))}
+.clk-info{text-align:center}
+.clk-digi{font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--ink)}
+.clk-12{font-size:.9rem;color:var(--ink-soft);font-weight:700;margin-left:7px}
+.clk-say{border:0;background:none;cursor:pointer;font:inherit;margin:3px 0 1px;display:inline-flex;align-items:center;gap:6px}
+.clk-th{font-family:var(--thai);font-weight:700;font-size:1.7rem;color:var(--pcol,var(--teal-deep))}
+.clk-spk{font-size:1rem}
+.clk-rom{font-family:var(--body);font-weight:700;font-size:1.02rem;color:var(--teal-deep)}
+.clk-per{display:inline-block;margin-top:7px;font-family:var(--display);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.03em;color:var(--pcol,var(--ink-soft));background:var(--paper-2);padding:4px 12px;border-radius:999px}
+.clk-ctrl{display:flex;gap:18px;margin-top:6px}
+.clk-ctrl-row{display:flex;align-items:center;gap:8px}
+.clk-ctrl-lab{font-family:var(--display);font-weight:800;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);min-width:26px;text-align:center}
+.clk-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);color:var(--teal-deep);font-size:1.3rem;font-weight:800;cursor:pointer;display:grid;place-items:center;line-height:1;padding:0}
+.clk-btn:hover{border-color:var(--teal);background:var(--teal-tint)}
 @media(min-width:460px){.cls-grid{grid-template-columns:1fr 1fr 1fr}}
 
 /* S7: long IPA compounds (no-space, dot-separated) wrap instead of overflowing on narrow screens — non-game surfaces only */
@@ -1281,6 +1310,20 @@ button.game-card:hover{transform:translateY(-2px)}
       </div>
 
       <div class="guide-card">
+        <h3>Start with the Foundations 📖</h3>
+        <p>Before the vocabulary chapters, the <b>Study</b> picker opens with a <b>Chapter 0 · Foundations</b> chapter that teaches you to actually read Thai. Work through it in order:</p>
+        <ul>
+          <li><b>Consonants</b> — the alphabet, each letter shown in its class colour.</li>
+          <li><b>Consonant classes</b> — a lesson on the three classes (middle / high / low) that decide a syllable's tone.</li>
+          <li><b>Vowels (สระ)</b> and <b>Tone marks (วรรณยุกต์)</b> — the core vowel sounds and the four tone marks.</li>
+          <li><b>Final consonants (ตัวสะกด)</b> — how ~30 letters collapse into just 8 ending sounds, plus live vs dead syllables.</li>
+          <li><b>Tone rules</b> — the capstone lesson, with an <b>interactive tone calculator</b>: set the class, vowel length, ending and mark, and watch the tone appear.</li>
+          <li><b>Telling the time</b> — Thai's 6-hour clock, with an <b>interactive clock</b> you can step through hour by hour and hear out loud.</li>
+        </ul>
+        <p>Cards marked <b>📖 Lesson</b> aren't flashcards — they're short illustrated lessons with tap-through mini-exercises.</p>
+      </div>
+
+      <div class="guide-card">
         <h3>Studying a card</h3>
         <p>Tap a card to flip between the prompt and the answer. Swipe, or use the arrows, to move between cards.</p>
         <p>After each card, tell the app how it went — this schedules when you'll see it again:</p>
@@ -1339,6 +1382,20 @@ button.game-card:hover{transform:translateY(-2px)}
       </div>
 
       <div class="guide-card">
+        <h3>まずは基礎（Foundations 📖）から</h3>
+        <p>語彙の章の前に、<b>Study</b> のメニューは <b>Chapter 0 · Foundations</b> の章から始まります。ここでタイ語を「読む」力を身につけます。順番に進めましょう:</p>
+        <ul>
+          <li><b>子音（Consonants）</b> — アルファベット。各文字を分類の色つきで表示。</li>
+          <li><b>子音の分類</b> — 音節の声調を決める3分類（中・高・低）のレッスン。</li>
+          <li><b>母音（สระ）</b>と<b>声調記号（วรรณยุกต์）</b> — 主要な母音の音と4つの声調記号。</li>
+          <li><b>末子音（ตัวสะกด）</b> — 約30の文字が8つの語末音にまとまること、生・死の音節。</li>
+          <li><b>声調の規則</b> — 総まとめのレッスン。<b>インタラクティブな声調計算機</b>付き：分類・母音の長さ・末子音・記号を選ぶと声調が表示されます。</li>
+          <li><b>時刻の言い方</b> — タイの6時間制。<b>インタラクティブな時計</b>で1時間ずつ進めて音声を聞けます。</li>
+        </ul>
+        <p><b>📖 Lesson</b> と付いたカードはフラッシュカードではなく、図解付きの短いレッスンで、タップして進むミニ練習があります。</p>
+      </div>
+
+      <div class="guide-card">
         <h3>カードで学ぶ</h3>
         <p>カードをタップすると問題と答えが切り替わります。スワイプ、または矢印ボタンで次のカードへ進めます。</p>
         <p>各カードのあとに、どれくらい覚えていたかを選ぶと、次に表示するタイミングが決まります:</p>
@@ -1394,6 +1451,20 @@ button.game-card:hover{transform:translateY(-2px)}
           <li><b>Story</b> — 阅读一个发生在泰国的简短生存小故事，然后把泰语挖空，凭记忆填回去。用语言按钮可在<b>EN / 日本語 / 中文</b>之间切换。每个词的提示可选择显示释义、罗马音、IPA 或隐藏，空格的选项可选择以泰文、罗马音或 IPA 显示。</li>
           <li><b>Guide</b> — 你现在就在这里！</li>
         </ul>
+      </div>
+
+      <div class="guide-card">
+        <h3>从基础（Foundations 📖）开始</h3>
+        <p>在词汇章节之前，<b>Study</b> 选择器最先是一个 <b>Chapter 0 · Foundations</b> 章节，教你真正学会认读泰语。请按顺序学习:</p>
+        <ul>
+          <li><b>辅音（Consonants）</b> — 字母表，每个字母都以其类别的颜色显示。</li>
+          <li><b>辅音类别</b> — 关于决定音节声调的三类（中／高／低）的课程。</li>
+          <li><b>元音（สระ）</b>和<b>声调符号（วรรณยุกต์）</b> — 核心元音读音与四个声调符号。</li>
+          <li><b>尾辅音（ตัวสะกด）</b> — 约30个字母如何归为 8 种收尾音，以及活音节与死音节。</li>
+          <li><b>声调规则</b> — 收官课程，配有<b>互动声调计算器</b>：设定类别、元音长短、收尾音和符号，声调即时显示。</li>
+          <li><b>如何表达时间</b> — 泰式六小时制，配有<b>互动时钟</b>，可逐小时步进并朗读发音。</li>
+        </ul>
+        <p>标有 <b>📖 Lesson</b> 的卡片不是抽认卡，而是配图的简短课程，带有点击推进的小练习。</p>
       </div>
 
       <div class="guide-card">
@@ -2396,6 +2467,86 @@ function bindToneCalc(){
     bindToneCalc();
   };});
 }
+/* ===== Telling time: Thai 6-hour clock (clock section) ===== */
+var TH_NUM=["ศูนย์","หนึ่ง","สอง","สาม","สี่","ห้า","หก","เจ็ด","แปด","เก้า","สิบ"];
+var TH_NUM_ROM=["sǔun","nùeng","sǎawng","sǎam","sìi","hâa","hòk","jèt","bpàet","gâo","sìp"];
+function thNum(n){
+  if(n<=10)return TH_NUM[n];
+  if(n<20)return "สิบ"+(n===11?"เอ็ด":TH_NUM[n-10]);
+  var tens=Math.floor(n/10),ones=n%10;
+  var t=(tens===2?"ยี่สิบ":TH_NUM[tens]+"สิบ");
+  return ones===0?t:t+(ones===1?"เอ็ด":TH_NUM[ones]);
+}
+function thNumRom(n){
+  if(n<=10)return TH_NUM_ROM[n];
+  if(n<20)return "sìp"+(n===11?"-èt":"-"+TH_NUM_ROM[n-10]);
+  var tens=Math.floor(n/10),ones=n%10;
+  var t=(tens===2?"yîi-sìp":TH_NUM_ROM[tens]+"-sìp");
+  return ones===0?t:t+(ones===1?"-èt":"-"+TH_NUM_ROM[ones]);
+}
+var CLOCK_PERIODS={
+  midnight:{label:{en:"Midnight (เที่ยงคืน)",ja:"真夜中（เที่ยงคืน）",zs:"午夜（เที่ยงคืน）",zt:"午夜（เที่ยงคืน）"},col:"#3f4d6b"},
+  dtii:{label:{en:"After midnight · ตี (1–5 AM)",ja:"深夜 · ตี（1–5時）",zs:"凌晨 · ตี（1–5点）",zt:"凌晨 · ตี（1–5點）"},col:"#5b6b8c"},
+  morning:{label:{en:"Morning · เช้า (6–11 AM)",ja:"朝 · เช้า（6–11時）",zs:"上午 · เช้า（6–11点）",zt:"上午 · เช้า（6–11點）"},col:"#c99a1e"},
+  noon:{label:{en:"Noon (เที่ยง)",ja:"正午（เที่ยง）",zs:"正午（เที่ยง）",zt:"正午（เที่ยง）"},col:"#d9822e"},
+  afternoon:{label:{en:"Afternoon · บ่าย (1–3 PM)",ja:"昼 · บ่าย（13–15時）",zs:"下午 · บ่าย（1–3点）",zt:"下午 · บ่าย（1–3點）"},col:"#cf6f3a"},
+  evening:{label:{en:"Evening · เย็น (4–6 PM)",ja:"夕方 · เย็น（16–18時）",zs:"傍晚 · เย็น（4–6点）",zt:"傍晚 · เย็น（4–6點）"},col:"#c1544a"},
+  night:{label:{en:"Night · ทุ่ม (7–11 PM)",ja:"夜 · ทุ่ม（19–23時）",zs:"晚上 · ทุ่ม（7–11点）",zt:"晚上 · ทุ่ม（7–11點）"},col:"#7d5a9e"}
+};
+function hourBase(h){
+  if(h===0)return {per:"midnight",th:"เที่ยงคืน",rom:"thîang-khuuen"};
+  if(h>=1&&h<=5)return {per:"dtii",th:"ตี"+thNum(h),rom:"dtii "+thNumRom(h)};
+  if(h>=6&&h<=11)return {per:"morning",th:thNum(h)+"โมงเช้า",rom:thNumRom(h)+" moong cháo"};
+  if(h===12)return {per:"noon",th:"เที่ยง",rom:"thîang"};
+  if(h>=13&&h<=15){var n=h-12;return {per:"afternoon",th:"บ่าย"+(n===1?"":thNum(n))+"โมง",rom:"bàai "+(n===1?"":thNumRom(n)+" ")+"moong"};}
+  if(h>=16&&h<=18){var n=h-12;return {per:"evening",th:thNum(n)+"โมงเย็น",rom:thNumRom(n)+" moong yen"};}
+  var n=h-18;return {per:"night",th:thNum(n)+"ทุ่ม",rom:thNumRom(n)+" thûm"};
+}
+function computeThaiTime(h,m){
+  h=((h%24)+24)%24;m=((m%60)+60)%60;
+  var b=hourBase(h),th=b.th,rom=b.rom;
+  if(m===30){th+="ครึ่ง";rom+=" khrûeng";}
+  else if(m>0){th+=thNum(m)+"นาที";rom+=" "+thNumRom(m)+" naa-thii";}
+  return {per:b.per,th:th,rom:rom,h:h,m:m};
+}
+function to12(h,m){var ap=h<12?"AM":"PM",hh=h%12;if(hh===0)hh=12;return hh+":"+(m<10?"0":"")+m+" "+ap;}
+var timeClock={h:8,m:0};
+function clockFaceSVG(h,m){
+  var ha=((h%12)+m/60)/12*360,ma=m/60*360,i,a,x,y,x2,y2,ticks="",nums="";
+  for(i=0;i<12;i++){a=i*30*Math.PI/180;x=100+Math.sin(a)*82;y=100-Math.cos(a)*82;x2=100+Math.sin(a)*91;y2=100-Math.cos(a)*91;ticks+='<line x1="'+x.toFixed(1)+'" y1="'+y.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" class="clk-tick"/>';}
+  for(i=1;i<=12;i++){a=i*30*Math.PI/180;x=100+Math.sin(a)*66;y=100-Math.cos(a)*66;nums+='<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" class="clk-num">'+i+'</text>';}
+  function hand(ang,len,cls){var r=ang*Math.PI/180;return '<line x1="100" y1="100" x2="'+(100+Math.sin(r)*len).toFixed(1)+'" y2="'+(100-Math.cos(r)*len).toFixed(1)+'" class="'+cls+'"/>';}
+  return '<svg class="clk-face" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="95" class="clk-rim"/>'+ticks+nums+hand(ha,48,"clk-hh")+hand(ma,70,"clk-mm")+'<circle cx="100" cy="100" r="5.5" class="clk-pin"/></svg>';
+}
+function clockHTML(){
+  var t=computeThaiTime(timeClock.h,timeClock.m),per=CLOCK_PERIODS[t.per];
+  var dig=(t.h<10?"0":"")+t.h+":"+(t.m<10?"0":"")+t.m;
+  return '<div class="clk" style="--pcol:'+per.col+'">'
+    +clockFaceSVG(t.h,t.m)
+    +'<div class="clk-info">'
+      +'<div class="clk-digi">'+dig+'<span class="clk-12">'+esc(to12(t.h,t.m))+'</span></div>'
+      +'<button class="clk-say" id="clkSay"><span class="clk-th">'+esc(t.th)+'</span> <span class="clk-spk">🔊</span></button>'
+      +'<div class="clk-rom">'+esc(t.rom)+'</div>'
+      +'<div class="clk-per">'+esc(locT(per.label))+'</div>'
+    +'</div>'
+    +'<div class="clk-ctrl">'
+      +'<div class="clk-ctrl-row"><button class="clk-btn" data-a="h-1">‹</button><span class="clk-ctrl-lab">'+esc(locT({en:"Hour",ja:"時",zs:"时",zt:"時"}))+'</span><button class="clk-btn" data-a="h1">›</button></div>'
+      +'<div class="clk-ctrl-row"><button class="clk-btn" data-a="m-5">‹</button><span class="clk-ctrl-lab">'+esc(locT({en:"Min",ja:"分",zs:"分",zt:"分"}))+'</span><button class="clk-btn" data-a="m5">›</button></div>'
+    +'</div></div>';
+}
+function bindClock(){
+  var host=$("#clockHost");if(!host)return;
+  host.innerHTML=clockHTML();
+  $$("#clockHost .clk-btn").forEach(function(b){b.onclick=function(){
+    var a=b.getAttribute("data-a");
+    if(a==="h1")timeClock.h=(timeClock.h+1)%24;
+    else if(a==="h-1")timeClock.h=(timeClock.h+23)%24;
+    else if(a==="m5")timeClock.m=(timeClock.m+5)%60;
+    else if(a==="m-5")timeClock.m=(timeClock.m+55)%60;
+    bindClock();speak(computeThaiTime(timeClock.h,timeClock.m).th);
+  };});
+  var s=$("#clkSay");if(s)s.onclick=function(){speak(computeThaiTime(timeClock.h,timeClock.m).th);};
+}
 function renderLesson(w){
   var L=w.lesson||{};var secs=L.sections||[];
   var title=locT(L.title)||w.en||"";var sub=locT(L.subtitle);
@@ -2416,6 +2567,8 @@ function renderLesson(w){
       html+=toneChartHTML();
     }else if(s.t==="tonecalc"){
       html+='<div class="les-calc"><div class="les-h">'+esc(locT({en:"Tone calculator",ja:"声調計算機",zs:"声调计算器",zt:"聲調計算器"}))+'</div><p class="les-p">'+esc(locT({en:"Set the four things below and watch the tone update. Try one class with each mark, then switch class to feel the shift.",ja:"下の4つを選ぶと声調が変わります。ひとつの分類で各記号を試し、分類を切り替えてずれを感じましょう。",zs:"选择下面四项，声调会随之更新。用一个类别试每个符号，再切换类别，感受错位。",zt:"選擇下面四項，聲調會隨之更新。用一個類別試每個符號，再切換類別，感受錯位。"}))+'</p><div id="toneCalcHost"></div></div>';
+    }else if(s.t==="clock"){
+      html+='<div class="les-clockwrap"><div class="les-h">'+esc(locT({en:"Interactive clock",ja:"インタラクティブな時計",zs:"互动时钟",zt:"互動時鐘"}))+'</div><p class="les-p">'+esc(locT({en:"Step the hour and minute, and tap the phrase to hear it. Watch how the word changes with the part of the day — ตี, โมงเช้า, บ่าย, เย็น, ทุ่ม.",ja:"時と分を進め、フレーズをタップして聞いてみましょう。時間帯によって言い方が変わります — ตี・โมงเช้า・บ่าย・เย็น・ทุ่ม。",zs:"调整小时和分钟，点击短语即可听发音。注意说法会随一天的时段改变——ตี、โมงเช้า、บ่าย、เย็น、ทุ่ม。",zt:"調整小時和分鐘，點擊短語即可聽發音。注意說法會隨一天的時段改變——ตี、โมงเช้า、บ่าย、เย็น、ทุ่ม。"}))+'</p><div id="clockHost"></div></div>';
     }else if(s.t==="exercise"){
       exSpec=s;
       html+='<div class="les-ex"><div class="les-h">'+esc(locT(s.h)||"Practice")+'</div>'+(locT(s.sub)?'<p class="les-p">'+esc(locT(s.sub))+'</p>':'')+'<div class="les-ex-body" id="lesExBody"></div></div>';
@@ -2425,6 +2578,7 @@ function renderLesson(w){
   /* wire class-grid chips to speak the letter name */
   $$("#lessonView .cls-chip").forEach(function(b){b.onclick=function(){var w2=CONS_BY_TH[b.getAttribute("data-th")];if(w2)speak(w2.nm);};});
   if($("#toneCalcHost")){toneCalc={cls:"mid",vlen:"long",end:"none",mark:"none"};bindToneCalc();}
+  if($("#clockHost")){timeClock={h:8,m:0};bindClock();}
   if(exSpec){lessonEx={options:(exSpec.options||[]).slice(),items:shuffle((exSpec.items||[]).slice()),idx:0,score:0,answered:false,pick:null,ok:false};bindLessonEx();}
 }
 function flipCard(){study.flipped=!study.flipped;setMood(study.flipped?"think":"idle");if(study.flipped&&Math.random()<0.3)baoSay("think",$("#mascotStudy"),{placement:"left"});renderCard();}
@@ -2727,7 +2881,7 @@ function renderCatBar(){
     var sub=isLes?'<span class="lm-sub lm-lessub">📖 Lesson</span>':'<span class="lm-sub">'+c.n+'</span>';
     return '<button class="lm-item'+(on?" on":"")+(isLes?" lm-lesson":"")+(clk?"":" static")+'" role="'+(clk?"menuitemradio":"presentation")+'"'+(clk?(' aria-checked="'+on+'" data-c="'+c.k+'"'):"")+'>'
       +'<span class="lm-ie">'+c.emo+'</span><span class="lm-name">'+esc(c.en)+'</span>'+sub
-      +(on?'<span class="lm-tick" aria-hidden="true">✓</span>':'')+'</button>';
+      +(on?'<span class="lm-tick" aria-hidden="true">✓</span>':(clk?'<span class="lm-go" aria-hidden="true">›</span>':''))+'</button>';
   }
   var GROUPS;
   if(part==="basics"){
@@ -2761,7 +2915,7 @@ function renderCatBar(){
     var pcats=CATS.filter(function(c){return catPart(c)===part;});
     body='<div class="lm-ghead" role="presentation">All decks · '+pcats.length+'</div>'+pcats.map(function(c){return itemHTML(c,true);}).join("");
   }else{
-    body=GROUPS.map(function(g){
+    body='<p class="lm-hint">Tap a <b>chapter header</b> to study all its cards. <b>📖 lessons</b> open on their own — faded decks are part of the chapter; switch to <b>All decks</b> to study one on its own.</p>'+GROUPS.map(function(g){
       var decks=g.keys.map(function(k){return CAT_BY_KEY[k];}).filter(Boolean);
       if(!decks.length)return "";
       var rows=decks.map(function(c){return itemHTML(c,false);}).join("");
