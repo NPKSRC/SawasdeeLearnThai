@@ -335,7 +335,12 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .les-ex-body{margin-top:6px}
 .lex-prog{font-size:.8rem;color:var(--ink-soft);font-weight:700;text-align:center;margin-bottom:6px}
 .lex-letter{font-family:var(--thai);font-weight:700;font-size:4.2rem;line-height:1;text-align:center;margin:4px 0 12px}
-.lex-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.lex-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(82px,1fr));gap:8px}
+.fin-col .cls-col-h{align-items:center}
+.fin-snd{font-size:.8rem;color:var(--ink-soft);font-weight:700;margin:2px 0 7px}
+.fin-ld{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:999px}
+.fin-ld.ld-live{background:var(--teal-tint);color:var(--teal-deep)}
+.fin-ld.ld-dead{background:#f7e4e1;color:var(--ruby-deep)}
 .lex-opt{display:flex;flex-direction:column;align-items:center;gap:1px;padding:10px 4px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;font:inherit;color:var(--ink)}
 .lex-opt b{font-size:.9rem}
 .lex-opt small{font-family:var(--thai);font-size:.78rem;color:var(--ink-soft)}
@@ -1770,6 +1775,8 @@ function migrateAccount(a){
   if(["thai","meaning"].indexOf(s.front)<0)s.front="thai";
   if(!s.langs)s.langs={en:true,ja:false,zs:false,zt:false};
   if(!s.langs.en&&!s.langs.ja&&!s.langs.zs&&!s.langs.zt)s.langs.en=true;
+  /* single-select: keep only the first enabled meaning language */
+  (function(){var kept=false;["en","ja","zs","zt"].forEach(function(k){if(s.langs[k]&&!kept){kept=true;}else{s.langs[k]=false;}});if(!kept)s.langs.en=true;})();
   if(s.pron!=="rom"&&s.pron!=="ipa")s.pron="rom";
   if(["en","ja","zs","zt"].indexOf(s.quizLang)<0){var _qpref="en";["en","ja","zs","zt"].some(function(k){if(s.langs&&s.langs[k]){_qpref=k;return true;}return false;});s.quizLang=_qpref;}
   if(["th","rom","ipa","mean","audio"].indexOf(s.quizFront)<0)s.quizFront="th";
@@ -1803,7 +1810,10 @@ function needsOnboard(){var a=acct();return !a||!a.settings||!a.settings.onboard
 
 /* settings accessors */
 function S(){return acct().settings;}
-function selLangs(){var L=S().langs;var out=[];LANG_ORDER.forEach(function(k){if(L[k])out.push(k);});if(!out.length)out=["en"];return out.slice(0,2);}
+function selLangs(){var L=S().langs;var out=[];LANG_ORDER.forEach(function(k){if(L[k])out.push(k);});if(!out.length)out=["en"];return out.slice(0,1);}
+function curLang(){return selLangs()[0]||"en";}
+/* Pick the right string from a plain string (legacy) or an {en,ja,zs,zt} map, in the current language. */
+function locT(v){if(v==null)return "";if(typeof v==="string")return v;var k=curLang();return v[k]||v.en||"";}
 function pronOf(w){return S().pron==="ipa"?(w.i||w.r):w.r;}
 function pronCls(){return S().pron==="ipa"?"ipa":"";}
 function curCatKey(){return S().cat;}
@@ -2192,70 +2202,88 @@ function bindCardExtras(){
 }
 
 /* ============ LESSON RENDERER (kind:"lesson") ============ */
-var CLS_META={mid:{en:"Middle",th:"อักษรกลาง",cls:"cls-mid"},high:{en:"High",th:"อักษรสูง",cls:"cls-high"},low:{en:"Low",th:"อักษรต่ำ",cls:"cls-low"}};
+var CLS_META={mid:{en:"Middle",ja:"中子音",zs:"中辅音",zt:"中輔音",th:"อักษรกลาง",cls:"cls-mid"},high:{en:"High",ja:"高子音",zs:"高辅音",zt:"高輔音",th:"อักษรสูง",cls:"cls-high"},low:{en:"Low",ja:"低子音",zs:"低辅音",zt:"低輔音",th:"อักษรต่ำ",cls:"cls-low"}};
+var LD_WORD={live:{en:"live",ja:"生",zs:"活",zt:"活"},dead:{en:"dead",ja:"死",zs:"死",zt:"死"}};
 var CONS_BY_TH={};ALL_WORDS.forEach(function(w){if(w.kind==="cons")CONS_BY_TH[w.th]=w;});
-var lessonEx={items:[],idx:0,score:0,answered:false,pick:null,ok:false};
+var FIN_META={k:{fam:"แม่กก",snd:"k /k/",live:false},t:{fam:"แม่กด",snd:"t /t/",live:false},p:{fam:"แม่กบ",snd:"p /p/",live:false},ng:{fam:"แม่กง",snd:"ng /ŋ/",live:true},n:{fam:"แม่กน",snd:"n /n/",live:true},m:{fam:"แม่กม",snd:"m /m/",live:true},y:{fam:"แม่เกย",snd:"y /j/",live:true},w:{fam:"แม่เกอว",snd:"w /w/",live:true}};
+function finalGridHTML(){
+  var order=["k","t","p","ng","n","m","y","w"];
+  return '<div class="cls-grid fin-grid">'+order.map(function(k){
+    var m=FIN_META[k];
+    var letters=ALL_WORDS.filter(function(w){return w.kind==="cons"&&w.fin===k;});
+    var chips=letters.map(function(w){return '<button class="cls-chip" data-th="'+esc(w.th)+'" title="'+esc(w.nm)+'">'+esc(w.th)+'</button>';}).join("");
+    return '<div class="cls-col fin-col"><div class="cls-col-h"><b>'+esc(m.fam)+'</b><span class="fin-ld '+(m.live?"ld-live":"ld-dead")+'">'+esc(locT(LD_WORD[m.live?"live":"dead"]))+'</span></div><div class="fin-snd">'+esc(m.snd)+'</div><div class="cls-chips">'+chips+'</div></div>';
+  }).join("")+'</div>';
+}
+var lessonEx={options:[],items:[],idx:0,score:0,answered:false,pick:null,ok:false};
 function classGridHTML(){
   var order=["mid","high","low"];
   return '<div class="cls-grid">'+order.map(function(k){
     var m=CLS_META[k];
     var letters=ALL_WORDS.filter(function(w){return w.kind==="cons"&&w.cls===k;});
     var chips=letters.map(function(w){return '<button class="cls-chip" data-th="'+esc(w.th)+'" title="'+esc(w.nm)+'">'+esc(w.th)+'</button>';}).join("");
-    return '<div class="cls-col '+m.cls+'"><div class="cls-col-h"><b>'+m.en+'</b><span>'+esc(m.th)+' · '+letters.length+'</span></div><div class="cls-chips">'+chips+'</div></div>';
+    return '<div class="cls-col '+m.cls+'"><div class="cls-col-h"><b>'+esc(locT(m))+'</b><span>'+esc(m.th)+' · '+letters.length+'</span></div><div class="cls-chips">'+chips+'</div></div>';
   }).join("")+'</div>';
 }
+/* Generic exercise: options=[{k,label,sub}], items=[{q,a,spk}]. */
 function lessonExHTML(){
   var ex=lessonEx;var n=ex.items.length;
   if(ex.idx>=n){
-    var pct=Math.round(ex.score/n*100);
+    var pct=n?Math.round(ex.score/n*100):0;
     return '<div class="lex-done"><div class="lex-score">'+ex.score+' / '+n+'</div>'
-      +'<div class="lex-msg">'+(pct>=80?"Great — you've got the classes! 🎉":pct>=50?"Good start — run it again to lock them in.":"Keep going — tap through once more.")+'</div>'
+      +'<div class="lex-msg">'+(pct>=80?"Great — you've got it! 🎉":pct>=50?"Good start — run it again to lock it in.":"Keep going — tap through once more.")+'</div>'
       +'<button class="btn btn-primary btn-sm" id="lexRetry">↺ Try again</button></div>';
   }
-  var it=ex.items[ex.idx];var w=CONS_BY_TH[it];
-  var opts=["mid","high","low"].map(function(k){
-    var m=CLS_META[k];var st="";
-    if(ex.answered){if(k===w.cls)st=" ok";else if(k===ex.pick)st=" bad";}
-    return '<button class="lex-opt'+st+'" data-cls="'+k+'"'+(ex.answered?" disabled":"")+'><b>'+m.en+'</b><small>'+esc(m.th)+'</small></button>';
+  var it=ex.items[ex.idx];
+  var opts=(ex.options||[]).map(function(o){
+    var st="";
+    if(ex.answered){if(o.k===it.a)st=" ok";else if(o.k===ex.pick)st=" bad";}
+    return '<button class="lex-opt'+st+'" data-k="'+esc(o.k)+'"'+(ex.answered?" disabled":"")+'><b>'+esc(locT(o.label))+'</b>'+(o.sub?'<small>'+esc(o.sub)+'</small>':'')+'</button>';
   }).join("");
-  var fb=ex.answered?('<div class="lex-fb '+(ex.ok?"good":"bad")+'">'+(ex.ok?"✓ Correct":"✗ "+CLS_META[w.cls].en+" ("+esc(w.nm)+")")+'</div>'):'<div class="lex-fb"></div>';
-  return '<div class="lex-prog">Letter '+(ex.idx+1)+' of '+n+' · Score '+ex.score+'</div>'
-    +'<div class="lex-letter '+CLS_META[w.cls].cls+'-ink">'+esc(it)+'</div>'
+  var ans=null;(ex.options||[]).forEach(function(o){if(o.k===it.a)ans=o;});
+  var fb=ex.answered?('<div class="lex-fb '+(ex.ok?"good":"bad")+'">'+(ex.ok?"✓ Correct":"✗ "+esc(ans?locT(ans.label):it.a)+(it.spk?" · "+esc(it.spk):""))+'</div>'):'<div class="lex-fb"></div>';
+  return '<div class="lex-prog">'+(ex.idx+1)+' of '+n+' · Score '+ex.score+'</div>'
+    +'<div class="lex-letter">'+esc(it.q)+'</div>'
     +'<div class="lex-opts">'+opts+'</div>'+fb
-    +(ex.answered?'<button class="btn btn-primary btn-sm lex-next" id="lexNext">'+(ex.idx+1>=n?"See result":"Next letter")+' ›</button>':'');
+    +(ex.answered?'<button class="btn btn-primary btn-sm lex-next" id="lexNext">'+(ex.idx+1>=n?"See result":"Next")+' ›</button>':'');
 }
 function bindLessonEx(){
   var host=$("#lesExBody");if(!host)return;
   host.innerHTML=lessonExHTML();
   $$("#lesExBody .lex-opt").forEach(function(b){b.onclick=function(){
     if(lessonEx.answered)return;
-    var pick=b.getAttribute("data-cls");var it=lessonEx.items[lessonEx.idx];var w=CONS_BY_TH[it];
-    lessonEx.answered=true;lessonEx.pick=pick;lessonEx.ok=(pick===w.cls);if(lessonEx.ok)lessonEx.score++;
-    speak(w.nm);bindLessonEx();
+    var pick=b.getAttribute("data-k");var it=lessonEx.items[lessonEx.idx];
+    lessonEx.answered=true;lessonEx.pick=pick;lessonEx.ok=(pick===it.a);if(lessonEx.ok)lessonEx.score++;
+    if(it.spk)speak(it.spk);bindLessonEx();
   };});
   var nx=$("#lexNext");if(nx)nx.onclick=function(){lessonEx.idx++;lessonEx.answered=false;lessonEx.pick=null;lessonEx.ok=false;bindLessonEx();};
-  var rt=$("#lexRetry");if(rt)rt.onclick=function(){lessonEx.idx=0;lessonEx.score=0;lessonEx.answered=false;lessonEx.pick=null;bindLessonEx();};
+  var rt=$("#lexRetry");if(rt)rt.onclick=function(){lessonEx.items=shuffle(lessonEx.items);lessonEx.idx=0;lessonEx.score=0;lessonEx.answered=false;lessonEx.pick=null;bindLessonEx();};
 }
 function renderLesson(w){
   var L=w.lesson||{};var secs=L.sections||[];
-  var html='<div class="les-hero"><div class="les-title">'+esc(L.title||w.en||"")+'</div>'+(L.subtitle?'<div class="les-sub">'+esc(L.subtitle)+'</div>':'')+'</div>';
+  var title=locT(L.title)||w.en||"";var sub=locT(L.subtitle);
+  var html='<div class="les-hero"><div class="les-title">'+esc(title)+'</div>'+(sub?'<div class="les-sub">'+esc(sub)+'</div>':'')+'</div>';
   var exSpec=null;
   secs.forEach(function(s){
     if(s.t==="text"){
-      html+='<div class="les-sec">'+(s.h?'<div class="les-h">'+esc(s.h)+'</div>':'')+(s.p||[]).map(function(p){return '<p class="les-p">'+p+'</p>';}).join("")+'</div>';
+      var h=locT(s.h);
+      html+='<div class="les-sec">'+(h?'<div class="les-h">'+esc(h)+'</div>':'')+(s.p||[]).map(function(p){return '<p class="les-p">'+locT(p)+'</p>';}).join("")+'</div>';
     }else if(s.t==="note"){
-      html+='<div class="les-note">'+(s.h?'<div class="les-note-h">'+esc(s.h)+'</div>':'')+'<p>'+(s.p||"")+'</p></div>';
+      var nh=locT(s.h);
+      html+='<div class="les-note">'+(nh?'<div class="les-note-h">'+esc(nh)+'</div>':'')+'<p>'+locT(s.p)+'</p></div>';
     }else if(s.t==="classgrid"){
       html+=classGridHTML();
+    }else if(s.t==="finalgrid"){
+      html+=finalGridHTML();
     }else if(s.t==="exercise"){
       exSpec=s;
-      html+='<div class="les-ex"><div class="les-h">'+esc(s.h||"Practice")+'</div>'+(s.sub?'<p class="les-p">'+esc(s.sub)+'</p>':'')+'<div class="les-ex-body" id="lesExBody"></div></div>';
+      html+='<div class="les-ex"><div class="les-h">'+esc(locT(s.h)||"Practice")+'</div>'+(locT(s.sub)?'<p class="les-p">'+esc(locT(s.sub))+'</p>':'')+'<div class="les-ex-body" id="lesExBody"></div></div>';
     }
   });
   $("#lessonView").innerHTML=html;
   /* wire class-grid chips to speak the letter name */
   $$("#lessonView .cls-chip").forEach(function(b){b.onclick=function(){var w2=CONS_BY_TH[b.getAttribute("data-th")];if(w2)speak(w2.nm);};});
-  if(exSpec){lessonEx={items:(exSpec.items||[]).slice(),idx:0,score:0,answered:false,pick:null,ok:false};bindLessonEx();}
+  if(exSpec){lessonEx={options:(exSpec.options||[]).slice(),items:shuffle((exSpec.items||[]).slice()),idx:0,score:0,answered:false,pick:null,ok:false};bindLessonEx();}
 }
 function flipCard(){study.flipped=!study.flipped;setMood(study.flipped?"think":"idle");if(study.flipped&&Math.random()<0.3)baoSay("think",$("#mascotStudy"),{placement:"left"});renderCard();}
 function gotoCard(n,dir){study.idx=n;study.flipped=false;renderCard();}
@@ -2527,10 +2555,10 @@ function syncStudyControls(){
 }
 function renderStudyLangbar(){var L=S().langs;$$("#lmLangbar .lang-toggle").forEach(function(b){b.setAttribute("aria-pressed",!!L[b.getAttribute("data-lang")]);});}
 function toggleStudyLang(k){
-  var L=S().langs;var on=!!L[k];var count=LANG_ORDER.filter(function(x){return L[x];}).length;
-  if(!on&&count>=2){toast("Pick up to two languages");return;}
-  if(on&&count<=1){toast("Keep at least one language");return;}
-  L[k]=!on;saveDB();renderStudyLangbar();renderCard();renderBrowse();
+  var L=S().langs;
+  if(L[k]&&LANG_ORDER.filter(function(x){return L[x];}).length===1)return; /* already the only one */
+  LANG_ORDER.forEach(function(x){L[x]=(x===k);}); /* single-select: one language at a time */
+  saveDB();renderStudyLangbar();renderCard();renderBrowse();
 }
 
 /* category dropdown */
