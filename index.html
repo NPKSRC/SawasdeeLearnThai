@@ -219,7 +219,7 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .card{position:relative;width:100%;height:360px;cursor:pointer;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.2,.2,1)}
 .card.flipped{transform:rotateY(180deg)}
 .card.dragging{transition:none}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:safe center;padding:24px;text-align:center;overflow-y:auto;overflow-x:hidden}
 .face .tag{position:absolute;top:14px;left:14px;font-family:var(--display);font-weight:700;font-size:.66rem;letter-spacing:.5px;text-transform:uppercase;color:var(--teal-deep);background:var(--teal-tint);padding:5px 11px;border-radius:999px}
 .face .cattag{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-family:var(--display);font-weight:700;font-size:.64rem;letter-spacing:.4px;color:var(--ink-soft);background:var(--paper-2);padding:5px 10px;border-radius:999px;white-space:nowrap}
 .face .statustag{position:absolute;top:14px;right:14px;font-family:var(--display);font-weight:800;font-size:.62rem;letter-spacing:.5px;text-transform:uppercase;padding:5px 10px;border-radius:999px;color:#fff}
@@ -241,7 +241,7 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .front .meanbig{font-weight:700;font-size:1.9rem;color:var(--ink);max-width:92%;line-height:1.18}
 .front .meanbig.sc{font-family:var(--sc)} .front .meanbig.tc{font-family:var(--tc)} .front .meanbig.jp{font-family:var(--jp)}
 .front .meansub{font-size:.95rem;color:var(--ink-soft);font-weight:600;margin-top:6px}
-.back{transform:rotateY(180deg);gap:3px;justify-content:center;padding-bottom:64px}
+.back{transform:rotateY(180deg);gap:3px;justify-content:safe center;padding-bottom:64px}
 .back .thai{font-family:var(--thai);font-weight:700;font-size:2.5rem;line-height:1.12}
 .back .thai.small{font-size:1.9rem}
 .back .pron{font-family:var(--body);font-size:1.32rem;color:var(--teal-deep);font-weight:600}
@@ -259,7 +259,7 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 /* ===== Foundations: consonant cards ===== */
 .cons-face{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
 .cons-letter{font-family:var(--thai);font-weight:700;font-size:5.4rem;line-height:1;color:var(--ink)}
-.cons-letter.back{font-size:3rem;margin-top:2px}
+.cons-letter.ans{font-size:3rem;margin-top:2px}
 .cons-emo{font-size:2.2rem;line-height:1;margin-top:2px}
 .cons-name{font-family:var(--thai);font-weight:700;font-size:1.55rem;color:var(--ink);margin-top:2px}
 .cons-sound{display:flex;gap:14px;align-items:baseline;justify-content:center;margin-top:6px}
@@ -275,9 +275,82 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .cons-classpill.cls-mid{background:var(--teal)}
 .cons-classpill.cls-high{background:var(--ruby)}
 .cons-classpill.cls-low{background:var(--gold-deep)}
-.cons-letter.back.cls-mid{color:var(--teal-deep)}
-.cons-letter.back.cls-high{color:var(--ruby-deep)}
-.cons-letter.back.cls-low{color:var(--gold-deep)}
+.cons-letter.ans.cls-mid{color:var(--teal-deep)}
+.cons-letter.ans.cls-high{color:var(--ruby-deep)}
+.cons-letter.ans.cls-low{color:var(--gold-deep)}
+.vw-badge{font-family:var(--display);font-weight:800;font-size:.72rem;line-height:1.2;padding:5px 13px;border-radius:999px;color:#fff;display:inline-flex;align-items:center}
+.cons-face+.vw-badge{margin-top:10px}
+.vw-badge.short{background:var(--gold-deep)}
+.vw-badge.long{background:var(--teal)}
+.vw-nm{font-family:var(--thai);font-weight:700;font-size:2.7rem;line-height:1.15;color:var(--ink)}
+.vw-form{font-family:var(--thai);font-weight:700;font-size:1.55rem;line-height:1.1;color:var(--ink-soft);margin-top:1px}
+.vw-nm.vw-nm-ans{font-size:2.05rem;margin-bottom:1px}
+.vw-form-ans{font-family:var(--thai);font-size:1.25rem;color:var(--ink-soft);font-weight:700}
+.vw-pos{font-family:var(--display);font-weight:700;font-size:.72rem;line-height:1.2;color:var(--ink-soft);background:var(--paper-2);padding:5px 13px;border-radius:999px;display:inline-flex;align-items:center}
+.vw-ex{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:14px}
+.vw-ex-lbl{font-family:var(--display);font-weight:800;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);opacity:.85}
+.vw-ex .exrow{display:flex;align-items:baseline;gap:8px;margin-top:2px}
+.vw-ex .exw{font-family:var(--thai);font-weight:700;font-size:1.5rem;color:var(--ink)}
+.vw-ex .exr{font-family:var(--body);font-weight:800;font-size:.95rem;color:var(--teal-deep)}
+.vw-ex .exg{font-family:var(--body);font-weight:600;font-size:.92rem;color:var(--ink-soft)}
+.tone-mark-big{font-family:var(--thai);font-weight:700;font-size:5.4rem;line-height:1.15;color:var(--ruby-deep);min-height:1.15em;display:flex;align-items:center;justify-content:center}
+.tone-mark-big.ans{font-size:3.4rem}
+.tone-pill{font-family:var(--thai);font-weight:700;font-size:.9rem;color:#fff;padding:5px 15px;border-radius:999px;background:var(--ruby);margin-top:8px}
+.tone-note{font-size:.68rem;color:var(--ink-soft);margin-top:8px;font-weight:600;line-height:1.38;max-width:300px;text-align:center}
+.tone-note+.tone-note{margin-top:3px}
+.tone-ans-nm{margin-top:4px}
+
+/* ===== Lesson view (kind:"lesson") ===== */
+.lesson-view{max-width:560px;margin:0 auto;padding:2px 2px 8px;text-align:left}
+.les-hero{margin:4px 2px 14px}
+.les-title{font-family:var(--display);font-size:1.5rem;line-height:1.15;color:var(--ink)}
+.les-sub{color:var(--ink-soft);font-weight:700;font-size:.9rem;margin-top:3px}
+.les-sec{margin:0 0 14px}
+.les-h{font-family:var(--display);font-size:1.08rem;color:var(--teal-deep);margin:0 0 5px}
+.les-p{font-size:.95rem;line-height:1.6;color:var(--ink);margin:0 0 8px}
+.les-p b{color:var(--ink)}
+.les-note{background:var(--gold-tint);border:1.5px solid #ecd9a8;border-radius:var(--r-lg);padding:12px 14px;margin:0 0 14px}
+.les-note-h{font-weight:800;color:var(--gold-deep);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.les-note p{margin:0;font-size:.92rem;line-height:1.55;color:var(--ink)}
+.cls-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 14px}
+.cls-col{border:1.5px solid var(--line);border-radius:var(--r-lg);padding:10px 12px;background:var(--cloud)}
+.cls-col-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.cls-col-h b{font-family:var(--display);font-size:1rem}
+.cls-col-h span{font-size:.78rem;color:var(--ink-soft);font-weight:700}
+.cls-chips{display:flex;flex-wrap:wrap;gap:6px}
+.cls-chip{font-family:var(--thai);font-size:1.15rem;line-height:1;min-width:38px;padding:7px 4px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;font-weight:700}
+.cls-col.cls-mid{background:var(--teal-tint);border-color:#bcdcd5}
+.cls-col.cls-mid .cls-col-h b{color:var(--teal-deep)}
+.cls-col.cls-mid .cls-chip{border-color:#bcdcd5}
+.cls-col.cls-high{background:#f7e4e1;border-color:#e7bfb9}
+.cls-col.cls-high .cls-col-h b{color:var(--ruby-deep)}
+.cls-col.cls-high .cls-chip{border-color:#e7bfb9}
+.cls-col.cls-low{background:var(--gold-tint);border-color:#ecd9a8}
+.cls-col.cls-low .cls-col-h b{color:var(--gold-deep)}
+.cls-col.cls-low .cls-chip{border-color:#ecd9a8}
+.cls-mid-ink{color:var(--teal-deep)}
+.cls-high-ink{color:var(--ruby-deep)}
+.cls-low-ink{color:var(--gold-deep)}
+.les-ex{background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:14px 14px 16px;margin:6px 0 8px}
+.les-ex-body{margin-top:6px}
+.lex-prog{font-size:.8rem;color:var(--ink-soft);font-weight:700;text-align:center;margin-bottom:6px}
+.lex-letter{font-family:var(--thai);font-weight:700;font-size:4.2rem;line-height:1;text-align:center;margin:4px 0 12px}
+.lex-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.lex-opt{display:flex;flex-direction:column;align-items:center;gap:1px;padding:10px 4px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;font:inherit;color:var(--ink)}
+.lex-opt b{font-size:.9rem}
+.lex-opt small{font-family:var(--thai);font-size:.78rem;color:var(--ink-soft)}
+.lex-opt.ok{background:#dff3ec;border-color:var(--teal);color:var(--teal-deep)}
+.lex-opt.bad{background:#f7e0dd;border-color:var(--ruby);color:var(--ruby-deep)}
+.lex-fb{min-height:20px;text-align:center;font-weight:800;font-size:.88rem;margin:10px 0 4px}
+.lex-fb.good{color:var(--teal-deep)}
+.lex-fb.bad{color:var(--ruby-deep)}
+.lex-next{width:100%;margin-top:2px}
+.lex-done{text-align:center;padding:8px 0}
+.lex-score{font-family:var(--display);font-size:2rem;color:var(--teal-deep)}
+.lex-msg{color:var(--ink-soft);font-weight:700;font-size:.92rem;margin:4px 0 12px}
+.lm-item.lm-lesson .lm-name{font-style:normal}
+.lm-lessub{color:var(--teal-deep);font-weight:800;font-size:.72rem;white-space:nowrap}
+@media(min-width:460px){.cls-grid{grid-template-columns:1fr 1fr 1fr}}
 
 /* S7: long IPA compounds (no-space, dot-separated) wrap instead of overflowing on narrow screens — non-game surfaces only */
 .front .pronbig,.back .pron,.qprompt-pin,.row .rpin{overflow-wrap:break-word}
@@ -785,7 +858,7 @@ button.game-card:hover{transform:translateY(-2px)}
       <div class="stage stage-side"><div id="mascotStudy"></div></div>
     </div>
 
-    <div class="studybar">
+    <div class="studybar" id="studyBarRow">
       <div class="progress"><i id="studyBar"></i></div>
       <div class="counter" id="studyCounter">1 / 1</div>
     </div>
@@ -797,6 +870,8 @@ button.game-card:hover{transform:translateY(-2px)}
       </div>
     </div>
 
+    <div class="lesson-view" id="lessonView" hidden></div>
+
     <div class="rate" id="rateRow">
       <button class="r-again" data-rate="again">Again<small>&lt; 1 min</small></button>
       <button class="r-hard" data-rate="hard">Hard<small>review soon</small></button>
@@ -804,7 +879,7 @@ button.game-card:hover{transform:translateY(-2px)}
       <button class="r-easy" data-rate="easy">Easy<small>too simple</small></button>
     </div>
 
-    <div class="controls" style="gap:46px">
+    <div class="controls" id="studyNav" style="gap:46px">
       <button class="btn btn-round btn-ghost" id="prevBtn" aria-label="Previous card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
       <button class="btn btn-round btn-ghost" id="nextBtn" aria-label="Next card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     </div>
@@ -1475,6 +1550,7 @@ button.game-card:hover{transform:translateY(-2px)}
 
 <script src="data.js"></script>
 <script src="alphabet.js"></script>
+<script src="foundations.js"></script>
 <script>
 
 "use strict";
@@ -1648,8 +1724,11 @@ CATS.forEach(function(c){
     WORDS_BY_CAT[vid]=[];
     CHAPTER_KEYS.push(vid);
   }
-  CAT_BY_KEY[vid].n+=(WORDS_BY_CAT[c.k]||[]).length;
-  WORDS_BY_CAT[vid]=WORDS_BY_CAT[vid].concat(WORDS_BY_CAT[c.k]||[]);
+  /* Lessons are explainer decks, not flashcards — keep them out of the
+     "study the whole chapter" aggregate (and its word count). */
+  var _agg=(WORDS_BY_CAT[c.k]||[]).filter(function(w){return w.kind!=="lesson";});
+  CAT_BY_KEY[vid].n+=_agg.length;
+  WORDS_BY_CAT[vid]=WORDS_BY_CAT[vid].concat(_agg);
 });
 function catPart(c){return (c&&c.part==="basics")?"basics":"vocab";}
 var FIRST_CAT=CATS[0].k;
@@ -1992,7 +2071,7 @@ function consCard(w,st,stl,hard){
   meaningLines(w).forEach(function(m){mean+='<span class="cm-line '+m.font+'"><span class="cm-t">'+esc(m.t)+'</span>'+(m.rd?'<span class="cm-rd">'+esc(m.rd)+'</span>':'')+'</span>';});
   mean+='</div>';
   var b='<span class="tag">Answer</span>'+catTag+stTag
-    +'<div class="cons-letter back cls-'+cls+'">'+esc(w.th)+'</div>'
+    +'<div class="cons-letter ans cls-'+cls+'">'+esc(w.th)+'</div>'
     +'<div class="cons-name">'+esc(w.nm)+'</div>'
     +'<div class="cons-sound"><span class="rom">'+esc(w.r)+'</span><span class="ipa">'+esc(w.i)+'</span></div>'
     +mean
@@ -2001,9 +2080,73 @@ function consCard(w,st,stl,hard){
     +'<button class="spk" id="cardSpk" aria-label="Hear it">'+SPK_SVG+'</button>';
   $("#cardBack").innerHTML=b;
 }
+var VW_LEN={short:{en:"Short",ja:"短音",zs:"短音",zt:"短音"},long:{en:"Long",ja:"長音",zs:"长音",zt:"長音"}};
+var VW_POS={after:{en:"after",ja:"後ろ",zs:"后面",zt:"後面"},before:{en:"before",ja:"前",zs:"前面",zt:"前面"},above:{en:"above",ja:"上",zs:"上方",zt:"上方"},below:{en:"below",ja:"下",zs:"下方",zt:"下方"},around:{en:"around the consonant",ja:"子音の周り",zs:"辅音周围",zt:"輔音周圍"}};
+var TONE_NOTE={en:"The actual tone also depends on the consonant’s class — shown here on a middle-class letter. Full rules in the Tone Rules lesson.",ja:"実際の声調は子音の類にもよります。ここでは中子音字で示しています。詳しくは「声調の規則」レッスンで。",zs:"实际声调还取决于辅音的类别——这里用中辅音字母展示。完整规则见「声调规则」课程。",zt:"實際聲調還取決於輔音的類別——這裡用中輔音字母展示。完整規則見「聲調規則」課程。"};
+function locSpans(map){return selLangs().map(function(k){var t=(map&&(map[k]||map.en))||"";var fn=(LANGS[k]&&LANGS[k].font)?LANGS[k].font:"";return '<span'+(fn?(' class="'+fn+'"'):'')+'>'+esc(t)+'</span>';}).join(" · ");}
+function vowelCard(w,st,stl,hard){
+  var catTag='<span class="cattag">🔤 สระ Vowels</span>';
+  var stTag='<span class="statustag st-'+st+'">'+stl+'</span>';
+  var lenCls=(w.len==="long")?"long":"short";
+  var lenBadge=esc(w.lenTh)+' · '+locSpans(VW_LEN[w.len]);
+  var posBadge=esc(w.posTh)+' · '+locSpans(VW_POS[w.pos]);
+  var f='<span class="tag">Vowel</span>'+catTag+stTag
+    +'<div class="cons-face"><div class="vw-nm">'+esc(w.nm)+'</div><div class="vw-form">('+esc(w.form)+')</div></div>'
+    +'<span class="vw-badge '+lenCls+'">'+lenBadge+'</span>'
+    +'<button class="hardstar'+(hard?" on":"")+'" id="hardStar" title="Mark for review" aria-label="Mark for review">★</button>'
+    +'<button class="spk spk-front" id="cardSpkFront" title="Hear an example" aria-label="Hear an example">'+SPK_SVG+'</button>'
+    +'<span class="hint">tap to flip</span>';
+  $("#cardFront").innerHTML=f;
+  var exg='';meaningLines(w).forEach(function(m){exg+='<span class="exg '+m.font+'">'+esc(m.t)+(m.rd?" · "+esc(m.rd):"")+'</span>';});
+  var b='<span class="tag">Answer</span>'+catTag+stTag
+    +'<div class="vw-nm vw-nm-ans">'+esc(w.nm)+' <span class="vw-form-ans">('+esc(w.form)+')</span></div>'
+    +'<div class="cons-sound"><span class="rom">'+esc(w.r)+'</span><span class="ipa">'+esc(w.i)+'</span></div>'
+    +'<div class="cons-meta"><span class="vw-badge '+lenCls+'">'+lenBadge+'</span>'
+    +'<span class="vw-pos">'+posBadge+'</span></div>'
+    +'<div class="vw-ex"><span class="vw-ex-lbl">example word</span>'
+    +'<div class="exrow"><span class="exw">'+esc(w.exTh)+'</span><span class="exr">'+esc(w.exR)+'</span></div>'+exg+'</div>'
+    +'<button class="spk" id="cardSpk" aria-label="Hear an example">'+SPK_SVG+'</button>';
+  $("#cardBack").innerHTML=b;
+}
+function toneCard(w,st,stl,hard){
+  var catTag='<span class="cattag">🎵 วรรณยุกต์ Tone marks</span>';
+  var stTag='<span class="statustag st-'+st+'">'+stl+'</span>';
+  var f='<span class="tag">Tone mark</span>'+catTag+stTag
+    +'<div class="cons-face"><div class="tone-mark-big">'+esc(w.th)+'</div></div>'
+    +'<span class="tone-pill">'+esc(w.nm)+'</span>'
+    +'<button class="hardstar'+(hard?" on":"")+'" id="hardStar" title="Mark for review" aria-label="Mark for review">★</button>'
+    +'<button class="spk spk-front" id="cardSpkFront" title="Hear an example" aria-label="Hear an example">'+SPK_SVG+'</button>'
+    +'<span class="hint">tap to flip</span>';
+  $("#cardFront").innerHTML=f;
+  var exline=meaningLines(w).map(function(m){return '<span class="'+m.font+'">'+esc(m.t)+'</span>';}).join(" · ");
+  var noteHTML=selLangs().map(function(k){var t=TONE_NOTE[k]||TONE_NOTE.en;var fn=(LANGS[k]&&LANGS[k].font)?LANGS[k].font:"";return '<div class="tone-note '+fn+'">'+esc(t)+'</div>';}).join("");
+  var b='<span class="tag">Answer</span>'+catTag+stTag
+    +'<div class="cons-name tone-ans-nm">'+esc(w.nm)+' · '+esc(w.r)+'</div>'
+    +'<div class="cons-meta"><span class="tone-pill">'+esc(w.toneTh)+' · '+esc(w.toneEn)+'</span></div>'
+    +'<div class="vw-ex"><span class="vw-ex-lbl">example · middle-class letter</span>'
+    +'<div class="exrow"><span class="exw">'+esc(w.exTh)+'</span><span class="exr">'+esc(w.exR)+'</span></div>'
+    +'<span class="exg">'+exline+'</span></div>'
+    +noteHTML
+    +'<button class="spk" id="cardSpk" aria-label="Hear an example">'+SPK_SVG+'</button>';
+  $("#cardBack").innerHTML=b;
+}
+/* Lesson decks hide the flip-card, rating, nav and progress chrome and show
+   the scrollable lesson instead; flashcard decks restore all of it. */
+function setLessonLayout(on){
+  var cw=$("#cardWrap"),lv=$("#lessonView"),rr=$("#rateRow"),nav=$("#studyNav"),bar=$("#studyBarRow"),opt=$(".study-optrow");
+  if(cw)cw.style.display=on?"none":"";
+  if(lv)lv.hidden=!on;
+  if(rr)rr.style.display=on?"none":"";
+  if(nav)nav.style.display=on?"none":"";
+  if(bar)bar.style.display=on?"none":"";
+  if(opt)opt.style.display=on?"none":"";
+}
 function renderCard(){
   var w=study.pool[study.idx];
-  if(!w){$("#cardFront").innerHTML='<div class="meanbig">No words here yet.</div>';$("#cardBack").innerHTML="";$("#studyCounter").textContent="0 / 0";$("#studyBar").style.width="0%";var rr=$("#rateRow");if(rr)rr.style.display="none";return;}
+  if(!w){setLessonLayout(false);$("#cardFront").innerHTML='<div class="meanbig">No words here yet.</div>';$("#cardBack").innerHTML="";$("#studyCounter").textContent="0 / 0";$("#studyBar").style.width="0%";var rr=$("#rateRow");if(rr)rr.style.display="none";return;}
+  if(w.kind==="lesson"){setLessonLayout(true);var sp0=$("#studySpeech");if(sp0)sp0.textContent="A short lesson — scroll through, then try the exercise.";renderLesson(w);return;}
+  setLessonLayout(false);
+  var sp1=$("#studySpeech");if(sp1&&/lesson/i.test(sp1.textContent))sp1.textContent="Tap the card to flip — then rate how well you knew it.";
   var c=acct().cards[w.id];var st=statusOf(c);var front=S().front;var pcls=pronCls();
   var stl={"new":"New","learning":"Learning","familiar":"Familiar","mastered":"Mastered"}[st];
   var hard=c&&c.hard;
@@ -2011,6 +2154,8 @@ function renderCard(){
     +'<span class="cattag">'+CAT_BY_KEY[w.c].emo+" "+esc(CAT_BY_KEY[w.c].en)+'</span>'
     +'<span class="statustag st-'+st+'">'+stl+'</span>';
   if(w.kind==="cons"){consCard(w,st,stl,hard);}
+  else if(w.kind==="vowel"){vowelCard(w,st,stl,hard);}
+  else if(w.kind==="tone"){toneCard(w,st,stl,hard);}
   else{
   var f=head;
   if(front==="thai"){f+='<div class="thai'+thaiCls(w.th,true)+'">'+esc(w.th)+'</div>';}
@@ -2042,8 +2187,75 @@ function renderCard(){
 }
 function bindCardExtras(){
   var hs=$("#hardStar");if(hs)hs.onclick=function(ev){ev.stopPropagation();var w=study.pool[study.idx];var c=cardOf(w.id);c.hard=!c.hard;saveDB();renderCard();updateDueCounts();toast(c.hard?"Marked for review ★":"Removed from review");};
-  var sp=$("#cardSpk");if(sp)sp.onclick=function(ev){ev.stopPropagation();var _w=study.pool[study.idx];speak(_w.kind==="cons"?_w.nm:_w.th);};
-  var spf=$("#cardSpkFront");if(spf)spf.onclick=function(ev){ev.stopPropagation();var _w=study.pool[study.idx];speak(_w.kind==="cons"?_w.nm:_w.th);};
+  var sp=$("#cardSpk");if(sp)sp.onclick=function(ev){ev.stopPropagation();var _w=study.pool[study.idx];speak(_w.kind==="cons"?_w.nm:(_w.spk||_w.th));};
+  var spf=$("#cardSpkFront");if(spf)spf.onclick=function(ev){ev.stopPropagation();var _w=study.pool[study.idx];speak(_w.kind==="cons"?_w.nm:(_w.spk||_w.th));};
+}
+
+/* ============ LESSON RENDERER (kind:"lesson") ============ */
+var CLS_META={mid:{en:"Middle",th:"อักษรกลาง",cls:"cls-mid"},high:{en:"High",th:"อักษรสูง",cls:"cls-high"},low:{en:"Low",th:"อักษรต่ำ",cls:"cls-low"}};
+var CONS_BY_TH={};ALL_WORDS.forEach(function(w){if(w.kind==="cons")CONS_BY_TH[w.th]=w;});
+var lessonEx={items:[],idx:0,score:0,answered:false,pick:null,ok:false};
+function classGridHTML(){
+  var order=["mid","high","low"];
+  return '<div class="cls-grid">'+order.map(function(k){
+    var m=CLS_META[k];
+    var letters=ALL_WORDS.filter(function(w){return w.kind==="cons"&&w.cls===k;});
+    var chips=letters.map(function(w){return '<button class="cls-chip" data-th="'+esc(w.th)+'" title="'+esc(w.nm)+'">'+esc(w.th)+'</button>';}).join("");
+    return '<div class="cls-col '+m.cls+'"><div class="cls-col-h"><b>'+m.en+'</b><span>'+esc(m.th)+' · '+letters.length+'</span></div><div class="cls-chips">'+chips+'</div></div>';
+  }).join("")+'</div>';
+}
+function lessonExHTML(){
+  var ex=lessonEx;var n=ex.items.length;
+  if(ex.idx>=n){
+    var pct=Math.round(ex.score/n*100);
+    return '<div class="lex-done"><div class="lex-score">'+ex.score+' / '+n+'</div>'
+      +'<div class="lex-msg">'+(pct>=80?"Great — you've got the classes! 🎉":pct>=50?"Good start — run it again to lock them in.":"Keep going — tap through once more.")+'</div>'
+      +'<button class="btn btn-primary btn-sm" id="lexRetry">↺ Try again</button></div>';
+  }
+  var it=ex.items[ex.idx];var w=CONS_BY_TH[it];
+  var opts=["mid","high","low"].map(function(k){
+    var m=CLS_META[k];var st="";
+    if(ex.answered){if(k===w.cls)st=" ok";else if(k===ex.pick)st=" bad";}
+    return '<button class="lex-opt'+st+'" data-cls="'+k+'"'+(ex.answered?" disabled":"")+'><b>'+m.en+'</b><small>'+esc(m.th)+'</small></button>';
+  }).join("");
+  var fb=ex.answered?('<div class="lex-fb '+(ex.ok?"good":"bad")+'">'+(ex.ok?"✓ Correct":"✗ "+CLS_META[w.cls].en+" ("+esc(w.nm)+")")+'</div>'):'<div class="lex-fb"></div>';
+  return '<div class="lex-prog">Letter '+(ex.idx+1)+' of '+n+' · Score '+ex.score+'</div>'
+    +'<div class="lex-letter '+CLS_META[w.cls].cls+'-ink">'+esc(it)+'</div>'
+    +'<div class="lex-opts">'+opts+'</div>'+fb
+    +(ex.answered?'<button class="btn btn-primary btn-sm lex-next" id="lexNext">'+(ex.idx+1>=n?"See result":"Next letter")+' ›</button>':'');
+}
+function bindLessonEx(){
+  var host=$("#lesExBody");if(!host)return;
+  host.innerHTML=lessonExHTML();
+  $$("#lesExBody .lex-opt").forEach(function(b){b.onclick=function(){
+    if(lessonEx.answered)return;
+    var pick=b.getAttribute("data-cls");var it=lessonEx.items[lessonEx.idx];var w=CONS_BY_TH[it];
+    lessonEx.answered=true;lessonEx.pick=pick;lessonEx.ok=(pick===w.cls);if(lessonEx.ok)lessonEx.score++;
+    speak(w.nm);bindLessonEx();
+  };});
+  var nx=$("#lexNext");if(nx)nx.onclick=function(){lessonEx.idx++;lessonEx.answered=false;lessonEx.pick=null;lessonEx.ok=false;bindLessonEx();};
+  var rt=$("#lexRetry");if(rt)rt.onclick=function(){lessonEx.idx=0;lessonEx.score=0;lessonEx.answered=false;lessonEx.pick=null;bindLessonEx();};
+}
+function renderLesson(w){
+  var L=w.lesson||{};var secs=L.sections||[];
+  var html='<div class="les-hero"><div class="les-title">'+esc(L.title||w.en||"")+'</div>'+(L.subtitle?'<div class="les-sub">'+esc(L.subtitle)+'</div>':'')+'</div>';
+  var exSpec=null;
+  secs.forEach(function(s){
+    if(s.t==="text"){
+      html+='<div class="les-sec">'+(s.h?'<div class="les-h">'+esc(s.h)+'</div>':'')+(s.p||[]).map(function(p){return '<p class="les-p">'+p+'</p>';}).join("")+'</div>';
+    }else if(s.t==="note"){
+      html+='<div class="les-note">'+(s.h?'<div class="les-note-h">'+esc(s.h)+'</div>':'')+'<p>'+(s.p||"")+'</p></div>';
+    }else if(s.t==="classgrid"){
+      html+=classGridHTML();
+    }else if(s.t==="exercise"){
+      exSpec=s;
+      html+='<div class="les-ex"><div class="les-h">'+esc(s.h||"Practice")+'</div>'+(s.sub?'<p class="les-p">'+esc(s.sub)+'</p>':'')+'<div class="les-ex-body" id="lesExBody"></div></div>';
+    }
+  });
+  $("#lessonView").innerHTML=html;
+  /* wire class-grid chips to speak the letter name */
+  $$("#lessonView .cls-chip").forEach(function(b){b.onclick=function(){var w2=CONS_BY_TH[b.getAttribute("data-th")];if(w2)speak(w2.nm);};});
+  if(exSpec){lessonEx={items:(exSpec.items||[]).slice(),idx:0,score:0,answered:false,pick:null,ok:false};bindLessonEx();}
 }
 function flipCard(){study.flipped=!study.flipped;setMood(study.flipped?"think":"idle");if(study.flipped&&Math.random()<0.3)baoSay("think",$("#mascotStudy"),{placement:"left"});renderCard();}
 function gotoCard(n,dir){study.idx=n;study.flipped=false;renderCard();}
@@ -2119,7 +2331,7 @@ function initSwipe(){
 /* ============ QUIZ ============ */
 var quiz={front:"th",back:"mean",pool:"level",len:10,qs:[],i:0,score:0,locked:false,missed:[]};
 function quizCandidatePool(){
-  var a=acct();var base=curCatWords();
+  var a=acct();var base=curCatWords().filter(function(w){return w.kind!=="lesson";});
   if(quiz.pool==="due"){var d=base.filter(function(w){return isDue(a.cards[w.id]);});return d.length>=4?d:base;}
   if(quiz.pool==="hard"){var h=ALL_WORDS.filter(function(w){return a.cards[w.id]&&a.cards[w.id].hard;});return h.length>=4?h:base;}
   return base;
@@ -2240,7 +2452,7 @@ function endQuiz(){
 /* ============ BROWSE ============ */
 var browseStatus="all";
 function renderBrowse(){
-  var a=acct();var list=curCatWords();var q=($("#searchInput").value||"").trim().toLowerCase();
+  var a=acct();var list=curCatWords().filter(function(w){return w.kind!=="lesson";});var q=($("#searchInput").value||"").trim().toLowerCase();
   var res=list.filter(function(w){
     if(q){var hay=(w.th+" "+w.r+" "+w.i+" "+w.en+" "+w.ja+" "+w.jr+" "+w.zs+" "+w.zt+" "+w.py).toLowerCase();if(hay.indexOf(q)<0)return false;}
     if(browseStatus!=="all"){var c=a.cards[w.id];if(browseStatus==="hard"){if(!(c&&c.hard))return false;}else{if(statusOf(c)!==browseStatus)return false;}}
@@ -2339,9 +2551,12 @@ function renderCatBar(){
     +LANG_ORDER.map(function(k){var d=LANGS[k];return '<button class="lang-toggle" data-lang="'+k+'" aria-pressed="'+(!!L[k])+'"><span class="dot"></span>'+d.flag+'</button>';}).join("")
     +'</div>';
   function itemHTML(c,clickable){
-    var on=(c.k===gk);
-    return '<button class="lm-item'+(on?" on":"")+(clickable?"":" static")+'" role="'+(clickable?"menuitemradio":"presentation")+'"'+(clickable?(' aria-checked="'+on+'" data-c="'+c.k+'"'):"")+'>'
-      +'<span class="lm-ie">'+c.emo+'</span><span class="lm-name">'+esc(c.en)+'</span><span class="lm-sub">'+c.n+'</span>'
+    var on=(c.k===gk);var isLes=(c.kind==="lesson");
+    /* Lessons are always tappable (even in Chapters view) so the curriculum flow stays reachable. */
+    var clk=clickable||isLes;
+    var sub=isLes?'<span class="lm-sub lm-lessub">📖 Lesson</span>':'<span class="lm-sub">'+c.n+'</span>';
+    return '<button class="lm-item'+(on?" on":"")+(isLes?" lm-lesson":"")+(clk?"":" static")+'" role="'+(clk?"menuitemradio":"presentation")+'"'+(clk?(' aria-checked="'+on+'" data-c="'+c.k+'"'):"")+'>'
+      +'<span class="lm-ie">'+c.emo+'</span><span class="lm-name">'+esc(c.en)+'</span>'+sub
       +(on?'<span class="lm-tick" aria-hidden="true">✓</span>':'')+'</button>';
   }
   var GROUPS;
