@@ -91,7 +91,7 @@ body{
 .lm-chev{flex:none;width:30px;height:30px;border-radius:9px;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:.82rem;line-height:1;transition:transform .2s,background .18s}
 .lm-trigger:hover .lm-chev{background:var(--teal-deep)}
 .lm-trigger[aria-expanded="true"] .lm-chev{transform:rotate(180deg)}
-.lm-pop{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:50;background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow);padding:6px;max-height:60vh;overflow-y:auto}
+.lm-pop{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:50;background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow);padding:6px;max-height:min(46vh,300px);overflow-y:auto;overflow-x:hidden;touch-action:pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .lm-ghead{position:sticky;top:-6px;z-index:1;background:var(--cloud);padding:8px 10px 4px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft,#7a8a87);border-bottom:1px solid var(--line);margin-bottom:4px}
 .lm-viewtoggle{position:sticky;top:-6px;z-index:3;display:flex;gap:4px;background:var(--cloud);padding:2px 2px 8px;margin-bottom:4px;border-bottom:1px solid var(--line)}
 .lm-vt{flex:1;border:1.5px solid var(--line);background:var(--paper-2);border-radius:9px;padding:7px 10px;font-family:var(--display);font-weight:800;font-size:.8rem;color:var(--ink-soft);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
