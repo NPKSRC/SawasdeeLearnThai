@@ -355,6 +355,37 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .lex-msg{color:var(--ink-soft);font-weight:700;font-size:.92rem;margin:4px 0 12px}
 .lm-item.lm-lesson .lm-name{font-style:normal}
 .lm-lessub{color:var(--teal-deep);font-weight:800;font-size:.72rem;white-space:nowrap}
+/* Tone chart (5 tones) */
+.tchart{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:2px 0 14px}
+.tchart-cell{border:1.5px solid var(--line);border-top:3px solid var(--tcol);border-radius:12px;background:var(--cloud);padding:8px 3px 7px;text-align:center}
+.tc-svg{display:block;margin:0 auto 3px}
+.tc-base{stroke:var(--line);stroke-width:1.4;stroke-dasharray:2 3}
+.tchart-nm{font-family:var(--display);font-weight:800;font-size:.72rem;color:var(--ink);line-height:1.1}
+.tchart-th{font-family:var(--thai);font-size:.8rem;color:var(--ink-soft)}
+/* Tone calculator */
+.les-calc{background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:14px 14px 16px;margin:6px 0 14px}
+.les-calc .les-h{margin-bottom:2px}
+.tcalc-row{margin:0 0 9px}
+.tcalc-lab{font-family:var(--display);font-weight:800;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:4px}
+.tcalc-seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:6px}
+.tcalc-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:7px 3px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink-soft);cursor:pointer;font:inherit;min-width:0}
+.tcalc-opt b{font-size:.8rem;font-weight:800;line-height:1.05;text-align:center}
+.tcalc-opt small{font-family:var(--thai);font-size:.72rem;color:var(--ink-faint);line-height:1.1;text-align:center}
+.tcalc-symbig{font-family:var(--thai);font-size:1.35rem;line-height:1.05}
+.tcalc-opt.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.tcalc-opt.on small{color:rgba(255,255,255,.85)}
+.tcalc-out{margin-top:12px}
+.tcalc-res{border:1.5px solid var(--line);border-left:5px solid var(--tcol,var(--teal));border-radius:14px;padding:11px 13px;background:var(--paper-2)}
+.tcalc-ld{display:inline-block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 9px;border-radius:999px;font-family:var(--display)}
+.tcalc-ld.ld-live{background:var(--teal-tint);color:var(--teal-deep)}
+.tcalc-ld.ld-dead{background:#f7e4e1;color:var(--ruby-deep)}
+.tcalc-tone{display:flex;align-items:center;gap:12px;margin:10px 0 7px}
+.tcalc-tnm{font-family:var(--thai);font-weight:700;font-size:1.5rem;color:var(--tcol);line-height:1}
+.tcalc-ten{font-family:var(--display);font-weight:800;font-size:.92rem;color:var(--ink);margin-top:1px}
+.tcalc-trace{font-size:.82rem;color:var(--ink-soft);font-weight:700;line-height:1.4}
+.tcalc-trace b{font-family:var(--thai);color:var(--tcol);font-size:1rem}
+.tcalc-invalid{--tcol:var(--ink-faint)}
+.tcalc-invmsg{margin-top:8px;font-size:.86rem;color:var(--ink-soft);line-height:1.5}
 @media(min-width:460px){.cls-grid{grid-template-columns:1fr 1fr 1fr}}
 
 /* S7: long IPA compounds (no-space, dot-separated) wrap instead of overflowing on narrow screens — non-game surfaces only */
@@ -2259,6 +2290,112 @@ function bindLessonEx(){
   var nx=$("#lexNext");if(nx)nx.onclick=function(){lessonEx.idx++;lessonEx.answered=false;lessonEx.pick=null;lessonEx.ok=false;bindLessonEx();};
   var rt=$("#lexRetry");if(rt)rt.onclick=function(){lessonEx.items=shuffle(lessonEx.items);lessonEx.idx=0;lessonEx.score=0;lessonEx.answered=false;lessonEx.pick=null;bindLessonEx();};
 }
+/* ===== Tone rules: the 5 tones + interactive tone calculator (tonechart / tonecalc sections) ===== */
+var TONE5={
+  mid:{en:"Mid",ja:"平声",zs:"中平",zt:"中平",th:"สามัญ",col:"#6f635a",path:"M6,20 L94,20"},
+  low:{en:"Low",ja:"低声",zs:"低调",zt:"低調",th:"เอก",col:"#b97e17",path:"M6,25 L94,32"},
+  falling:{en:"Falling",ja:"下降声",zs:"降调",zt:"降調",th:"โท",col:"#c5483d",path:"M6,8 L32,8 L94,33"},
+  high:{en:"High",ja:"高声",zs:"高调",zt:"高調",th:"ตรี",col:"#0e7c73",path:"M6,23 L94,7"},
+  rising:{en:"Rising",ja:"上昇声",zs:"升调",zt:"升調",th:"จัตวา",col:"#cc5f7d",path:"M6,24 Q46,36 94,8"}
+};
+var TONE5_ORDER=["mid","low","falling","high","rising"];
+function toneContourSVG(t,big){
+  var m=TONE5[t];
+  return '<svg class="tc-svg" viewBox="0 0 100 40" width="'+(big?70:52)+'" height="'+(big?34:26)+'" preserveAspectRatio="none" aria-hidden="true">'
+    +'<line x1="6" y1="33" x2="94" y2="33" class="tc-base"/>'
+    +'<path d="'+m.path+'" fill="none" stroke="'+m.col+'" stroke-width="'+(big?4:3.4)+'" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+function toneChartHTML(){
+  return '<div class="tchart">'+TONE5_ORDER.map(function(t){var m=TONE5[t];
+    return '<div class="tchart-cell" style="--tcol:'+m.col+'">'+toneContourSVG(t,false)
+      +'<div class="tchart-nm">'+esc(locT(m))+'</div><div class="tchart-th">'+esc(m.th)+'</div></div>';
+  }).join("")+'</div>';
+}
+var CALC_CLASSES=[
+  {k:"mid",label:{en:"Middle",ja:"中子音",zs:"中辅音",zt:"中輔音"},th:"กลาง"},
+  {k:"high",label:{en:"High",ja:"高子音",zs:"高辅音",zt:"高輔音"},th:"สูง"},
+  {k:"low",label:{en:"Low",ja:"低子音",zs:"低辅音",zt:"低輔音"},th:"ต่ำ"}
+];
+var CALC_VLEN=[
+  {k:"long",label:{en:"Long",ja:"長い",zs:"长",zt:"長"},th:"ยาว"},
+  {k:"short",label:{en:"Short",ja:"短い",zs:"短",zt:"短"},th:"สั้น"}
+];
+var CALC_END=[
+  {k:"none",label:{en:"None",ja:"なし",zs:"无",zt:"無"},th:"—"},
+  {k:"son",label:{en:"Sonorant",ja:"共鳴音",zs:"响音",zt:"響音"},th:"ง น ม ย ว"},
+  {k:"stop",label:{en:"Stop",ja:"閉鎖音",zs:"塞音",zt:"塞音"},th:"ก ด บ"}
+];
+var CALC_MARKS=[
+  {k:"none",sym:"◌",label:{en:"None",ja:"なし",zs:"无",zt:"無"}},
+  {k:"ek",sym:"◌่",label:"ไม้เอก"},
+  {k:"tho",sym:"◌้",label:"ไม้โท"},
+  {k:"tri",sym:"◌๊",label:"ไม้ตรี"},
+  {k:"chattawa",sym:"◌๋",label:"ไม้จัตวา"}
+];
+var CALC_MARK_TH={ek:"ไม้เอก",tho:"ไม้โท",tri:"ไม้ตรี",chattawa:"ไม้จัตวา"};
+var CALC_INVALID={en:"This tone mark isn't used on high- or low-class letters — only ไม้เอก and ไม้โท appear there.",ja:"この声調記号は高子音・低子音には使いません。そこでは ไม้เอก と ไม้โท だけが現れます。",zs:"这个声调符号不用于高辅音或低辅音——那里只出现 ไม้เอก 和 ไม้โท。",zt:"這個聲調符號不用於高輔音或低輔音——那裡只出現 ไม้เอก 和 ไม้โท。"};
+var NO_MARK_WORD={en:"no mark",ja:"記号なし",zs:"无符号",zt:"無符號"};
+var toneCalc={cls:"mid",vlen:"long",end:"none",mark:"none"};
+function computeCalcTone(){
+  var cls=toneCalc.cls,vlen=toneCalc.vlen,end=toneCalc.end,mark=toneCalc.mark;
+  var live=(end==="son")||(end==="none"&&vlen==="long");
+  if(mark==="none"){
+    var t;
+    if(cls==="mid")t=live?"mid":"low";
+    else if(cls==="high")t=live?"rising":"low";
+    else t=live?"mid":(vlen==="short"?"high":"falling");
+    return {tone:t,live:live,valid:true};
+  }
+  var tbl;
+  if(cls==="mid")tbl={ek:"low",tho:"falling",tri:"high",chattawa:"rising"};
+  else if(cls==="high")tbl={ek:"low",tho:"falling"};
+  else tbl={ek:"falling",tho:"high"};
+  var t=tbl[mark];
+  if(!t)return {tone:null,live:live,valid:false};
+  return {tone:t,live:live,valid:true};
+}
+function calcRowHTML(label,opts,cur,group){
+  return '<div class="tcalc-row"><div class="tcalc-lab">'+esc(label)+'</div><div class="tcalc-seg">'
+    +opts.map(function(o){
+      var on=o.k===cur;var main,sub;
+      if(o.sym){main='<span class="tcalc-symbig">'+esc(o.sym)+'</span>';sub='<small>'+esc(locT(o.label))+'</small>';}
+      else{main='<b>'+esc(locT(o.label))+'</b>';sub=o.th?'<small>'+esc(o.th)+'</small>':'';}
+      return '<button class="tcalc-opt'+(on?' on':'')+'" data-g="'+group+'" data-k="'+esc(o.k)+'">'+main+sub+'</button>';
+    }).join("")+'</div></div>';
+}
+function toneCalcResultHTML(){
+  var r=computeCalcTone();
+  var ldKey=r.live?"live":"dead";
+  var ld='<span class="tcalc-ld '+(r.live?"ld-live":"ld-dead")+'">'+esc(locT(LD_WORD[ldKey]))+' · '+(r.live?"คำเป็น":"คำตาย")+'</span>';
+  if(!r.valid){
+    return '<div class="tcalc-res tcalc-invalid">'+ld+'<div class="tcalc-invmsg">'+esc(locT(CALC_INVALID))+'</div></div>';
+  }
+  var m=TONE5[r.tone];
+  var clsName=locT(CLS_META[toneCalc.cls]);
+  var markName=toneCalc.mark==="none"?locT(NO_MARK_WORD):CALC_MARK_TH[toneCalc.mark];
+  var trace=esc(clsName)+' · '+esc(markName)+' · '+esc(locT(LD_WORD[ldKey]))+' → ';
+  return '<div class="tcalc-res" style="--tcol:'+m.col+'">'+ld
+    +'<div class="tcalc-tone">'+toneContourSVG(r.tone,true)
+      +'<div class="tcalc-tinfo"><div class="tcalc-tnm">'+esc(m.th)+'</div><div class="tcalc-ten">'+esc(locT(m))+'</div></div></div>'
+    +'<div class="tcalc-trace">'+trace+'<b>'+esc(m.th)+'</b></div></div>';
+}
+function toneCalcHTML(){
+  return '<div class="tcalc">'
+    +calcRowHTML(locT({en:"Initial class",ja:"頭子音の分類",zs:"首辅音类别",zt:"首輔音類別"}),CALC_CLASSES,toneCalc.cls,"cls")
+    +calcRowHTML(locT({en:"Vowel length",ja:"母音の長さ",zs:"元音长短",zt:"母音長短"}),CALC_VLEN,toneCalc.vlen,"vlen")
+    +calcRowHTML(locT({en:"Ending sound",ja:"末子音",zs:"尾音",zt:"尾音"}),CALC_END,toneCalc.end,"end")
+    +calcRowHTML(locT({en:"Tone mark",ja:"声調記号",zs:"声调符号",zt:"聲調符號"}),CALC_MARKS,toneCalc.mark,"mark")
+    +'<div class="tcalc-out">'+toneCalcResultHTML()+'</div></div>';
+}
+function bindToneCalc(){
+  var host=$("#toneCalcHost");if(!host)return;
+  host.innerHTML=toneCalcHTML();
+  $$("#toneCalcHost .tcalc-opt").forEach(function(b){b.onclick=function(){
+    var g=b.getAttribute("data-g"),k=b.getAttribute("data-k");
+    if(g==="cls")toneCalc.cls=k;else if(g==="vlen")toneCalc.vlen=k;else if(g==="end")toneCalc.end=k;else if(g==="mark")toneCalc.mark=k;
+    bindToneCalc();
+  };});
+}
 function renderLesson(w){
   var L=w.lesson||{};var secs=L.sections||[];
   var title=locT(L.title)||w.en||"";var sub=locT(L.subtitle);
@@ -2275,6 +2412,10 @@ function renderLesson(w){
       html+=classGridHTML();
     }else if(s.t==="finalgrid"){
       html+=finalGridHTML();
+    }else if(s.t==="tonechart"){
+      html+=toneChartHTML();
+    }else if(s.t==="tonecalc"){
+      html+='<div class="les-calc"><div class="les-h">'+esc(locT({en:"Tone calculator",ja:"声調計算機",zs:"声调计算器",zt:"聲調計算器"}))+'</div><p class="les-p">'+esc(locT({en:"Set the four things below and watch the tone update. Try one class with each mark, then switch class to feel the shift.",ja:"下の4つを選ぶと声調が変わります。ひとつの分類で各記号を試し、分類を切り替えてずれを感じましょう。",zs:"选择下面四项，声调会随之更新。用一个类别试每个符号，再切换类别，感受错位。",zt:"選擇下面四項，聲調會隨之更新。用一個類別試每個符號，再切換類別，感受錯位。"}))+'</p><div id="toneCalcHost"></div></div>';
     }else if(s.t==="exercise"){
       exSpec=s;
       html+='<div class="les-ex"><div class="les-h">'+esc(locT(s.h)||"Practice")+'</div>'+(locT(s.sub)?'<p class="les-p">'+esc(locT(s.sub))+'</p>':'')+'<div class="les-ex-body" id="lesExBody"></div></div>';
@@ -2283,6 +2424,7 @@ function renderLesson(w){
   $("#lessonView").innerHTML=html;
   /* wire class-grid chips to speak the letter name */
   $$("#lessonView .cls-chip").forEach(function(b){b.onclick=function(){var w2=CONS_BY_TH[b.getAttribute("data-th")];if(w2)speak(w2.nm);};});
+  if($("#toneCalcHost")){toneCalc={cls:"mid",vlen:"long",end:"none",mark:"none"};bindToneCalc();}
   if(exSpec){lessonEx={options:(exSpec.options||[]).slice(),items:shuffle((exSpec.items||[]).slice()),idx:0,score:0,answered:false,pick:null,ok:false};bindLessonEx();}
 }
 function flipCard(){study.flipped=!study.flipped;setMood(study.flipped?"think":"idle");if(study.flipped&&Math.random()<0.3)baoSay("think",$("#mascotStudy"),{placement:"left"});renderCard();}
