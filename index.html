@@ -495,6 +495,20 @@ button.game-card:hover{transform:translateY(-2px)}
 .game-card .gc-txt span{font-size:.8rem;color:var(--ink-soft);display:block}
 .game-card .gc-arrow{flex:none;color:var(--teal-deep);font-weight:800;font-size:1.1rem}
 .game-card .soon-pill{margin:0}
+/* ---------- Writing game ---------- */
+.wg-count{margin-left:auto;font-family:var(--display);font-weight:800;font-size:.86rem;color:var(--ink-soft)}
+.wg-prompt{position:relative;text-align:center;margin:6px 6px 10px}
+.wg-label{font-family:var(--thai);font-weight:700;font-size:1.55rem;line-height:1.15;color:var(--ink)}
+.wg-sub{font-family:var(--display);font-weight:700;font-size:.82rem;color:var(--ink-soft);margin-top:1px}
+.wg-spk{position:absolute;top:50%;right:0;transform:translateY(-50%)}
+.wg-padwrap{display:flex;justify-content:center}
+.wg-canvas{width:100%;max-width:340px;height:auto;background:var(--cloud);border:2px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-sm);touch-action:none;cursor:crosshair;display:block}
+.wg-tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0 2px}
+.wg-tools .btn{flex:0 1 auto}
+.wg-result{text-align:center;min-height:1.5em;font-family:var(--display);font-weight:800;font-size:.98rem;margin:4px 0 6px;color:var(--ink-soft)}
+.wg-result.good{color:var(--teal-deep)}.wg-result.ok{color:var(--gold-deep)}.wg-result.low{color:var(--lotus-deep)}
+.wg-nav{display:flex;gap:10px;margin-top:8px}
+.wg-nav .btn{flex:1}
 .back-pill{display:inline-flex;align-items:center;gap:8px;background:#fdf5e0;border:2px solid #f0d27a;color:#b9791f;border-radius:999px;padding:7px 16px 7px 8px;font-family:var(--display);font-weight:800;font-size:.82rem;cursor:pointer;margin-bottom:12px;transition:transform .12s}
 .back-pill:hover{transform:translateX(-2px)}
 .back-pill i{width:22px;height:22px;border-radius:50%;background:#e0a526;color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.95rem;line-height:1}
@@ -1065,6 +1079,11 @@ button.game-card:hover{transform:translateY(-2px)}
         <span class="gc-txt"><b>Tone Hero</b><span>See the word — tap its tone. Thai has five!</span></span>
         <span class="gc-arrow">→</span>
       </button>
+      <button class="game-card" id="gcWrite">
+        <span class="gc-tile">✍️</span>
+        <span class="gc-txt"><b>Writing</b><span>Trace each Thai letter — turn the guide on or off.</span></span>
+        <span class="gc-arrow">→</span>
+      </button>
     </div>
 
     <div id="petalsSetup" style="display:none">
@@ -1223,6 +1242,52 @@ button.game-card:hover{transform:translateY(-2px)}
       <div class="controls" style="margin-top:14px">
         <button class="btn btn-ghost" id="thChangeBtn">Change setup</button>
         <button class="btn btn-primary" id="thAgainBtn">Play again</button>
+      </div>
+    </div>
+
+    <!-- ===== Writing ===== -->
+    <div id="writeSetup" style="display:none">
+      <button class="back-pill" id="wgSetupBackBtn"><i>‹</i> Back to games list</button>
+      <div class="quiz-setup">
+        <h2>✍️ Writing</h2>
+        <p class="sub">Trace each Thai character one at a time. Keep the faint guide letter on, or hide it to test yourself.</p>
+        <div class="scope-chip" id="wgScope"></div>
+        <div class="setup-group">
+          <label>Practice</label>
+          <div class="seg" id="wgType">
+            <button data-t="cons" aria-pressed="true">พยัญชนะ<small>consonants</small></button>
+            <button data-t="vowel" aria-pressed="false">สระ<small>vowels</small></button>
+            <button data-t="tone" aria-pressed="false">วรรณยุกต์<small>tone marks</small></button>
+            <button data-t="all" aria-pressed="false">ทั้งหมด<small>all letters</small></button>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="wgStartBtn" style="width:100%">Start writing</button>
+      </div>
+    </div>
+
+    <div id="writePlay" style="display:none">
+      <div class="pt-top">
+        <button class="back-pill" id="wgBackBtn" style="margin-bottom:0"><i>‹</i> Back to games list</button>
+        <span class="wg-count" id="wgCount">1 / 1</span>
+      </div>
+      <div class="wg-prompt">
+        <div class="wg-label" id="wgLabel">—</div>
+        <div class="wg-sub" id="wgSub"></div>
+        <button class="spk wg-spk" id="wgSpk" title="Hear it in Thai" aria-label="Hear it in Thai"></button>
+      </div>
+      <div class="wg-padwrap">
+        <canvas id="wgCanvas" class="wg-canvas" width="300" height="300"></canvas>
+      </div>
+      <div class="wg-tools">
+        <button class="btn btn-ghost btn-sm" id="wgGuideBtn">👁 Hide guide</button>
+        <button class="btn btn-ghost btn-sm" id="wgUndoBtn">↶ Undo</button>
+        <button class="btn btn-ghost btn-sm" id="wgClearBtn">✕ Clear</button>
+        <button class="btn btn-ghost btn-sm" id="wgCheckBtn">✓ Check</button>
+      </div>
+      <div class="wg-result" id="wgResult"></div>
+      <div class="wg-nav">
+        <button class="btn btn-ghost" id="wgPrevBtn">‹ Prev</button>
+        <button class="btn btn-primary" id="wgNextBtn">Next ›</button>
       </div>
     </div>
   </section>
@@ -2862,6 +2927,8 @@ function toggleStudyLang(k){
   if(L[k]&&LANG_ORDER.filter(function(x){return L[x];}).length===1)return; /* already the only one */
   LANG_ORDER.forEach(function(x){L[x]=(x===k);}); /* single-select: one language at a time */
   saveDB();renderStudyLangbar();renderCard();renderBrowse();
+  if($("#writeSetup")&&$("#writeSetup").style.display==="block")writeValidate();
+  else if($("#writePlay")&&$("#writePlay").style.display==="block"&&write.list.length){var it=wgItems(write.type)[write.i];if(it){write.list[write.i]=it;write.cur=it;$("#wgSub").textContent=it.sub||"";}}
 }
 
 /* category dropdown */
@@ -3376,6 +3443,7 @@ function ptShow(which){ /* "home" | "setup" | "play" */
   $("#petalsPlay").style.display=which==="play"?"block":"none";
   $("#mmSetup").style.display="none";$("#mmPlay").style.display="none";$("#mmDone").style.display="none";
   $("#thSetup").style.display="none";$("#thPlay").style.display="none";$("#thDone").style.display="none";
+  $("#writeSetup").style.display="none";$("#writePlay").style.display="none";
   if(which==="setup")renderPetalsSetup();
 }
 function renderPetalsSetup(){
@@ -3389,11 +3457,204 @@ function renderPetalsSetup(){
   $$("#ptDiff button").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-d")===petals.diff);});
 }
 function renderGames(){
+  if($("#writePlay").style.display==="block")return;
+  if($("#writeSetup").style.display==="block"){writeValidate();return;}
   if($("#thSetup").style.display==="block"){thValidate();return;}
   if($("#thPlay").style.display==="block"||$("#thDone").style.display==="block")return;
   if($("#mmSetup").style.display==="block"){mmValidate();return;}
   if($("#mmPlay").style.display==="block"||$("#mmDone").style.display==="block")return;
   ptShow($("#petalsPlay").style.display==="block"?"play":($("#petalsSetup").style.display==="block"?"setup":"home"));
+}
+
+/* ============ WRITING PRACTICE ============ */
+var WG_FONT="'Noto Sans Thai Looped','Noto Sans Thai',sans-serif";
+var write={type:"cons",list:[],i:0,guide:true,cur:null,strokes:[],drawing:false,
+           cnv:null,ctx:null,size:300,dot:null,bound:false};
+/* Build the practice list from the injected Foundations letters (cons / vowel / tone). */
+function wgItems(type){
+  var out=[];
+  (THAI_DATA.words||[]).forEach(function(w){
+    if(type!=="all"&&w.kind!==type)return;
+    if(w.kind==="cons")out.push({glyph:w.th,label:w.nm||w.th,sub:[w.r,w.i,locT(CLS_META[w.cls])].filter(Boolean).join("  ·  "),spk:w.nm||w.th});
+    else if(w.kind==="vowel")out.push({glyph:w.th,label:(w.nm||w.th)+(w.form?"  ("+w.form+")":""),sub:[w.r,w.i].filter(Boolean).join("  ·  "),spk:w.th});
+    else if(w.kind==="tone")out.push({glyph:w.th,label:w.nm||w.th,sub:[w.toneEn,w.r].filter(Boolean).join("  ·  "),spk:w.nm||w.th});
+  });
+  return out;
+}
+var WG_L={
+  cons:{en:"consonants",ja:"子音",zs:"辅音",zt:"輔音"},
+  vowel:{en:"vowels",ja:"母音",zs:"元音",zt:"元音"},
+  tone:{en:"tone marks",ja:"声調記号",zs:"声调符号",zt:"聲調符號"},
+  all:{en:"all letters",ja:"すべての文字",zs:"全部字母",zt:"全部字母"}
+};
+var WG_CHARS={en:"characters",ja:"文字",zs:"个字符",zt:"個字符"};
+function wgLoc(m){return (m&&(m[curLang()]||m.en))||"";}
+function wgCap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+function writeValidate(){
+  $$("#wgType button").forEach(function(b){
+    var t=b.getAttribute("data-t");
+    b.setAttribute("aria-pressed",t===write.type);
+    var sm=b.querySelector("small");if(sm)sm.textContent=wgLoc(WG_L[t]);
+  });
+  var n=wgItems(write.type).length;
+  $("#wgScope").textContent="✍️ "+wgCap(wgLoc(WG_L[write.type]))+" · "+n+" "+wgLoc(WG_CHARS);
+}
+function writeShow(which){ /* "setup" | "play" */
+  $("#gamesHome").style.display="none";
+  $("#petalsSetup").style.display="none";$("#petalsPlay").style.display="none";
+  $("#mmSetup").style.display="none";$("#mmPlay").style.display="none";$("#mmDone").style.display="none";
+  $("#thSetup").style.display="none";$("#thPlay").style.display="none";$("#thDone").style.display="none";
+  $("#writeSetup").style.display=which==="setup"?"block":"none";
+  $("#writePlay").style.display=which==="play"?"block":"none";
+  if(which==="setup")writeValidate();
+}
+function writeStart(){
+  write.list=wgItems(write.type);
+  if(!write.list.length){toast("No characters to practice here");return;}
+  write.i=0;
+  writeShow("play");
+  writeSetupCanvas();
+  writeLoad();
+}
+function writeSetupCanvas(){
+  write.cnv=$("#wgCanvas");
+  var css=write.cnv.clientWidth||300;
+  var dpr=window.devicePixelRatio||1;
+  write.size=css;
+  write.cnv.width=Math.round(css*dpr);
+  write.cnv.height=Math.round(css*dpr);
+  write.cnv.style.height=css+"px";
+  write.ctx=write.cnv.getContext("2d");
+  write.ctx.setTransform(dpr,0,0,dpr,0,0);
+  if(!write.bound){
+    write.bound=true;
+    var c=write.cnv;
+    c.addEventListener("pointerdown",wgDown);
+    c.addEventListener("pointermove",wgMove);
+    c.addEventListener("pointerup",wgUp);
+    c.addEventListener("pointercancel",wgUp);
+    c.addEventListener("pointerleave",wgUp);
+  }
+}
+function wgPos(e){
+  var r=write.cnv.getBoundingClientRect();
+  return {x:e.clientX-r.left,y:e.clientY-r.top};
+}
+function wgDown(e){
+  if(!write.cur)return;
+  e.preventDefault();
+  write.drawing=true;
+  write.strokes.push([wgPos(e)]);
+  if(write.cnv.setPointerCapture){try{write.cnv.setPointerCapture(e.pointerId);}catch(x){}}
+  writeDraw();
+}
+function wgMove(e){
+  if(!write.drawing)return;
+  e.preventDefault();
+  write.strokes[write.strokes.length-1].push(wgPos(e));
+  writeDraw();
+}
+function wgUp(e){
+  if(!write.drawing)return;
+  write.drawing=false;
+}
+/* Draw one stroke path with midpoint smoothing; sc scales coords (for the scoring canvas). */
+function wgPath(ctx,pts,sc){
+  sc=sc||1;
+  if(pts.length===1){var p=pts[0];ctx.beginPath();ctx.arc(p.x*sc,p.y*sc,ctx.lineWidth/2,0,7);var f=ctx.strokeStyle;ctx.fillStyle=f;ctx.fill();return;}
+  ctx.beginPath();ctx.moveTo(pts[0].x*sc,pts[0].y*sc);
+  for(var i=1;i<pts.length-1;i++){var mx=(pts[i].x+pts[i+1].x)/2*sc,my=(pts[i].y+pts[i+1].y)/2*sc;ctx.quadraticCurveTo(pts[i].x*sc,pts[i].y*sc,mx,my);}
+  var l=pts[pts.length-1];ctx.lineTo(l.x*sc,l.y*sc);ctx.stroke();
+}
+/* Find a sensible start dot: the top-most ink pixel of the left-most inked column. */
+function wgComputeDot(){
+  var S=write.size||300;
+  var off=document.createElement("canvas");off.width=S;off.height=S;
+  var c=off.getContext("2d");
+  c.fillStyle="#000";c.font="700 "+Math.round(S*0.66)+"px "+WG_FONT;
+  c.textAlign="center";c.textBaseline="middle";
+  c.fillText(write.cur.glyph,S/2,S*0.54);
+  var d=c.getImageData(0,0,S,S).data;
+  for(var x=0;x<S;x++){
+    for(var y=0;y<S;y++){
+      if(d[(y*S+x)*4+3]>60){write.dot={x:x,y:y};return;}
+    }
+  }
+  write.dot=null;
+}
+function writeDraw(){
+  var ctx=write.ctx,S=write.size;if(!ctx)return;
+  ctx.clearRect(0,0,S,S);
+  /* grid */
+  ctx.save();
+  ctx.strokeStyle="#efe7d7";ctx.lineWidth=1;ctx.strokeRect(1,1,S-2,S-2);
+  ctx.setLineDash([5,7]);ctx.strokeStyle="#ece3d2";ctx.beginPath();
+  ctx.moveTo(S/2,8);ctx.lineTo(S/2,S-8);ctx.moveTo(8,S/2);ctx.lineTo(S-8,S/2);ctx.stroke();
+  ctx.restore();
+  /* faint ghost letter + start dot */
+  if(write.guide){
+    ctx.save();
+    ctx.fillStyle="rgba(42,33,28,0.13)";
+    ctx.font="700 "+Math.round(S*0.66)+"px "+WG_FONT;
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText(write.cur.glyph,S/2,S*0.54);
+    ctx.restore();
+    if(write.dot){
+      ctx.save();
+      ctx.beginPath();ctx.arc(write.dot.x,write.dot.y,Math.max(5,S*0.022),0,7);
+      ctx.fillStyle="rgba(14,124,115,0.92)";ctx.fill();
+      ctx.lineWidth=2;ctx.strokeStyle="#fff";ctx.stroke();
+      ctx.restore();
+    }
+  }
+  /* ink */
+  ctx.strokeStyle="#0a5c55";ctx.lineWidth=Math.max(6,S*0.05);
+  ctx.lineCap="round";ctx.lineJoin="round";
+  write.strokes.forEach(function(pts){wgPath(ctx,pts,1);});
+}
+function writeLoad(){
+  write.cur=write.list[write.i];
+  write.strokes=[];
+  $("#wgLabel").textContent=write.cur.label;
+  $("#wgSub").textContent=write.cur.sub||"";
+  $("#wgCount").textContent=(write.i+1)+" / "+write.list.length;
+  $("#wgResult").textContent="";$("#wgResult").className="wg-result";
+  $("#wgNextBtn").textContent=(write.i>=write.list.length-1)?"Finish ✓":"Next ›";
+  wgComputeDot();
+  writeDraw();
+}
+/* Rough tracing score: how much of the letter you covered, weighted by how much
+   of your ink landed on the letter (so scribbling everywhere doesn't win). */
+function writeCheck(){
+  var res=$("#wgResult");
+  if(!write.strokes.length){res.textContent="Draw the letter first ✍️";res.className="wg-result";return;}
+  var R=150,S=write.size,sc=R/S;
+  function mk(){var cv=document.createElement("canvas");cv.width=R;cv.height=R;return cv;}
+  function glyph(ctx,fat){
+    ctx.font="700 "+Math.round(R*0.66)+"px "+WG_FONT;ctx.textAlign="center";ctx.textBaseline="middle";
+    if(fat){ctx.strokeStyle="#000";ctx.lineJoin="round";ctx.lineCap="round";ctx.lineWidth=R*0.14;ctx.strokeText(write.cur.glyph,R/2,R*0.54);}
+    ctx.fillStyle="#000";ctx.fillText(write.cur.glyph,R/2,R*0.54);
+  }
+  var gc=mk().getContext("2d");glyph(gc,false);var gd=gc.getImageData(0,0,R,R).data;   /* letter core */
+  var tc=mk().getContext("2d");glyph(tc,true);var td=tc.getImageData(0,0,R,R).data;    /* letter + tolerance band */
+  var uc=mk().getContext("2d");uc.strokeStyle="#000";uc.lineJoin="round";uc.lineCap="round";
+  uc.lineWidth=R*0.05;write.strokes.forEach(function(p){wgPath(uc,p,sc);});var un=uc.getImageData(0,0,R,R).data; /* ink */
+  uc.clearRect(0,0,R,R);uc.lineWidth=R*0.13;write.strokes.forEach(function(p){wgPath(uc,p,sc);});var uf=uc.getImageData(0,0,R,R).data; /* fat ink */
+  var gTot=0,covered=0,uTot=0,onLetter=0;
+  for(var k=3;k<gd.length;k+=4){
+    var gOn=gd[k]>60,tOn=td[k]>60,unOn=un[k]>60,ufOn=uf[k]>60;
+    if(gOn){gTot++;if(ufOn)covered++;}
+    if(unOn){uTot++;if(tOn)onLetter++;}
+  }
+  var coverage=gTot?covered/gTot:0, precision=uTot?onLetter/uTot:0;
+  var score=Math.round(100*coverage*(0.45+0.55*precision));
+  if(score>100)score=100;
+  var msg,cls;
+  if(score>=80){msg="Beautiful — "+score+"% ✨";cls="good";}
+  else if(score>=60){msg="Nice work — "+score+"%. Keep going 🌸";cls="good";}
+  else if(score>=40){msg="Getting there — "+score+"%. Try tracing closer.";cls="ok";}
+  else{msg="Keep practicing — "+score+"%. Follow the guide letter 💪";cls="low";}
+  res.textContent=msg;res.className="wg-result "+cls;
 }
 
 /* ============ MEMORY MATCH ============ */
@@ -3459,6 +3720,7 @@ function mmShow(which){ /* "setup" | "play" | "done" */
   $("#mmPlay").style.display=which==="play"?"block":"none";
   $("#mmDone").style.display=which==="done"?"block":"none";
   $("#thSetup").style.display="none";$("#thPlay").style.display="none";$("#thDone").style.display="none";
+  $("#writeSetup").style.display="none";$("#writePlay").style.display="none";
   if(which==="setup")mmValidate();
 }
 
@@ -3637,6 +3899,7 @@ function thShow(which){ /* "setup" | "play" | "done" */
   $("#thSetup").style.display=which==="setup"?"block":"none";
   $("#thPlay").style.display=which==="play"?"block":"none";
   $("#thDone").style.display=which==="done"?"block":"none";
+  $("#writeSetup").style.display="none";$("#writePlay").style.display="none";
   if(which==="setup")thValidate();
 }
 
@@ -3947,6 +4210,20 @@ function init(){
   $$("#thMode button").forEach(function(b){b.onclick=function(){hero.mode=b.getAttribute("data-m");thValidate();};});
   $("#thSpk").innerHTML=SPK_SVG;
   $("#thSpk").onclick=function(){if(hero.cur&&hero.cur.w)speak(hero.cur.w.th);};
+  /* writing */
+  $("#gcWrite").onclick=function(){writeShow("setup");};
+  $("#wgSetupBackBtn").onclick=function(){ptShow("home");};
+  $("#wgBackBtn").onclick=function(){ptShow("home");};
+  $("#wgStartBtn").onclick=function(){writeStart();};
+  $$("#wgType button").forEach(function(b){b.onclick=function(){write.type=b.getAttribute("data-t");writeValidate();};});
+  $("#wgSpk").innerHTML=SPK_SVG;
+  $("#wgSpk").onclick=function(){if(write.cur)speak(write.cur.spk);};
+  $("#wgGuideBtn").onclick=function(){write.guide=!write.guide;$("#wgGuideBtn").textContent=write.guide?"👁 Hide guide":"👁 Show guide";writeDraw();};
+  $("#wgUndoBtn").onclick=function(){write.strokes.pop();writeDraw();};
+  $("#wgClearBtn").onclick=function(){write.strokes=[];$("#wgResult").textContent="";$("#wgResult").className="wg-result";writeDraw();};
+  $("#wgCheckBtn").onclick=function(){writeCheck();};
+  $("#wgPrevBtn").onclick=function(){if(write.i>0){write.i--;writeLoad();}};
+  $("#wgNextBtn").onclick=function(){if(write.i<write.list.length-1){write.i++;writeLoad();}else{writeShow("setup");}};
   /* settings */
   $("#settingsBtn").onclick=openSettings;
   $("#closeSettingsBtn").onclick=closeSettings;
