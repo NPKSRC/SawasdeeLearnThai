@@ -56,7 +56,10 @@ body{
 .acct-chip .who b{font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:84px}
 
 /* ---------- Category selector ---------- */
-.levels{position:relative;display:flex;margin:2px 0 12px}
+.levels{position:relative;display:flex;flex-direction:column;margin:2px 0 12px}
+.lm-partsw{display:flex;gap:4px;margin-bottom:0;background:var(--paper-2);border:1.5px solid var(--line);border-radius:999px;padding:3px}
+.lm-pt{border:0;background:transparent;color:var(--ink-soft);font-family:var(--display);font-weight:800;font-size:.82rem;padding:6px 16px;border-radius:999px;cursor:pointer;transition:background .15s,color .15s}
+.lm-pt.on{background:var(--teal);color:#fff}
 /* ---- compact control row: category picker + meaning-language pills ---- */
 .ctrlrow{display:flex;align-items:center;gap:10px;margin:2px 0 12px;flex-wrap:wrap}
 .ctrlrow .levels{flex:1 1 auto;min-width:150px;margin:0}
@@ -70,6 +73,12 @@ body{
 .lang-toggle[data-lang="zs"][aria-pressed="true"]{background:var(--gold-deep)}
 .lang-toggle[data-lang="zt"][aria-pressed="true"]{background:var(--teal-deep)}
 .lang-toggle[aria-pressed="true"] .dot{background:rgba(255,255,255,.9)}
+.lm-lang{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lm-toprow{display:flex;align-items:center;justify-content:space-between;gap:8px 10px;flex-wrap:wrap;margin-bottom:9px}
+.lm-lang-lab{font-family:var(--display);font-weight:800;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-right:2px}
+.lm-lang .lang-toggle{padding:6px 12px;font-size:.82rem}
+.lm-item.static{cursor:default}
+.lm-item.static:not(.on):hover{background:transparent}
 .lm-trigger{display:flex;align-items:center;gap:12px;width:100%;background:var(--cloud);border:1.5px solid var(--teal);border-radius:var(--r-md);padding:9px 11px 9px 15px;cursor:pointer;transition:box-shadow .18s,background .18s}
 .lm-trigger:hover{background:var(--paper);box-shadow:var(--shadow)}
 .lm-left{display:flex;align-items:center;gap:11px;flex:1;text-align:left;min-width:0}
@@ -90,17 +99,18 @@ body{
 .lm-vt:hover:not(.on){background:var(--paper)}
 .lm-pop .lm-ghead{top:42px}
 .lm-ghead:not(:first-child){margin-top:6px}
-.lm-chapsel{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border:0;text-align:left;cursor:pointer;font-family:inherit;color:var(--ink-soft,#7a8a87)}
-.lm-chapsel:hover{background:var(--paper-2)}
-.lm-chapsel.on{color:var(--teal);background:var(--paper)}
+.lm-chapsel{position:static;display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border:1.5px solid var(--teal);background:var(--teal-tint);border-radius:12px;padding:11px 13px;margin:12px 0 4px;text-transform:none;letter-spacing:0;font-family:var(--display);font-weight:800;font-size:.92rem;color:var(--teal-deep);cursor:pointer;transition:background .15s,border-color .15s,color .15s;box-shadow:var(--shadow-sm)}
+.lm-chapsel:hover{background:#d3e7e2;border-color:var(--teal-deep)}
+.lm-chapsel.on{background:var(--teal);border-color:var(--teal);color:#fff}
 .lm-chapsel .lm-gh-l{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lm-chapsel .lm-gh-r{flex:none;text-transform:none;letter-spacing:0;font-size:.6rem;font-weight:800;opacity:.75;white-space:nowrap}
+.lm-chapsel .lm-gh-r{flex:none;text-transform:none;letter-spacing:0;font-size:.68rem;font-weight:800;opacity:.9;white-space:nowrap}
 .lm-pop[hidden]{display:none}
-.lm-item{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;cursor:pointer;padding:10px 12px;border-radius:11px;text-align:left;transition:background .15s}
+.lm-item{display:flex;align-items:center;gap:9px;width:100%;border:0;background:transparent;cursor:pointer;padding:7px 10px 7px 16px;margin-left:6px;border-left:2px solid var(--line);border-radius:0 10px 10px 0;text-align:left;transition:background .15s}
 .lm-item:hover{background:var(--paper-2)}
-.lm-item.on{background:var(--paper)}
-.lm-item .lm-ie{font-size:1.25rem;flex:none}
-.lm-name{flex:1;font-family:var(--display);font-weight:800;font-size:.94rem;color:var(--ink)}
+.lm-item.on{background:var(--paper-2);border-left-color:var(--teal)}
+.lm-item.on .lm-name{color:var(--ink);font-weight:800}
+.lm-item .lm-ie{font-size:1.02rem;flex:none;opacity:.85}
+.lm-name{flex:1;font-family:var(--display);font-weight:600;font-size:.84rem;color:var(--ink-soft)}
 .lm-item .lm-sub{font-family:var(--body);font-weight:700;font-size:.62rem;opacity:.6;color:var(--ink-soft)}
 .lm-tick{color:var(--teal);font-weight:800;font-size:.9rem}
 
@@ -246,6 +256,29 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .back .ml.ja .rd{font-family:var(--jp)}
 .back .note{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-family:var(--thai);font-size:.8rem;color:var(--ink-soft);font-weight:500;max-width:94%;line-height:1.4}
 .back .note b{font-family:var(--display);font-size:.6rem;text-transform:uppercase;letter-spacing:.5px;color:var(--gold-deep);display:block;margin-bottom:2px}
+/* ===== Foundations: consonant cards ===== */
+.cons-face{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.cons-letter{font-family:var(--thai);font-weight:700;font-size:5.4rem;line-height:1;color:var(--ink)}
+.cons-letter.back{font-size:3rem;margin-top:2px}
+.cons-emo{font-size:2.2rem;line-height:1;margin-top:2px}
+.cons-name{font-family:var(--thai);font-weight:700;font-size:1.55rem;color:var(--ink);margin-top:2px}
+.cons-sound{display:flex;gap:14px;align-items:baseline;justify-content:center;margin-top:6px}
+.cons-sound .rom{font-family:var(--body);font-weight:800;font-size:1.5rem;color:var(--teal-deep)}
+.cons-sound .ipa{font-family:var(--body);font-size:1.05rem;color:var(--ink-soft);font-weight:600}
+.cons-mean{display:flex;flex-direction:column;align-items:center;gap:1px;margin-top:10px}
+.cons-mean .cm-emo{font-size:1.7rem;line-height:1;margin-bottom:2px}
+.cons-mean .cm-line{font-weight:600;font-size:1.05rem;color:var(--ink)}
+.cons-mean .cm-line .cm-rd{font-size:.8rem;color:var(--ink-soft);margin-left:6px}
+.cons-meta{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin-top:12px}
+.cons-fin{font-family:var(--display);font-weight:700;font-size:.72rem;color:var(--ink-soft);background:var(--paper-2);padding:4px 11px;border-radius:999px}
+.cons-classpill{font-family:var(--thai);font-weight:700;font-size:.82rem;color:#fff;padding:4px 13px;border-radius:999px;margin-top:8px}
+.cons-classpill.cls-mid{background:var(--teal)}
+.cons-classpill.cls-high{background:var(--ruby)}
+.cons-classpill.cls-low{background:var(--gold-deep)}
+.cons-letter.back.cls-mid{color:var(--teal-deep)}
+.cons-letter.back.cls-high{color:var(--ruby-deep)}
+.cons-letter.back.cls-low{color:var(--gold-deep)}
+
 /* S7: long IPA compounds (no-space, dot-separated) wrap instead of overflowing on narrow screens — non-game surfaces only */
 .front .pronbig,.back .pron,.qprompt-pin,.row .rpin{overflow-wrap:break-word}
 
@@ -486,6 +519,11 @@ button.game-card:hover{transform:translateY(-2px)}
 .pron-pick button b{font-family:var(--display);font-size:.94rem;display:block}
 .pron-pick button span{font-size:.7rem;color:var(--ink-soft);font-weight:700}
 .pron-pick button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-tint)}
+.ob-section{margin-top:15px}
+.ob-label{font-family:var(--display);font-weight:800;font-size:.72rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+.ob-label small{text-transform:none;letter-spacing:0;font-weight:700;opacity:.75}
+.mode-pick .pp-ex{min-width:40px;font-size:1.7rem;text-align:center}
+.mode-pick button[data-mode="basics"] .pp-ex{font-family:var(--thai)}
 .modal-actions{display:flex;gap:10px;margin-top:8px}
 .bindbox{background:var(--cloud);border:1.5px dashed var(--line);border-radius:var(--r-md);padding:14px;margin-top:6px}
 .bindbox p{font-size:.8rem;color:var(--ink-soft);font-weight:700;margin:0 0 10px}
@@ -658,7 +696,7 @@ button.game-card:hover{transform:translateY(-2px)}
     <div class="ob-top">
       <div class="seal-logo" aria-hidden="true"><div id="obLogo"></div></div>
       <div><h1>Sawasdee</h1><p>Learn Thai</p></div>
-      <div class="ob-dots" id="obDots"><i class="on"></i><i></i><i></i></div>
+      <div class="ob-dots" id="obDots"><i class="on"></i><i></i></div>
     </div>
 
     <!-- Step 1: profile -->
@@ -679,26 +717,16 @@ button.game-card:hover{transform:translateY(-2px)}
       </div>
     </div>
 
-    <!-- Step 2: languages -->
-    <div class="ob-panel" id="obLangPanel">
-      <h2 class="ob-h">Which meanings do you want?</h2>
-      <p class="ob-sub">Thai words will be explained in your language. Pick up to two.</p>
-      <div class="lang-pick" id="obLang"></div>
+    <!-- Step 2: languages, pronunciation & mode -->
+    <div class="ob-panel" id="obSetupPanel">
+      <h2 class="ob-h">Set up your lessons</h2>
+      <p class="ob-sub">A few quick choices — you can change any of them later.</p>
+      <div class="ob-section"><div class="ob-label">Meanings <small>· pick up to two</small></div><div class="lang-pick" id="obLang"></div></div>
+      <div class="ob-section"><div class="ob-label">Pronunciation guide</div><div class="pron-pick" id="obPron"></div></div>
+      <div class="ob-section"><div class="ob-label">Where to start</div><div class="pron-pick mode-pick" id="obMode"></div></div>
       <div class="ob-spacer"></div>
       <div class="ob-foot">
-        <button class="btn btn-ghost" id="obLangBack">Back</button>
-        <button class="btn btn-primary" id="obLangNext" style="flex:1">Continue</button>
-      </div>
-    </div>
-
-    <!-- Step 3: pronunciation -->
-    <div class="ob-panel" id="obPronPanel">
-      <h2 class="ob-h">How should sounds be written?</h2>
-      <p class="ob-sub">Thai has tones. Choose the pronunciation guide that suits you — you can switch later.</p>
-      <div class="pron-pick" id="obPron"></div>
-      <div class="ob-spacer"></div>
-      <div class="ob-foot">
-        <button class="btn btn-ghost" id="obPronBack">Back</button>
+        <button class="btn btn-ghost" id="obSetupBack">Back</button>
         <button class="btn btn-primary" id="obFinishBtn" style="flex:1">Start learning</button>
       </div>
     </div>
@@ -723,12 +751,6 @@ button.game-card:hover{transform:translateY(-2px)}
 
   <div class="ctrlrow" id="ctrlRow">
     <nav class="levels" id="levels" aria-label="Choose category"></nav>
-    <div class="langbar" id="langbarStudy" aria-label="Card meaning languages">
-      <button class="lang-toggle" data-lang="en" aria-pressed="true"><span class="dot"></span>EN</button>
-      <button class="lang-toggle" data-lang="ja" aria-pressed="false"><span class="dot"></span>日</button>
-      <button class="lang-toggle" data-lang="zs" aria-pressed="false"><span class="dot"></span>简</button>
-      <button class="lang-toggle" data-lang="zt" aria-pressed="false"><span class="dot"></span>繁</button>
-    </div>
   </div>
 
   <!-- ===== STUDY ===== -->
@@ -1452,6 +1474,7 @@ button.game-card:hover{transform:translateY(-2px)}
 <div class="toast" id="toast"></div>
 
 <script src="data.js"></script>
+<script src="alphabet.js"></script>
 <script>
 
 "use strict";
@@ -1628,7 +1651,9 @@ CATS.forEach(function(c){
   CAT_BY_KEY[vid].n+=(WORDS_BY_CAT[c.k]||[]).length;
   WORDS_BY_CAT[vid]=WORDS_BY_CAT[vid].concat(WORDS_BY_CAT[c.k]||[]);
 });
+function catPart(c){return (c&&c.part==="basics")?"basics":"vocab";}
 var FIRST_CAT=CATS[0].k;
+var FIRST_VOCAB_CAT=(function(){for(var i=0;i<CATS.length;i++){if(catPart(CATS[i])==="vocab")return CATS[i].k;}return CATS[0].k;})();
 
 var LANGS={
   en:{key:"en",flag:"EN",label:"English",sub:"English meanings",field:"en",read:null,font:""},
@@ -1656,7 +1681,7 @@ function newAccount(name,mascot){
   var id="a"+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36);
   return {id:id,name:name||"Learner",mascot:mascot||"eleph",created:Date.now(),
     xp:0,streak:0,lastDay:null,days:[],xpByDay:{},
-    settings:{front:"thai",langs:{en:true,ja:false,zs:false,zt:false},pron:"rom",quizLang:"en",quizFront:"th",quizBack:"mean",cat:FIRST_CAT,catView:"chapter",storyLang:"en",storyPron:"rom",storyChoice:"thai",onboarded:false},
+    settings:{front:"thai",langs:{en:true,ja:false,zs:false,zt:false},pron:"rom",quizLang:"en",quizFront:"th",quizBack:"mean",cat:FIRST_VOCAB_CAT,part:"vocab",lastCat:{},catView:"chapter",storyLang:"en",storyPron:"rom",storyChoice:"thai",onboarded:false},
     cards:{},best:{},qStats:{correct:0,total:0},log:[]};
 }
 function migrateAccount(a){
@@ -1675,7 +1700,9 @@ function migrateAccount(a){
   if(["en","ja","zh"].indexOf(s.storyLang)<0)s.storyLang="en";
   if(["mean","rom","ipa","none"].indexOf(s.storyPron)<0)s.storyPron="rom";
   if(["thai","rom","ipa"].indexOf(s.storyChoice)<0)s.storyChoice="thai";
-  if(!s.cat||!CAT_BY_KEY[s.cat])s.cat=FIRST_CAT;
+  if(!s.cat||!CAT_BY_KEY[s.cat])s.cat=FIRST_VOCAB_CAT;
+  if(!s.lastCat)s.lastCat={};
+  if(CAT_BY_KEY[s.cat])s.part=catPart(CAT_BY_KEY[s.cat]);
   if(s.catView!=="flat"&&s.catView!=="chapter")s.catView="chapter";
   if(typeof s.onboarded!=="boolean")s.onboarded=true; /* legacy accounts already in use */
   if(a.mascot==="betta")a.mascot="rooster";
@@ -1949,6 +1976,31 @@ function meaningLines(w){
   return selLangs().map(function(k){var L=LANGS[k];return {k:k,flag:L.flag,font:L.font,t:w[L.field],rd:L.read?w[L.read]:""};});
 }
 function thaiCls(s,big){var n=(s||"").length;if(big)return n>9?" tiny":(n>5?" small":"");return n>9?" small":"";}
+function consCard(w,st,stl,hard){
+  var cls=w.cls||"mid";
+  var catTag='<span class="cattag">📖 พยัญชนะ Consonants</span>';
+  var stTag='<span class="statustag st-'+st+'">'+stl+'</span>';
+  var f='<span class="tag">Letter</span>'+catTag+stTag
+    +'<div class="cons-face"><div class="cons-letter">'+esc(w.th)+'</div>'
+    +'<div class="cons-emo" aria-hidden="true">'+esc(w.emo||"")+'</div></div>'
+    +'<span class="cons-classpill cls-'+cls+'">'+esc(w.clsTh||"")+'</span>'
+    +'<button class="hardstar'+(hard?" on":"")+'" id="hardStar" title="Mark for review" aria-label="Mark for review">★</button>'
+    +'<button class="spk spk-front" id="cardSpkFront" title="Hear it" aria-label="Hear it">'+SPK_SVG+'</button>'
+    +'<span class="hint">tap to flip</span>';
+  $("#cardFront").innerHTML=f;
+  var mean='<div class="cons-mean"><span class="cm-emo" aria-hidden="true">'+esc(w.emo||"")+'</span>';
+  meaningLines(w).forEach(function(m){mean+='<span class="cm-line '+m.font+'"><span class="cm-t">'+esc(m.t)+'</span>'+(m.rd?'<span class="cm-rd">'+esc(m.rd)+'</span>':'')+'</span>';});
+  mean+='</div>';
+  var b='<span class="tag">Answer</span>'+catTag+stTag
+    +'<div class="cons-letter back cls-'+cls+'">'+esc(w.th)+'</div>'
+    +'<div class="cons-name">'+esc(w.nm)+'</div>'
+    +'<div class="cons-sound"><span class="rom">'+esc(w.r)+'</span><span class="ipa">'+esc(w.i)+'</span></div>'
+    +mean
+    +'<div class="cons-meta"><span class="cons-classpill cls-'+cls+'">'+esc(w.clsTh)+' · '+esc(w.clsEn)+' class</span>'
+    +'<span class="cons-fin">final sound: '+esc(w.fin)+'</span></div>'
+    +'<button class="spk" id="cardSpk" aria-label="Hear it">'+SPK_SVG+'</button>';
+  $("#cardBack").innerHTML=b;
+}
 function renderCard(){
   var w=study.pool[study.idx];
   if(!w){$("#cardFront").innerHTML='<div class="meanbig">No words here yet.</div>';$("#cardBack").innerHTML="";$("#studyCounter").textContent="0 / 0";$("#studyBar").style.width="0%";var rr=$("#rateRow");if(rr)rr.style.display="none";return;}
@@ -1958,6 +2010,8 @@ function renderCard(){
   var head='<span class="tag">'+(front==="thai"?"Thai":"Meaning")+'</span>'
     +'<span class="cattag">'+CAT_BY_KEY[w.c].emo+" "+esc(CAT_BY_KEY[w.c].en)+'</span>'
     +'<span class="statustag st-'+st+'">'+stl+'</span>';
+  if(w.kind==="cons"){consCard(w,st,stl,hard);}
+  else{
   var f=head;
   if(front==="thai"){f+='<div class="thai'+thaiCls(w.th,true)+'">'+esc(w.th)+'</div>';}
   else{var ml=meaningLines(w);var m0=ml[0];f+='<div class="meanbig '+m0.font+'">'+esc(m0.t)+'</div>'+(m0.rd?'<div class="meansub '+m0.font+'">'+esc(m0.rd)+'</div>':'');}
@@ -1977,6 +2031,7 @@ function renderCard(){
   if(w.n)b+='<div class="note"><b>Note (TH)</b>'+esc(w.n)+'</div>';
   b+='<button class="spk" id="cardSpk" aria-label="Hear it in Thai">'+SPK_SVG+'</button>';
   $("#cardBack").innerHTML=b;
+  }
 
   var card=$("#card");card.classList.toggle("flipped",study.flipped);
   $("#rateRow").style.display="grid";
@@ -1987,8 +2042,8 @@ function renderCard(){
 }
 function bindCardExtras(){
   var hs=$("#hardStar");if(hs)hs.onclick=function(ev){ev.stopPropagation();var w=study.pool[study.idx];var c=cardOf(w.id);c.hard=!c.hard;saveDB();renderCard();updateDueCounts();toast(c.hard?"Marked for review ★":"Removed from review");};
-  var sp=$("#cardSpk");if(sp)sp.onclick=function(ev){ev.stopPropagation();speak(study.pool[study.idx].th);};
-  var spf=$("#cardSpkFront");if(spf)spf.onclick=function(ev){ev.stopPropagation();speak(study.pool[study.idx].th);};
+  var sp=$("#cardSpk");if(sp)sp.onclick=function(ev){ev.stopPropagation();var _w=study.pool[study.idx];speak(_w.kind==="cons"?_w.nm:_w.th);};
+  var spf=$("#cardSpkFront");if(spf)spf.onclick=function(ev){ev.stopPropagation();var _w=study.pool[study.idx];speak(_w.kind==="cons"?_w.nm:_w.th);};
 }
 function flipCard(){study.flipped=!study.flipped;setMood(study.flipped?"think":"idle");if(study.flipped&&Math.random()<0.3)baoSay("think",$("#mascotStudy"),{placement:"left"});renderCard();}
 function gotoCard(n,dir){study.idx=n;study.flipped=false;renderCard();}
@@ -2258,7 +2313,7 @@ function syncStudyControls(){
   var p=$("#pronSel");if(p)p.value=S().pron;
   renderStudyLangbar();
 }
-function renderStudyLangbar(){var L=S().langs;$$("#langbarStudy .lang-toggle").forEach(function(b){b.setAttribute("aria-pressed",!!L[b.getAttribute("data-lang")]);});}
+function renderStudyLangbar(){var L=S().langs;$$("#lmLangbar .lang-toggle").forEach(function(b){b.setAttribute("aria-pressed",!!L[b.getAttribute("data-lang")]);});}
 function toggleStudyLang(k){
   var L=S().langs;var on=!!L[k];var count=LANG_ORDER.filter(function(x){return L[x];}).length;
   if(!on&&count>=2){toast("Pick up to two languages");return;}
@@ -2268,46 +2323,63 @@ function toggleStudyLang(k){
 
 /* category dropdown */
 function renderCatBar(){
-  var gk=curCatKey();var cur=CAT_BY_KEY[gk];
+  var gk=curCatKey();var cur=CAT_BY_KEY[gk]||CAT_BY_KEY[FIRST_VOCAB_CAT];
+  var part=(S().part==="basics")?"basics":"vocab";
+  var psw='<div class="lm-partsw" role="tablist" aria-label="Section">'
+    +'<button type="button" class="lm-pt'+(part==="basics"?" on":"")+'" data-part="basics" role="tab" aria-selected="'+(part==="basics")+'">Basics</button>'
+    +'<button type="button" class="lm-pt'+(part==="vocab"?" on":"")+'" data-part="vocab" role="tab" aria-selected="'+(part==="vocab")+'">Vocabulary</button>'
+    +'</div>';
   var trig='<button class="lm-trigger" id="lmTrigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Choose category, currently '+esc(cur.en)+'">'
     +'<span class="lm-left"><span class="lm-emo">'+cur.emo+'</span><span class="lm-txt">'
-    +'<span class="lm-eyebrow">Category</span>'
+    +'<span class="lm-eyebrow">'+(part==="basics"?"Basics":"Category")+'</span>'
     +'<span class="lm-cur"><b>'+esc(cur.en)+'</b><small>· '+cur.n+' words</small></span></span></span>'
     +'<span class="lm-chev" aria-hidden="true">▾</span></button>';
-  var GROUPS=[
-    {label:"Chapter 1 · Touchdown 🛬",keys:["essentials","self_intro","question_words"]},
-    {label:"Chapter 2 · Finding Your Way 🧭",keys:["directions","transport"]},
-    {label:"Chapter 3 · Street Eats & Baht 🍜",keys:["numbers_money","food_drink"]},
-    {label:"Chapter 4 · When Things Go Wrong 🆘",keys:["help_emergency","body_health"]},
-    {label:"Chapter 5 · Settling In 🛏️",keys:["time_dates","accommodation"]},
-    {label:"Chapter 6 · Making Friends 🤝",keys:["people_family","feelings_smalltalk"]},
-    {label:"Chapter 7 · Everyday Life 🏠",keys:["home_daily","common_verbs","describing_words"]},
-    {label:"Chapter 8 · Work & School 💼",keys:["work_office","school_study"]},
-    {label:"Chapter 9 · The World Around You 🌦️",keys:["nature_weather","tech_media"]},
-    {label:"Chapter 10 · Getting Things Done 🛍️",keys:["shopping_clothes","bank_post"]},
-    {label:"Chapter 11 · Grammar Glue 🧩",keys:["grammar_words"]},
-    {label:"Chapter 12 · Colors & Counters 🎨",keys:["colors","counters"]},
-    {label:"Chapter 13 · Saying More 🗣️",keys:["more_verbs","idioms"]},
-    {label:"Chapter 14 · Out & About 🗺️",keys:["sightseeing","activities"]},
-    {label:"Chapter 15 · Thai Life 🎊",keys:["ceremonies"]},
-    {label:"Chapter 16 · Food, Deeper 🍲",keys:["thai_dishes","fruits","local_eats_shops","flavors_textures","cooking_methods"]}
-  ];
-  var placed={};GROUPS.forEach(function(g){g.keys.forEach(function(k){placed[k]=true;});});
-  CATS.forEach(function(c){if(!placed[c.k])GROUPS[0].keys.push(c.k);}); /* unmapped decks fall into first group */
-  function itemHTML(c){
-    return '<button class="lm-item'+(c.k===gk?" on":"")+'" role="menuitemradio" aria-checked="'+(c.k===gk)+'" data-c="'+c.k+'">'
+  var L=S().langs;
+  var langRow='<div class="lm-lang" id="lmLangbar" role="group" aria-label="Meaning language">'
+    +LANG_ORDER.map(function(k){var d=LANGS[k];return '<button class="lang-toggle" data-lang="'+k+'" aria-pressed="'+(!!L[k])+'"><span class="dot"></span>'+d.flag+'</button>';}).join("")
+    +'</div>';
+  function itemHTML(c,clickable){
+    var on=(c.k===gk);
+    return '<button class="lm-item'+(on?" on":"")+(clickable?"":" static")+'" role="'+(clickable?"menuitemradio":"presentation")+'"'+(clickable?(' aria-checked="'+on+'" data-c="'+c.k+'"'):"")+'>'
       +'<span class="lm-ie">'+c.emo+'</span><span class="lm-name">'+esc(c.en)+'</span><span class="lm-sub">'+c.n+'</span>'
-      +(c.k===gk?'<span class="lm-tick" aria-hidden="true">✓</span>':'')+'</button>';
+      +(on?'<span class="lm-tick" aria-hidden="true">✓</span>':'')+'</button>';
+  }
+  var GROUPS;
+  if(part==="basics"){
+    var seen={};GROUPS=[];
+    CATS.forEach(function(c){if(catPart(c)!=="basics")return;var key=String(c.ch);if(!(key in seen)){seen[key]=GROUPS.length;GROUPS.push({label:(c.chLabel||"Foundations"),keys:[]});}GROUPS[seen[key]].keys.push(c.k);});
+  }else{
+    GROUPS=[
+      {label:"Chapter 1 · Touchdown 🛬",keys:["essentials","self_intro","question_words"]},
+      {label:"Chapter 2 · Finding Your Way 🧭",keys:["directions","transport"]},
+      {label:"Chapter 3 · Street Eats & Baht 🍜",keys:["numbers_money","food_drink"]},
+      {label:"Chapter 4 · When Things Go Wrong 🆘",keys:["help_emergency","body_health"]},
+      {label:"Chapter 5 · Settling In 🛏️",keys:["time_dates","accommodation"]},
+      {label:"Chapter 6 · Making Friends 🤝",keys:["people_family","feelings_smalltalk"]},
+      {label:"Chapter 7 · Everyday Life 🏠",keys:["home_daily","common_verbs","describing_words"]},
+      {label:"Chapter 8 · Work & School 💼",keys:["work_office","school_study"]},
+      {label:"Chapter 9 · The World Around You 🌦️",keys:["nature_weather","tech_media"]},
+      {label:"Chapter 10 · Getting Things Done 🛍️",keys:["shopping_clothes","bank_post"]},
+      {label:"Chapter 11 · Grammar Glue 🧩",keys:["grammar_words"]},
+      {label:"Chapter 12 · Colors & Counters 🎨",keys:["colors","counters"]},
+      {label:"Chapter 13 · Saying More 🗣️",keys:["more_verbs","idioms"]},
+      {label:"Chapter 14 · Out & About 🗺️",keys:["sightseeing","activities"]},
+      {label:"Chapter 15 · Thai Life 🎊",keys:["ceremonies"]},
+      {label:"Chapter 16 · Food, Deeper 🍲",keys:["thai_dishes","fruits","local_eats_shops","flavors_textures","cooking_methods"]}
+    ];
+    var placed={};GROUPS.forEach(function(g){g.keys.forEach(function(k){placed[k]=true;});});
+    CATS.forEach(function(c){if(!placed[c.k]&&catPart(c)==="vocab")GROUPS[0].keys.push(c.k);});
   }
   var view=(S().catView==="flat")?"flat":"chapter";
   var body;
   if(view==="flat"){
-    body='<div class="lm-ghead" role="presentation">All decks · '+CATS.length+'</div>'+CATS.map(itemHTML).join("");
+    var pcats=CATS.filter(function(c){return catPart(c)===part;});
+    body='<div class="lm-ghead" role="presentation">All decks · '+pcats.length+'</div>'+pcats.map(function(c){return itemHTML(c,true);}).join("");
   }else{
     body=GROUPS.map(function(g){
       var decks=g.keys.map(function(k){return CAT_BY_KEY[k];}).filter(Boolean);
       if(!decks.length)return "";
-      var rows=decks.map(itemHTML).join("");
+      var rows=decks.map(function(c){return itemHTML(c,false);}).join("");
       var vid="ch_"+decks[0].ch;var vc=CAT_BY_KEY[vid];var on=(gk===vid);
       var head='<button type="button" class="lm-ghead lm-chapsel'+(on?" on":"")+'" role="menuitemradio" aria-checked="'+on+'" data-c="'+vid+'" title="Study the whole chapter">'
         +'<span class="lm-gh-l">'+esc(g.label)+'</span>'
@@ -2319,18 +2391,22 @@ function renderCatBar(){
     +'<button type="button" class="lm-vt'+(view==="chapter"?" on":"")+'" data-view="chapter" aria-pressed="'+(view==="chapter")+'">Chapters</button>'
     +'<button type="button" class="lm-vt'+(view==="flat"?" on":"")+'" data-view="flat" aria-pressed="'+(view==="flat")+'">All decks</button>'
     +'</div>';
-  $("#levels").innerHTML=trig+'<div class="lm-pop" id="lmPop" role="menu" hidden>'+toggle+body+'</div>';
+  $("#levels").innerHTML='<div class="lm-toprow">'+psw+langRow+'</div>'+trig+'<div class="lm-pop" id="lmPop" role="menu" hidden>'+toggle+body+'</div>';
   var trigEl=$("#lmTrigger"),pop=$("#lmPop");
   function closeMenu(){if(pop)pop.hidden=true;if(trigEl)trigEl.setAttribute("aria-expanded","false");}
   function openMenu(){if(pop)pop.hidden=false;if(trigEl)trigEl.setAttribute("aria-expanded","true");}
   if(trigEl)trigEl.onclick=function(ev){ev.stopPropagation();(pop&&pop.hidden)?openMenu():closeMenu();};
+  $$("#lmLangbar .lang-toggle").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();toggleStudyLang(b.getAttribute("data-lang"));};});
+  $$("#levels .lm-pt").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();var np=b.getAttribute("data-part");var cp=(S().part==="basics")?"basics":"vocab";if(np!==cp)switchPart(np);};});
   $$("#lmPop .lm-vt").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();var v=b.getAttribute("data-view");if(S().catView!==v){S().catView=v;saveDB();renderCatBar();var p=document.getElementById("lmPop");if(p)p.hidden=false;var t=document.getElementById("lmTrigger");if(t)t.setAttribute("aria-expanded","true");}};});
-  $$("#lmPop .lm-item, #lmPop .lm-chapsel").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();S().cat=b.getAttribute("data-c");saveDB();closeMenu();renderCatBar();onCatChange();};});
+  $$("#lmPop .lm-item[data-c], #lmPop .lm-chapsel").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();var key=b.getAttribute("data-c");var s=S();s.cat=key;var isCh=(key.indexOf("ch_")===0);var np=isCh?"vocab":(CAT_BY_KEY[key]?catPart(CAT_BY_KEY[key]):"vocab");if(isCh)np=(S().part==="basics")?"basics":"vocab";s.part=np;if(!s.lastCat)s.lastCat={};s.lastCat[np]=key;saveDB();closeMenu();renderCatBar();onCatChange();};});
   if(!window.__lmDocBound){window.__lmDocBound=true;
     document.addEventListener("click",function(){var p=document.getElementById("lmPop");if(p&&!p.hidden){p.hidden=true;var t=document.getElementById("lmTrigger");if(t)t.setAttribute("aria-expanded","false");}});
     document.addEventListener("keydown",function(e){if(e.key==="Escape"){var p=document.getElementById("lmPop");if(p&&!p.hidden){p.hidden=true;var t=document.getElementById("lmTrigger");if(t)t.setAttribute("aria-expanded","false");}}});
   }
 }
+function firstDeckOf(p){for(var i=0;i<CATS.length;i++){if(catPart(CATS[i])===p)return CATS[i].k;}return FIRST_VOCAB_CAT;}
+function switchPart(np){var s=S();if(!s.lastCat)s.lastCat={};var curp=(s.part==="basics")?"basics":"vocab";s.lastCat[curp]=s.cat;s.part=np;var t=(s.lastCat[np]&&CAT_BY_KEY[s.lastCat[np]])?s.lastCat[np]:firstDeckOf(np);s.cat=t;saveDB();renderCatBar();onCatChange();}
 function onCatChange(){buildStudyPool("reset");renderCard();updateDueCounts();renderBrowse();updateQuizSetupLabels();if(curView==="progress")renderProgress();}
 function updateQuizSetupLabels(){var el=$("#qPoolLevel");if(el)el.textContent=catName(curCatKey());updateDueCounts();if(acct()){quiz.front=S().quizFront;quiz.back=S().quizBack;}renderQuizSides();}
 function syncQuizLangBar(){var cur=quizLang();$$("#qLang button").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-qlang")===cur);});}
@@ -3159,6 +3235,12 @@ function renderPronPick(hostSel,onChange){
   }).join("");
   $$(hostSel+" button").forEach(function(b){b.onclick=function(){S().pron=b.getAttribute("data-p");saveDB();$$(hostSel+" button").forEach(function(x){x.setAttribute("aria-pressed",x.getAttribute("data-p")===S().pron);});if(onChange)onChange();};});
 }
+function renderModePick(hostSel,onChange){
+  var cur=(S().part==="basics")?"basics":"vocab";
+  var opts=[["vocab","🛬","Vocabulary","Survival words & phrases — start speaking from day one."],["basics","ก","Basics","Learn to read first: the alphabet, vowels & tones."]];
+  $(hostSel).innerHTML=opts.map(function(o){return '<button data-mode="'+o[0]+'" aria-pressed="'+(cur===o[0])+'"><span class="pp-ex mp-ic">'+o[1]+'</span><span><b>'+o[2]+'</b><span>'+o[3]+'</span></span></button>';}).join("");
+  $$(hostSel+" button").forEach(function(b){b.onclick=function(){var m=b.getAttribute("data-mode");var s=S();s.part=m;s.cat=firstDeckOf(m);if(!s.lastCat)s.lastCat={};s.lastCat[m]=s.cat;saveDB();$$(hostSel+" button").forEach(function(x){x.setAttribute("aria-pressed",x.getAttribute("data-mode")===S().part);});if(onChange)onChange();};});
+}
 function renderMascotPick(hostSel,getVal,setVal){
   var cur=getVal();
   $(hostSel).innerHTML=["eleph","cat","dog","buff","rooster","monitor"].map(function(t){var m=MASCOTS[t];
@@ -3215,7 +3297,7 @@ function doImport(){
 /* ============ ONBOARDING ============ */
 var obStep=0,obMascotSel="eleph",obCreating=false;
 function setObDots(i){$$("#obDots i").forEach(function(d,idx){d.className=idx<=i?"on":"";if(idx!==i)d.className=idx<i?"on":"";});$$("#obDots i").forEach(function(d,idx){d.classList.toggle("on",idx===i);});}
-function showObPanel(id){["obWelcome","obLangPanel","obPronPanel"].forEach(function(p){$("#"+p).classList.toggle("show",p===id);});}
+function showObPanel(id){["obWelcome","obSetupPanel"].forEach(function(p){$("#"+p).classList.toggle("show",p===id);});}
 function openOnboarding(){
   $("#obLogo").innerHTML=mascotSVG("eleph",4,38);
   $("#onboard").classList.add("show");
@@ -3252,8 +3334,7 @@ function createProfileFromForm(){
   var a=newAccount(name,obMascotSel);DB.accounts[a.id]=a;DB.current=a.id;saveDB();lastStage=null;
   gotoObLang();
 }
-function gotoObLang(){obStep=1;setObDots(1);showObPanel("obLangPanel");renderLangPick("#obLang",null);}
-function gotoObPron(){obStep=2;setObDots(2);showObPanel("obPronPanel");renderPronPick("#obPron",null);}
+function gotoObLang(){obStep=1;setObDots(1);showObPanel("obSetupPanel");renderLangPick("#obLang",null);renderPronPick("#obPron",null);renderModePick("#obMode",null);}
 function finishOnboarding(){
   S().onboarded=true;saveDB();closeOnboarding();
   lastStage=stageFromGP(growthPoints(acct()).gp);
@@ -3268,7 +3349,6 @@ function init(){
   /* study display controls */
   var fSel=$("#frontSel");if(fSel)fSel.onchange=function(){S().front=fSel.value;saveDB();renderCard();};
   var pSel=$("#pronSel");if(pSel)pSel.onchange=function(){S().pron=pSel.value;saveDB();renderCard();renderBrowse();};
-  $$("#langbarStudy .lang-toggle").forEach(function(b){b.onclick=function(){toggleStudyLang(b.getAttribute("data-lang"));};});
   /* study controls */
   $("#prevBtn").onclick=function(){prevCard();};
   $("#nextBtn").onclick=function(){nextCard();};
@@ -3336,9 +3416,7 @@ function init(){
   /* onboarding */
   $("#obAddBtn").onclick=function(){obCreating=true;$("#obCreate").style.display="";$("#obCreateBtn").style.display="";$("#obCreateBtn").textContent="Create profile";$("#obName").focus();};
   $("#obCreateBtn").onclick=createProfileFromForm;
-  $("#obLangBack").onclick=function(){obStep=0;setObDots(0);showObPanel("obWelcome");renderObWelcome();};
-  $("#obLangNext").onclick=gotoObPron;
-  $("#obPronBack").onclick=gotoObLang;
+  $("#obSetupBack").onclick=function(){obStep=0;setObDots(0);showObPanel("obWelcome");renderObWelcome();};
   $("#obFinishBtn").onclick=finishOnboarding;
   /* guide language */
   $$(".glang-toggle").forEach(function(b){b.onclick=function(){S().glang=b.getAttribute("data-glang");saveDB();renderGuide();};});
