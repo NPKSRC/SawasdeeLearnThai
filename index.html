@@ -216,10 +216,11 @@ body.no-tts #qFront button[data-side="audio"]{display:none!important}
 .speech{text-align:center;font-family:var(--display);font-weight:700;color:var(--ink-soft);min-height:1.4em;margin:2px 0 12px;font-size:1rem}
 
 /* ---------- Flashcard ---------- */
-.card-wrap{perspective:1400px;margin-bottom:14px;touch-action:pan-y;-webkit-user-select:none;user-select:none}
-.card{position:relative;width:100%;height:360px;cursor:pointer;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.2,.2,1)}
+.card-wrap{margin-bottom:14px;touch-action:pan-y;-webkit-user-select:none;user-select:none}
+.card-swipe{position:relative;width:100%;height:360px;perspective:1400px;will-change:transform}
+.card-swipe.dragging{transition:none!important}
+.card{position:absolute;inset:0;cursor:pointer;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.2,.2,1)}
 .card.flipped{transform:rotateY(180deg)}
-.card.dragging{transition:none}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--cloud);border:1.5px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:safe center;padding:24px;text-align:center;overflow-y:auto;overflow-x:hidden}
 .face .tag{position:absolute;top:14px;left:14px;font-family:var(--display);font-weight:700;font-size:.66rem;letter-spacing:.5px;text-transform:uppercase;color:var(--teal-deep);background:var(--teal-tint);padding:5px 11px;border-radius:999px}
 .face .cattag{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-family:var(--display);font-weight:700;font-size:.64rem;letter-spacing:.4px;color:var(--ink-soft);background:var(--paper-2);padding:5px 10px;border-radius:999px;white-space:nowrap}
@@ -741,7 +742,7 @@ button.game-card:hover{transform:translateY(-2px)}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms!important;transition-duration:.06ms!important}
-  .card{transition:none}
+  .card,.card-swipe{transition:none}
   .mascot .blink,.mascot .m-body,.mascot .m-ear-l,.mascot .m-ear-r{animation:none}
   [data-mood="idle"] .mascot .pupil{animation:none}
 }
@@ -929,9 +930,11 @@ button.game-card:hover{transform:translateY(-2px)}
     </div>
 
     <div class="card-wrap" id="cardWrap">
-      <div class="card" id="card" tabindex="0" role="button" aria-label="Flashcard. Tap to flip, swipe to move.">
-        <div class="face front" id="cardFront"></div>
-        <div class="face back" id="cardBack"></div>
+      <div class="card-swipe" id="cardSwipe">
+        <div class="card" id="card" tabindex="0" role="button" aria-label="Flashcard. Tap to flip, swipe to move.">
+          <div class="face front" id="cardFront"></div>
+          <div class="face back" id="cardBack"></div>
+        </div>
       </div>
     </div>
 
@@ -2606,11 +2609,13 @@ function updateDueCounts(){
 
 /* swipe / drag */
 function initSwipe(){
-  var wrap=$("#cardWrap"),card=$("#card");
+  var wrap=$("#cardWrap"),card=$("#card"),sw=$("#cardSwipe");
   var startX=0,startY=0,dx=0,dy=0,active=false,moved=false,axis=null,lastX=0,lastT=0,vx=0,W=window.innerWidth||360;
-  function baseRot(){return study.flipped?"rotateY(180deg) ":"";}
-  function clearAfter(ms){setTimeout(function(){card.style.transition="";card.style.transform="";card.style.opacity="";},ms);}
-  function down(x,y){startX=x;startY=y;dx=0;dy=0;active=true;moved=false;axis=null;lastX=x;lastT=Date.now();vx=0;W=window.innerWidth||360;card.style.transition="";card.classList.add("dragging");}
+  /* The swipe layer (#cardSwipe) only ever carries 2D transforms (translateX / rotateZ / opacity).
+     The 3D flip lives solely on #card via the .flipped class. Keeping the two on separate
+     elements avoids the iOS backface-visibility glitch that left the front face mirrored. */
+  function clearAfter(ms){setTimeout(function(){sw.style.transition="";sw.style.transform="";sw.style.opacity="";},ms);}
+  function down(x,y){startX=x;startY=y;dx=0;dy=0;active=true;moved=false;axis=null;lastX=x;lastT=Date.now();vx=0;W=window.innerWidth||360;sw.style.transition="";sw.classList.add("dragging");}
   function move(x,y){
     if(!active)return false;dx=x-startX;dy=y-startY;
     var t=Date.now(),d=t-lastT;if(d>0){vx=(x-lastX)/d;lastX=x;lastT=t;}
@@ -2618,30 +2623,32 @@ function initSwipe(){
     if(axis==="h"){
       var atStart=study.idx===0,atEnd=study.idx===study.pool.length-1;
       var d2=((dx>0&&atStart)||(dx<0&&atEnd))?dx*0.35:dx;
-      card.style.transform=baseRot()+"translateX("+d2+"px) rotate("+(d2/22)+"deg)";
-      card.style.opacity=String(Math.max(.5,1-Math.abs(d2)/640));
+      sw.style.transform="translateX("+d2+"px) rotate("+(d2/22)+"deg)";
+      sw.style.opacity=String(Math.max(.5,1-Math.abs(d2)/640));
       return true;
     }
     return false;
   }
-  function snapBack(){card.classList.remove("dragging");card.style.transition="transform .42s cubic-bezier(.22,1,.36,1),opacity .3s ease";card.style.transform=baseRot();card.style.opacity="1";clearAfter(440);}
+  function snapBack(){sw.classList.remove("dragging");sw.style.transition="transform .42s cubic-bezier(.22,1,.36,1),opacity .3s ease";sw.style.transform="";sw.style.opacity="1";clearAfter(440);}
   function advance(dir){
     var canMove=dir==="next"?study.idx<study.pool.length-1:study.idx>0;
     if(!canMove){snapBack();if(dir==="next")toast("That's the last card 🌿");return;}
-    var off=dir==="next"?-1:1;card.classList.remove("dragging");
-    card.style.transition="transform .26s cubic-bezier(.4,0,.7,.4),opacity .26s ease";
-    card.style.transform=baseRot()+"translateX("+(off*W*1.05)+"px) rotate("+(off*12)+"deg)";card.style.opacity="0";
+    var off=dir==="next"?-1:1;sw.classList.remove("dragging");
+    sw.style.transition="transform .26s cubic-bezier(.4,0,.7,.4),opacity .26s ease";
+    sw.style.transform="translateX("+(off*W*1.05)+"px) rotate("+(off*12)+"deg)";sw.style.opacity="0";
     setTimeout(function(){
-      card.style.transition="none";if(dir==="next")study.idx++;else study.idx--;study.flipped=false;setMood("idle");renderCard();
-      card.style.transform=baseRot()+"translateX("+(off*44)+"px)";card.style.opacity="0";
-      requestAnimationFrame(function(){requestAnimationFrame(function(){card.style.transition="transform .4s cubic-bezier(.22,1,.36,1),opacity .3s ease";card.style.transform=baseRot();card.style.opacity="1";clearAfter(420);});});
+      sw.style.transition="none";
+      card.style.transition="none";/* snap the flip to front instantly while off-screen (no spin-in) */
+      if(dir==="next")study.idx++;else study.idx--;study.flipped=false;setMood("idle");renderCard();
+      sw.style.transform="translateX("+(off*44)+"px)";sw.style.opacity="0";
+      requestAnimationFrame(function(){requestAnimationFrame(function(){card.style.transition="";sw.style.transition="transform .4s cubic-bezier(.22,1,.36,1),opacity .3s ease";sw.style.transform="";sw.style.opacity="1";clearAfter(420);});});
     },260);
   }
   function up(){
     if(!active)return;active=false;
     if(axis==="h"){var fast=Math.abs(vx)>0.5,far=Math.abs(dx)>70;if((fast||far)&&dx<0)advance("next");else if((fast||far)&&dx>0)advance("prev");else snapBack();}
-    else if(!moved){card.classList.remove("dragging");flipCard();}
-    else{card.classList.remove("dragging");card.style.transition="";card.style.transform="";card.style.opacity="";}
+    else if(!moved){sw.classList.remove("dragging");flipCard();}
+    else{sw.classList.remove("dragging");sw.style.transition="";sw.style.transform="";sw.style.opacity="";}
   }
   wrap.addEventListener("touchstart",function(e){if(e.target&&e.target.closest&&e.target.closest(".spk,.hardstar"))return;down(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
   wrap.addEventListener("touchmove",function(e){var horiz=move(e.touches[0].clientX,e.touches[0].clientY);if(horiz&&e.cancelable)e.preventDefault();},{passive:false});
