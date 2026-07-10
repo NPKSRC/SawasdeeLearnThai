@@ -2740,10 +2740,34 @@ function buildQuiz(){
   picks.sort(function(a,b){return ALL_WORDS.indexOf(a)-ALL_WORDS.indexOf(b);});
   var distractorPool=curCatWords().length>=8?curCatWords():ALL_WORDS;
   quiz.qs=picks.map(function(w){
-    var others=sample(distractorPool.filter(function(x){return x.id!==w.id;}),3);
+    var others=pickDistractors(w,distractorPool);
     return {w:w,front:quiz.front,back:quiz.back,others:others};
   });
   quiz.i=0;quiz.score=0;quiz.missed=[];quiz.locked=false;
+}
+/* Choose up to 3 distractors that can never confuse the learner. Two guards:
+   (1) dedupe on the *displayed* back-text, so no two options ever read the same
+       string — this is what stops สวัสดีครับ & สวัสดีค่ะ (both "こんにちは") from
+       appearing as two different-yet-identical choices;
+   (2) skip words that share the *prompt* text (same front), so e.g. when the
+       question shows a meaning we never offer another word with that same meaning
+       as a "wrong" answer. Such same-prompt words are kept only as a last-resort
+       fallback (loose) if the pool is too small to fill 4 distinct options. */
+function qSideText(w,side){return sideText(w,side==="audio"?"th":side);}
+function pickDistractors(w,poolArr){
+  var wB=qSideText(w,quiz.back),wF=qSideText(w,quiz.front);
+  var used={};used[wB]=1;
+  var strict=[],loose=[];
+  shuffle(poolArr).forEach(function(x){
+    if(x.id===w.id)return;
+    var xB=qSideText(x,quiz.back);
+    if(!xB)return;
+    (qSideText(x,quiz.front)===wF?loose:strict).push(x);
+  });
+  var out=[];
+  function take(list){for(var i=0;i<list.length&&out.length<3;i++){var xB=qSideText(list[i],quiz.back);if(used[xB])continue;used[xB]=1;out.push(list[i]);}}
+  take(strict);take(loose);
+  return out;
 }
 /* Keep the front/back pair valid: audio needs a voice, and the two sides must differ. */
 function normalizeQuizSides(){
@@ -3134,8 +3158,17 @@ function stIndex(){
 }
 function stShuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function stClozeOptions(ans){
-  var pool=ST_TARGETS.filter(function(t){return t!==ans;});
-  var picks=stShuffle(pool).slice(0,3); picks.push(ans);
+  /* Dedupe on the displayed label (th/rom/ipa) so two options never read the same
+     — e.g. distinct words that share a romanization. */
+  var used={};used[stChoiceLabel(ans)]=1;
+  var picks=[];
+  stShuffle(ST_TARGETS).forEach(function(t){
+    if(t===ans||picks.length>=3)return;
+    var lab=stChoiceLabel(t);
+    if(used[lab])return;
+    used[lab]=1;picks.push(t);
+  });
+  picks.push(ans);
   return stShuffle(picks);
 }
 function stChoiceLabel(th){var w=ST_IDX[th]||{};var c=story.choice;if(c==="rom")return w.r||th;if(c==="ipa")return w.i||th;return th;}
